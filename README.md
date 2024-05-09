@@ -14,5 +14,5 @@
 ### [!] authorized note
 if you see some type of bugs from the addon/anticheat you should go to our discord server for help and fixing it
 
-discord - https://dsc.gg/bluemods
-official - https://bluemods.neocities.org
+### https://discord.gg/ppPT3MvgCk
+### https://bluemods.neocities.org
