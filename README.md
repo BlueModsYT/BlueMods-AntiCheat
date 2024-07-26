@@ -20,12 +20,6 @@ You can download the anticheat on our official [GitHub Site](https://github.com/
 ### [?] authorized note
 if you see some type of bugs from the addon/anticheat you should go to our discord server for help and fixing it
 
-### [⚠️] Does AntiCheat is Safe?
-yes, we do not use any virus or logs for movements on device's.
-
-### [⚠️] Does AntiCheat had Backdoor Access?
-no, we don't use backdoor or accessing to your world/realm/server or controlling.
-
 - if none of the questions is on your mind then ask us on discord.
 
 - https://bluemods.neocities.org
