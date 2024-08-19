@@ -1,0 +1,42 @@
+{
+  "format_version": 2,
+  "metadata": {
+    "authors": ["@bluemods.lol, @mp09, @trokkk.lol"],
+    "license": "MIT",
+    "url": "https://bluemods.neocities.org"
+  },
+  "header": {
+    "name": "§l§bBlueMods §cAnti§fCheat §ev5.3.15-Beta§r",
+    "description": "This is a beta mode, some of functions may not working with other add-ons. BlueMods AntiCheat for Minecraft Bedrock is a powerful tool designed to protect your server from hackers & cheaters",
+    "uuid": "9ac998a5-9da2-40aa-84ca-0e90a6034246",
+    "version": [5, 3, 15],
+    "min_engine_version": [1, 21, 0]
+  },
+  "modules": [
+    {
+      "type": "data",
+      "uuid": "bfec96d5-9104-4cf4-b09a-f661df9769e3",
+      "version": [2, 2, 0]
+    },
+    {
+      "description": "This is a beta mode, some of functions may not working with other add-ons. BlueMods AntiCheat for Minecraft Bedrock is a powerful tool designed to protect your server from hackers & cheaters",
+      "language": "javascript",
+      "type": "script",
+      "uuid": "96a45b89-ad20-42c9-9e2f-572e2026c9ba",
+      "version": [2, 2, 0],
+      "entry": "scripts/bluemods.js"
+    }
+  ],
+  "dependencies": [
+    {
+      "uuid": "b26a4d4c-afdf-4690-88f8-931846312678",
+      "description": "mojang-minecraft",
+      "version": "1.14.0-beta"
+    },
+    {
+      "uuid": "2bd50a27-ab5f-4f40-a596-3641627c635e",
+      "description": "mojang-minecraft-ui",
+      "version": "1.3.0-beta"
+    }
+  ]
+}
