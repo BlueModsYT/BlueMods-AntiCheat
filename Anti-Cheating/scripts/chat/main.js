@@ -1,6 +1,6 @@
 import { world, system, ChatSendBeforeEvent } from "@minecraft/server"
 import main from "../commands/config.js"
-import "./bow.js"
+import "./projectTile.js"
 // all rights reserved @bluemods.lol - discord account. || please report any bugs or glitches in our discord server https://dsc.gg/bluemods.
 let messages = new Map()
 try {
