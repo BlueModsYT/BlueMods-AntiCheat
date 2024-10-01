@@ -69,3 +69,4 @@ Staff Commands
 
 
 Contact us by joining our official discord server for bug fix and suggestions.
+<p align="center"><img src="https://github.com/user-attachments/assets/da292086-bee4-4210-9b91-5ad6c451a052" alt="BlueMods" width="950" height="110"></p>
