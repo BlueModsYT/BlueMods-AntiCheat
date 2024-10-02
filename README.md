@@ -15,56 +15,90 @@ You can ONLY download the anticheat on our official sites:
 - https://discord.gg/bluemods-anticheat-913049851531522078
 - https://github.com/BlueModsYT/BlueMods-AntiCheat/releases
 
-## Guides for AntiCheat 
-[?] How to download and import
-1. install the anticheat(addon) from our official website.
-2. import the addon it into your Minecraft bedrock files or extract it
-3. make sure that you have enable all experimental experience in the world setting when creating world
-4. "create world" then start playing normally with suspicious friends (toolbox users)
+## **⛔ PREVENTIONS**
+■ Anti Reach<br>
+■ Anti Crasher<br>
+■ Anti Force Nuker<br>
+■ Anti Illegal Items<br>
+■ Anti CBE Exploits<br>
+■ Anti Creative Mode<br>
+■ Anti Lore Containers<br>
+■ Anti Operator Blocks<br>
+■ Anti Invalid Namespoof<br>
 
-[?] How to use the anticheat in gameplay?
-1. How do I able to run the prefix and commands?, Just simply type "!op <player>" first then type "!?" and now you are able to see the list of commands.
-2. Unable to run these instructions above?, We'll you need OPERATOR permission to run "!op".
-3. How to ban or unban someone on the server?: First: You need to type this "!ban <player>" ! Don't copy this <player>, type the username that you wanted to ban from your server. Second: Just type "!unban <player>" make sure the player is in the server, or is on banned.
+## **📡 SYSTEMS**
+■ Projectile Sound<br>
+■ Chat Ranks (Automated)<br>
+■ Previous Banned (Hackers)<br>
+■ Custom Welcome System<br>
 
-## Commands for AntiCheat
-List of Commands
-- !tpa - allows you to request a teleport from any players.
-- !help - shows the list of the commands.
-- !about - shows the developer of the addon.
+## **❓ GUIDES**
+■ Make sure to type `!op add <player>` before using admin commands `!?` or `!help`. (if `!op` does not working just type `/tag @s add admin`)<br>
+■ If it does make an errors make sure to completely type the username and the capital word(s).<br>
+■ Do not give a stranger an op or trusted tag.<br>
 
-Gamemode Commands
-- !gma - change gamemode to adventure.
-- !gmc - change gamemode to creative.
-- !gms - change gamemode to survival.
-- !gmsp - change gamemode to spectator.
-- !vanish - makes yourself invisibility.
+## **♨️ REQUIREMENTS**
+■ `Beta APIs` - Enable this to make the command work.<br>
+■ `Education Edition` - Enable to make the !mute and !unmute work.<br>
+■ `Upcoming Creator Features` - Custom Entities Gamework.<br>
+- Why do we need to turn this ON?: in order to work the commands and the other functions that runs on beta mode. we insured and keep the server safe against those cheaters.<br>
 
-Fun Commands
-- !troll - troll someone in the server.
-- !control - allows you to control a specific player.
-- !uncontrol - uncontrol a specific player.
+## **🤖 COMMANDS FOR ANTICHEAT**
+■ !help - shows the list of the commands.<br>
+■ !about - shows the developer of the addon.<br>
 
-Moderation Commands
-- !kick - kick a specific player in server.
-- !cmdsf - disabled command block logs and popping on chats.
-- !ban - ban a specific player in server.
-- !unban - unban a specific player in server.
-- !mute - mute a specific player in server.
-- !unmute - unmute a specific player.
-- !freeze - freeze a specific player.
-- !unfreeze - unfreeze a specific player.
-- !lagclear - kill all items on the ground.
-- !ecwipe - allows you to remove items on there ender_chest.
+Spawn Commands<br>
+■ !spawn - go back to lobby.<br>
+■ !rspawn - remove the current spawn set.<br>
+■ !setspawn - make a setspawn to able to use !spawn.<br>
 
-Staff Commands
-- !op - op a specific player in server to immune to any anticheat.
-- !deop - deop a specific player in server to disable bypass.
-- !notify - notification when someone got flagged by the anticheat.
-- !trusted - add trusted or remove on specific player.
+TPA Commands<br>
+■ !tpa send \<player> - allows you to request a teleport from any players.<br>
+■ !tpa accept - allows you to accept a current request from other player.<br>
+■ !tpa decline - you can only decline a request from other player.<br>
+■ !tpa cancel - you can cancel a request from the player.<br>
+■ !tpa block \<player> - allows you to block a player from sending a teleport request.<br>
+■ !tpa unblock \<player> - unblock the blocked player so they can able to send a request to you again.<br>
 
-## Developers
-- Main: @bluemods.lol, @trokkk.lol
+Gamemode Commands<br>
+■ !gma \<player> - change gamemode to adventure.<br>
+■ !gmc \<player> - change gamemode to creative.<br>
+■ !gms \<player> - change gamemode to survival.<br>
+■ !gmsp \<player> - change gamemode to spectator.<br>
+■ !vanish \<player> - makes yourself invisibility.<br>
+
+Moderation Commands<br>
+■ !kick \<player> \<reason> - kick a specific player in server.<br>
+■ !ban add \<player> \<reason> - ban a specific player in server.<br>
+■ !ban remove \<player> - unban a specific player in server.<br>
+■ !ban list - see the list of the banned players on the server.<br>
+■ !cmdsf <enable/disable> - disabled command block logs and popping on chats. [MODULE]<br>
+■ !mute <add/remove> \<player> - mute a specific player in server.<br>
+■ !mute list - see the list of muted user.<br>
+■ !freeze <add/remove> \<player> - freeze a specific player.<br>
+■ !freeze list - see the list of freezed user.<br>
+■ !lagclear <default/mobs/all> - kill all items on the ground.<br>
+■ !ecwipe \<player> - allows you to remove items on their ender_chest.<br>
+■ !give \<item> \<value> [data] - give yourself an item(s).<br>
+■ !troll \<troll> \<player> - troll someone in the server.<br>
+■ !welcome <add/remove> [text] - add or remove specific set text.<br>
+■ !banitem <add/remove> <item> - add or remove ban items.<br>
+■ !banitem list - see the list of banned.<br>
+■ !clearchat - clear your chat (only you can see it)<br>
+
+Operator Commands<br>
+■ !op <add/remove> \<player> - op a specific player in server to immune to any anticheat.<br>
+■ !op list - see the list of the admins on the anticheat.<br>
+■ !notify <add/remove> \<player> - notification when someone got flagged by the anticheat.<br>
+■ !notify list - see the list of the notify on the anticheat.<br>
+■ !trusted <add/remove> \<player> - add trusted or remove on specific player.<br>
+■ !trusted list - see the list of the trusted on the anticheat.<br>
+
+## **📣 DOWNLOAD HERE**
+https://github.com/BlueModsYT/BlueMods-AntiCheat/releases
+
+## **⭐ DEVELOPER**
+- Main: @bluemods.lol, @trokkk.lol<br>
 - Scripter: @mp09
 
 
