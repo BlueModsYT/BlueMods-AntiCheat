@@ -11,9 +11,9 @@
 ## Frequently asked Questions
 [?] Where can I download the Anticheat?
 You can ONLY download the anticheat on our official sites:
-- https://mcpedl.com/bluemods-anticheat/
-- https://discord.gg/bluemods-anticheat-913049851531522078
-- https://github.com/BlueModsYT/BlueMods-AntiCheat/releases
+- [MCPEDL](https://mcpedl.com/bluemods)
+- [DISCORD](https://discord.gg/bluemods-anticheat-913049851531522078)
+- [GITHUB](https://github.com/BlueModsYT/BlueMods-AntiCheat/releases)
 
 ## **⛔ PREVENTIONS**
 ■ Anti Reach<br>
