@@ -33,15 +33,17 @@ You can ONLY download the anticheat on our official sites:
 ■ Custom Welcome System<br>
 
 ## **❓ GUIDES**
-■ Make sure to type `!op add <player>` before using admin commands `!?` or `!help`. (if `!op` does not working just type `/tag @s add admin`)<br>
-■ If it does make an errors make sure to completely type the username and the capital word(s).<br>
-■ Do not give a stranger an op or trusted tag.<br>
+- Ensure you type `!op add <player>` before using `!?` or `!help`. (If `!op` is not functioning, use `/tag @s add admin`).
+- When executing commands, be sure to use the player’s exact username, including capitalization.
+- **Important:** Do not grant "op" or "trusted" tags to unfamiliar players.
 
 ## **♨️ REQUIREMENTS**
-■ `Beta APIs` - Enable this to make the command work.<br>
-■ `Education Edition` - Enable to make the !mute and !unmute work.<br>
-■ `Upcoming Creator Features` - Custom Entities Gamework.<br>
-- Why do we need to turn this ON?: in order to work the commands and the other functions that runs on beta mode. we insured and keep the server safe against those cheaters.<br>
+- `Education Edition` - Must be enabled for `!mute` and `!unmute` commands to function.
+- `Beta APIs` - Required to enable command functionality.
+- `Upcoming Creator Features` - Enable for custom entities and advanced features.<br>
+**Why enable these?**  
+These settings are essential for running commands and features that operate in beta mode. By enabling them, you ensure that your server is secure from cheaters and the addon functions as intended.
+
 
 ## **🤖 COMMANDS FOR ANTICHEAT**
 ■ !help - shows the list of the commands.<br>
