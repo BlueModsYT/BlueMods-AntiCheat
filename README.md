@@ -8,7 +8,7 @@
         <img src="https://img.shields.io/discord/913049851531522078?style=for-the-badge&label=Discord&color=0000ff&link=https%3A%2F%2Fdiscord.gg%2Fbluemods-anticheat-913049851531522078" alt="Discord">
 </p>
 
-## Frequently asked Questions
+## **❓ FAQ**
 [?] Where can I download the Anticheat?
 You can ONLY download the anticheat on our official sites:
 - [MCPEDL](https://mcpedl.com/bluemods)
