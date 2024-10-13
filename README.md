@@ -16,21 +16,21 @@ You can ONLY download the anticheat on our official sites:
 - [GITHUB](https://github.com/BlueModsYT/BlueMods-AntiCheat/releases)
 
 ## **⛔ PREVENTIONS**
-■ Anti Reach<br>
-■ Anti Crasher<br>
-■ Anti Force Nuker<br>
-■ Anti Illegal Items<br>
-■ Anti CBE Exploits<br>
-■ Anti Creative Mode<br>
-■ Anti Lore Containers<br>
-■ Anti Operator Blocks<br>
-■ Anti Invalid Namespoof<br>
+- Anti Reach
+- Anti Crasher
+- Anti Force Nuker
+- Anti Illegal Items
+- Anti CBE Exploits
+- Anti Creative Mode
+- Anti Lore Containers
+- Anti Operator Blocks
+- Anti Invalid Namespoof
 
 ## **📡 SYSTEMS**
-■ Projectile Sound<br>
-■ Chat Ranks (Automated)<br>
-■ Previous Banned (Hackers)<br>
-■ Custom Welcome System<br>
+- Projectile Sound
+- Chat Ranks (Automated)
+- Previous Banned (Hackers)
+- Custom Welcome System
 
 ## **❓ GUIDES**
 - Ensure you type `!op add <player>` before using `!?` or `!help`. (If `!op` is not functioning, use `/tag @s add admin`).
