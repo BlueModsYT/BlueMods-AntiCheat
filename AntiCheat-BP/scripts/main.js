@@ -1,6 +1,7 @@
-import "./commands/modules.js";
+import "./commands/command.js";
 // bluemods: systems
 import "./anticheat/nuker/nuker.js";
+import "./anticheat/is32k.js";
 import "./anticheat/isAFK.js";
 import "./anticheat/isLored.js";
 import "./anticheat/isOperator.js";
