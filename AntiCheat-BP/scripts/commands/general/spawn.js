@@ -4,6 +4,19 @@ import main from "../config.js";
 
 // alrights reserve @bluemods.lol - discord account. || please report any bugs or glitches in our discord server https://dsc.gg/bluemods.
 
+function isCommandEnabled(commandName) {
+    return main.enabledCommands[commandName] !== undefined ? main.enabledCommands[commandName] : true;
+}
+
+const isAuthorized = (player, commandName) => {
+    if (!isCommandEnabled(commandName)) {
+        player.sendMessage(`§7[§b#§7] §cThis command §e${commandName} §cis currently disabled.`);
+        player.runCommandAsync(`playsound random.break @s`);
+        return false;
+    }
+    return true;
+};
+
 let SPAWN_LOCATION = world.getDynamicProperty("spawnLocation") || null;
 
 const TELEPORT_COOLDOWN = 5000; // (5 seconds)
@@ -26,6 +39,8 @@ Command.register({
     aliases: [],
 }, (data) => {
     const { player } = data;
+    if (!isAuthorized(player, "!spawn")) return;
+    
     const { id } = player;
 
     if (!SPAWN_LOCATION) {
@@ -112,6 +127,8 @@ Command.register({
     permission: (player) => player.hasTag(main.adminTag),
 }, (data) => {
     const { player } = data;
+    if (!isAuthorized(player, "!spawn")) return;
+    
 
     if (SPAWN_LOCATION) {
         player.sendMessage('§7[§c-§7] §cSpawn location is already set. Use §3!rspawn §cto remove it before setting a new one.');
@@ -143,6 +160,8 @@ Command.register({
     permission: (player) => player.hasTag(main.adminTag),
 }, (data) => {
     const { player } = data;
+    if (!isAuthorized(player, "!spawn")) return;
+    
 
     if (!SPAWN_LOCATION) {
         player.sendMessage('§7[§c-§7] §cThere is no spawn location set to remove.');

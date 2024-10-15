@@ -4,12 +4,27 @@ import main from "../config.js";
 
 // All rights reserved @bluemods.lol - discord account. || Please report any bugs or glitches in our Discord server: https://dsc.gg/bluemods
 
+function isCommandEnabled(commandName) {
+    return main.enabledCommands[commandName] !== undefined ? main.enabledCommands[commandName] : true;
+}
+
+const isAuthorized = (player, commandName) => {
+    if (!isCommandEnabled(commandName)) {
+        player.sendMessage(`§7[§b#§7] §cThis command §e${commandName} §cis currently disabled.`);
+        player.runCommandAsync(`playsound random.break @s`);
+        return false;
+    }
+    return true;
+};
+
 Command.register({
     name: "help",
     description: "",
     aliases: ["?"]
 }, (data, args) => {
     const player = data.player;
+    if (!isAuthorized(player, "!help")) return;
+    
     const category = args[0]?.toLowerCase();
  
     if (player.hasTag("admin")) {
@@ -74,6 +89,8 @@ ${main.developer}`);
 §7> §a!ecwipe ${main.player} §7- §3allows you to remove items on their ender_chest.
 §7> §a!invsee ${main.player} §7- §3allows you to see other player(s) Inventory.
 §7> §a!invwipe ${main.player} §7- §3this will clear the player(s) inventory.
+§7> §a!module ${main.enabledisable} <§acommand§7> §7- §3allows you to enable or disable a specific command. §7[§aMODULE§7]
+§7> §a!module list §7- §3see the list of commands module.
 
 ${main.developer}`);
             // Notification for Admins
@@ -143,6 +160,8 @@ ${main.developer}`);
 §7> §a!ecwipe ${main.player} §7- §3allows you to remove items on their ender_chest.
 §7> §a!invsee ${main.player} §7- §3allows you to see other player(s) Inventory.
 §7> §a!invwipe ${main.player} §7- §3this will clear the player(s) inventory.
+§7> §a!module ${main.enabledisable} <§acommand§7> §7- §3allows you to enable or disable a specific command. §7[§aMODULE§7]
+§7> §a!module list §7- §3see the list of commands module.
 
 §l§eOperator Commands§r
 §7> §a!op ${main.addremove} ${main.player} §7- §3op a specific player in server to immune to any anticheat.
