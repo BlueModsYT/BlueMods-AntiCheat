@@ -4,6 +4,19 @@ import main from "../config.js";
 
 // All rights reserved @bluemods.lol - discord account. || Please report any bugs or glitches in our Discord server: https://dsc.gg/bluemods
 
+function isCommandEnabled(commandName) {
+    return main.enabledCommands[commandName] !== undefined ? main.enabledCommands[commandName] : true;
+}
+
+const isAuthorized = (player, commandName) => {
+    if (!isCommandEnabled(commandName)) {
+        player.sendMessage(`§7[§b#§7] §cThis command §e${commandName} §cis currently disabled.`);
+        player.runCommandAsync(`playsound random.break @s`);
+        return false;
+    }
+    return true;
+};
+
 const cooldowns = {};
 
 Command.register({
@@ -13,6 +26,8 @@ Command.register({
     permission: (player) => player.hasTag(main.adminTag),
 }, (data, args) => {
     const { player } = data;
+    if (!isAuthorized(player, "!troll")) return;
+    
     const { id, name } = player;
     const trollTypes = ["creeper", "endermen", "ghast", "zombie", "skeleton"];
     const COOLDOWN_TIME = 10000;

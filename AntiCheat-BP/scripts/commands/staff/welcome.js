@@ -4,6 +4,19 @@ import main from "../config.js";
 
 // All rights reserved @bluemods.lol - discord account. || Please report any bugs or glitches in our discord server https://dsc.gg/bluemods.
 
+function isCommandEnabled(commandName) {
+    return main.enabledCommands[commandName] !== undefined ? main.enabledCommands[commandName] : true;
+}
+
+const isAuthorized = (player, commandName) => {
+    if (!isCommandEnabled(commandName)) {
+        player.sendMessage(`§7[§b#§7] §cThis command §e${commandName} §cis currently disabled.`);
+        player.runCommandAsync(`playsound random.break @s`);
+        return false;
+    }
+    return true;
+};
+
 const WELCOME_MESSAGE_KEY = "welcomeMessage";
 const LEAVE_MESSAGE_KEY = "leaveMessage";
 const defaultWelcomeMessage = `§bBlueMods §7>> §e{name}§a, Welcome Member.\n§cHacking on this server will result in an automatic ban!`;
@@ -44,6 +57,8 @@ Command.register({
     permission: (player) => player.hasTag(main.adminTag),
 }, (data, args) => {
     const { player } = data;
+    if (!isAuthorized(player, "!welcome")) return;
+    
     const type = args[0]?.toLowerCase();
     const action = args[1]?.toLowerCase();
     const customMessage = args.slice(2).join(" ");
@@ -114,4 +129,3 @@ world.afterEvents.playerLeave.subscribe((event) => {
         player.runCommandAsync('tag @s remove old');
     }
 });
-      

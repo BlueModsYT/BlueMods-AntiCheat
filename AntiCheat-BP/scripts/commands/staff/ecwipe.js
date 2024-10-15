@@ -4,6 +4,19 @@ import main from "../config.js";
 
 // All rights reserved @bluemods.lol - discord account. | Please report any bugs or glitches in our discord server https://dsc.gg/bluemods
 
+function isCommandEnabled(commandName) {
+    return main.enabledCommands[commandName] !== undefined ? main.enabledCommands[commandName] : true;
+}
+
+const isAuthorized = (player, commandName) => {
+    if (!isCommandEnabled(commandName)) {
+        player.sendMessage(`§7[§b#§7] §cThis command §e${commandName} §cis currently disabled.`);
+        player.runCommandAsync(`playsound random.break @s`);
+        return false;
+    }
+    return true;
+};
+
 Command.register({
     name: "ecwipe",
     description: "",
@@ -11,6 +24,8 @@ Command.register({
     permission: (player) => player.hasTag(main.adminTag),
 }, async (data, args) => {
     const player = data.player;
+    if (!isAuthorized(player, "!ecwipe")) return;
+    
     if (!args[0]) {
         player.sendMessage('§7[§b#§7] §aTry to mention a player to remove there ender_chest. !ecwipe <player>');
         return player.runCommandAsync('playsound random.break @s');

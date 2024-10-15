@@ -4,6 +4,19 @@ import main from "../config.js";
 
 // All rights reserved @bluemods.lol - discord account. || Please report any bugs or glitches in our Discord server: https://dsc.gg/bluemods
 
+function isCommandEnabled(commandName) {
+    return main.enabledCommands[commandName] !== undefined ? main.enabledCommands[commandName] : true;
+}
+
+const isAuthorized = (player, commandName) => {
+    if (!isCommandEnabled(commandName)) {
+        player.sendMessage(`§7[§b#§7] §cThis command §e${commandName} §cis currently disabled.`);
+        player.runCommandAsync(`playsound random.break @s`);
+        return false;
+    }
+    return true;
+};
+
 Command.register({
     name: "op",
     description: "",
@@ -11,6 +24,8 @@ Command.register({
     permission: (player) => (player.hasTag(main.adminTag) || player.isOp())
 }, async (data, args) => {
     const player = data.player;
+    if (!isAuthorized(player, "!op")) return;
+    
     const action = args[0]?.toLowerCase(); // First argument: add, remove, or list
     const targetName = args[1] || player.name; // Second argument: target player's name, default to the command executor
     const [targetPlayer] = world.getPlayers({ name: targetName });
