@@ -1,5 +1,6 @@
 import "./commands/command.js";
 // bluemods: systems
+import "./anticheat/badwords/isBadwords.js";
 import "./anticheat/nuker/nuker.js";
 import "./anticheat/is32k.js";
 import "./anticheat/isAFK.js";
@@ -36,9 +37,12 @@ import "./commands/staff/notify.js";
 import "./commands/staff/trusted.js";
 // bluemods : public
 import "./commands/general/tpa.js";
+import "./commands/general/rtp.js";
 import "./commands/general/help.js";
+import "./commands/general/ping.js";
 import "./commands/general/about.js";
 import "./commands/general/spawn.js";
+import "./commands/general/home.js";
 // bluemods : gamemode
 import "./commands/gamemodes/gma.js";
 import "./commands/gamemodes/gmc.js";
