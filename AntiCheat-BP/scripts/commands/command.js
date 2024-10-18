@@ -2,13 +2,27 @@ import { Command } from "./CommandHandler.js";
 import { world, system } from "@minecraft/server";
 import main from "./config.js";
 
+const enabledCommandsKey = "enabledCommands";
+
 function isCommandEnabled(commandName) {
     return main.enabledCommands[commandName] !== undefined ? main.enabledCommands[commandName] : true;
 }
 
 function saveEnabledCommands() {
     const commandsString = JSON.stringify(main.enabledCommands);
-    world.setDynamicProperty(main.enabledCommandsKey, commandsString);
+    world.setDynamicProperty(enabledCommandsKey, commandsString);
+}
+
+function loadEnabledCommands() {
+    const savedCommandsString = world.getDynamicProperty(enabledCommandsKey);
+    if (savedCommandsString) {
+        try {
+            const savedCommands = JSON.parse(savedCommandsString);
+            main.enabledCommands = savedCommands;
+        } catch (error) {
+            console.error(`Failed to load enabled commands: ${error}`);
+        }
+    }
 }
 
 Command.register({
@@ -69,3 +83,5 @@ Command.register({
         }
     }
 });
+
+system.runTimeout(loadEnabledCommands, 0);

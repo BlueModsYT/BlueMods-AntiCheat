@@ -19,8 +19,9 @@ export const main = {
         "!help": true,
         "!about": true,
         "!tpa": true,
-        "!rtp": true,
+        "!rtp": false,
         "!spawn": true,
+        "!home": false,
     // Gamemodes
         "!gma": true,
         "!gmc": true,
