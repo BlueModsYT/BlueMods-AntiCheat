@@ -1,12 +1,14 @@
 import { world, system } from "@minecraft/server";
 import main from "../commands/config.js";
-import "./projectTile.js";
-import "./playerBanned.js";
 
 // all rights reserved @bluemods.lol - discord account. || please report any bugs or glitches in our discord server https://dsc.gg/bluemods.
 
 let messages = new Map();
 let spamTimers = new Map();
+
+const spamCooldown = 3;  // 3 seconds cooldown
+const maxMessages = 3;  // Maximum messages allowed within the cooldown period
+const playerSpamData = new Map();
 
 try {
     world.scoreboard.addObjective('Sents', '');
@@ -49,6 +51,26 @@ function chat(data) {
 
     messages.set(data.sender.name, { message: data.message, time: currentTime });
 
+    const playerName = data.sender.name;
+    const playerData = playerSpamData.get(playerName) || { lastMessageTime: 0, messageCount: 0 };
+
+    const timeDiff = (currentTime - playerData.lastMessageTime) / 1000;
+
+    if (timeDiff > spamCooldown) {
+        playerData.messageCount = 0;
+    }
+
+    playerData.messageCount++;
+    playerData.lastMessageTime = currentTime;
+
+    if (playerData.messageCount > maxMessages) {
+        data.cancel = true;
+        const countdown = Math.ceil(spamCooldown - timeDiff);
+        return data.sender.sendMessage(`§7[§b#§7] §cSlow down, you're flooding the chat. Wait ${countdown} seconds.`);
+    }
+
+    playerSpamData.set(playerName, playerData);
+
     data.sender.runCommandAsync(`scoreboard players add @s Sents 1`);
 
     if (data.message.startsWith("!*")) {
@@ -68,6 +90,7 @@ system.runInterval(() => {
 }, 6000);
 
 world.beforeEvents.chatSend.subscribe((data) => {
-    if (data.message.startsWith(main.prefix)) return;
+   
+ if (data.message.startsWith(main.prefix)) return;
     chat(data);
 });
