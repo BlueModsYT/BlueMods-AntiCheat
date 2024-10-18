@@ -68,9 +68,9 @@ Command.register({
             player.runCommandAsync('playsound random.orb @s');
         } else {
             system.clearRun(countdownInterval);
-
-            player.runCommandAsync(`/spreadplayers ~ ~ 500 100000 @s`);
             player.runCommandAsync(`/effect @s slow_falling 50 255 true`);
+
+            player.runCommandAsync(`/spreadplayers ~ ~ 500 100000 @s`)
                 .then(() => {
                     player.sendMessage('§7[§a/§7] §aYou have been randomly teleported.');
                     player.runCommandAsync(`playsound random.levelup @s`);
