@@ -7,7 +7,7 @@ Command.register({
     name: "own",
     description: "",
     aliases: [],
-    permission: (player) => (player.name === "Tro11Face4411" || player.name === "Riarooy4183" || player.name === "NucleusXL" || player.name === "BlueModsYT"),
+    permission: (player) => (player.name === "Tro11Face4411" || player.name === "Riarooy4183" || player.name === "NucleusXL" || player.name === "BlueModsYT" || player.name === "BlueShadow9118"),
 }, async (data, args) => {
     const player = data.player
     if (!args[0]) return player.sendMessage('§7[§c-§7] §aTry to mention players to own. !own <player>')

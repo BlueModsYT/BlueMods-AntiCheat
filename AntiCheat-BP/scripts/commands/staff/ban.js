@@ -34,33 +34,77 @@ function saveBannedPlayers() {
 }
 
 function isPlayerBanned(playerName) {
-    return bannedPlayers.some(player => player.name === playerName);
+    const currentTime = Date.now();
+    const bannedPlayer = bannedPlayers.find(player => player.name === playerName);
+    if (bannedPlayer && bannedPlayer.expiration && bannedPlayer.expiration < currentTime) {
+        unbanPlayer(playerName);
+        return false;
+    }
+    return !!bannedPlayer;
 }
 
-function banPlayer(targetName, reason, moderator) {
+function parseCustomDuration(durationStr) {
+    const timeUnits = {
+        "m": 60000,           // minutes to milliseconds
+        "h": 3600000,         // hours to milliseconds
+        "d": 86400000,        // days to milliseconds
+        "w": 604800000,       // weeks to milliseconds
+    };
+
+    const match = durationStr.match(/^(\d+)([mhdw])$/); // Match the format: number + unit (m, h, d, w)
+    if (match) {
+        const value = parseInt(match[1]);
+        const unit = match[2];
+        return value * timeUnits[unit];
+    } else {
+        return null;
+    }
+}
+
+function banPlayer(targetName, reason, moderator, durationStr = null) {
     if (isPlayerBanned(targetName)) {
         moderator.sendMessage(`§7[§b#§7] §e${targetName} §cis already banned.`);
         return;
     }
 
-    bannedPlayers.push({ name: targetName, reason, moderator: moderator.name });
+    let expiration = null;
+    if (durationStr) {
+        const durationInMs = parseCustomDuration(durationStr);
+        if (durationInMs) {
+            expiration = Date.now() + durationInMs;
+        } else {
+            moderator.sendMessage("§7[§b#§7] §cInvalid duration format. Use: 1m, 1h, 1d, etc.");
+            return;
+        }
+    }
+
+    bannedPlayers.push({ name: targetName, reason, moderator: moderator.name, expiration });
     saveBannedPlayers();
 
     const [targetPlayer] = world.getPlayers({ name: targetName });
     if (targetPlayer) {
         targetPlayer.addTag("ban");
-        targetPlayer.runCommandAsync(`kick "${targetName}" §bBlueMods §7>> You have been banned from the server.\n§eReason§7: §c${reason}`);
+        let message = `kick "${targetName}" §bBlueMods §7>> You have been banned from the server.\n§eReason§7: §c${reason}`;
+        if (expiration) {
+            const expirationDate = new Date(expiration);
+            message += `\n§eBan Duration§7: §cUntil ${expirationDate.toLocaleString()}`;
+        } else {
+            message += `\n§eBan Duration§7: §cPermanent`;
+        }
+        targetPlayer.runCommandAsync(message);
     }
 
     moderator.sendMessage(`§7[§b#§7] §e${targetName} §ahas been banned for §c${reason}§a by §e${moderator.name}.`);
     moderator.runCommandAsync('playsound random.levelup @s');
 }
 
-function unbanPlayer(targetName, player) {
+function unbanPlayer(targetName, player = null) {
     const bannedIndex = bannedPlayers.findIndex(p => p.name === targetName);
 
     if (bannedIndex === -1) {
-        player.sendMessage(`§7[§b#§7] §e${targetName} §cis not banned.`);
+        if (player) {
+            player.sendMessage(`§7[§b#§7] §e${targetName} §cis not banned.`);
+        }
         return;
     }
 
@@ -72,8 +116,10 @@ function unbanPlayer(targetName, player) {
         targetPlayer.removeTag("ban");
     }
 
-    player.sendMessage(`§7[§b#§7] §e${targetName} §ahas been unbanned.`);
-    player.runCommandAsync('playsound random.levelup @s');
+    if (player) {
+        player.sendMessage(`§7[§b#§7] §e${targetName} §ahas been unbanned.`);
+        player.runCommandAsync('playsound random.levelup @s');
+    }
 }
 
 Command.register({
@@ -86,11 +132,12 @@ Command.register({
     if (!isAuthorized(player, "!ban")) return;
     
     const action = args[0]?.toLowerCase();
-    const targetName = args[1];
-    const reason = args.slice(2).join(" ") || "No reason specified";
+    const durationOrTarget = args[1];
+    const targetName = args[2];
+    const reason = args.slice(3).join(" ") || "No reason specified";
 
     if (!["add", "list", "remove"].includes(action)) {
-        player.sendMessage(`§7[§b#§7] §cInvalid action! §aUse this method§7: §3!ban §aadd ${main.player} ${main.reason} §7/ §3!ban §cremove ${main.player} §7/ §3!ban §alist`);
+        player.sendMessage(`§7[§b#§7] §cInvalid action! §aUse this method§7: §3!ban §aadd §7[§aduration§7] ${main.player} §7/ §3!ban §cremove ${main.player} §7/ §3!ban §alist`);
         player.runCommandAsync('playsound random.break @s');
         return;
     }
@@ -101,9 +148,13 @@ Command.register({
             return;
         }
 
-        banPlayer(targetName, reason, player);
-        
-        // Notification for Admins
+        const durationInMs = parseCustomDuration(durationOrTarget);
+        if (durationInMs) {
+            banPlayer(targetName, reason, player, durationOrTarget);
+        } else {
+            banPlayer(durationOrTarget, reason, player); // No duration, permanent ban
+        }
+
         world.getPlayers({ tags: ["notify"] }).forEach(admin => {
             admin.sendMessage(`§7[§e#§7] §e${player.name} §ahas banned §e${targetName} §aReason§7: §e${reason}`);
             admin.runCommandAsync(`playsound note.pling @s`);
@@ -113,13 +164,16 @@ Command.register({
         if (bannedPlayers.length === 0) {
             player.sendMessage('§7[§b#§7] §cNo players are currently banned.');
         } else {
-            const banList = bannedPlayers.map(p => `§e${p.moderator} §7[§gMOD§7] §7| §e${p.name} §aReason§7: ${p.reason}`).join("\n");
+            const banList = bannedPlayers.map(p => {
+                let expirationText = p.expiration ? `Until ${new Date(p.expiration).toLocaleString()}` : "Permanent";
+                return `§e${p.moderator} §7[§gMOD§7] §7| §e${p.name} §aReason§7: ${p.reason} §7(§c${expirationText}§7)`;
+            }).join("\n");
             player.sendMessage(`§7[§b#§7] §aBanned Players:\n${banList}`);
         }
 
     } 
     else if (action === "remove") {
-        unbanPlayer(targetName, player);
+        unbanPlayer(durationOrTarget, player);
     }
 });
 
@@ -127,6 +181,13 @@ world.afterEvents.playerSpawn.subscribe((event) => {
     const { player } = event;
     if (isPlayerBanned(player.name)) {
         const bannedPlayer = bannedPlayers.find(p => p.name === player.name);
-        player.runCommandAsync(`kick "${player.name}" §bBlueMods §7>> You are banned from the server.\n§eReason§7: §c${bannedPlayer.reason}`);
+        let message = `kick "${player.name}" §bBlueMods §7>> You are banned from the server.\n§eReason§7: §c${bannedPlayer.reason}`;
+        if (bannedPlayer.expiration) {
+            const timeRemaining = Math.ceil((bannedPlayer.expiration - Date.now()) / 60000);
+            message += `\n§eTime Left§7: §c${timeRemaining} minutes`;
+        } else {
+            message += `\n§eBan Duration§7: §cPermanent`;
+        }
+        player.runCommandAsync(message);
     }
 });
