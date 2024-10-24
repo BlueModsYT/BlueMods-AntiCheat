@@ -14,13 +14,29 @@ const isOperator = [
     "minecraft:structure_void",
     "minecraft:barrier",
     "minecraft:border_block",
-    "minecraft:light_block",
     "minecraft:jigsaw",
     "minecraft:allow",
     "minecraft:deny",
     "minecraft:mob_spawner",
     "minecraft:trial_spawner",
-    "minecraft:vault"
+    "minecraft:vault",
+    "minecraft:light_block",
+    "minecraft:light_block_0",
+    "minecraft:light_block_1",
+    "minecraft:light_block_2",
+    "minecraft:light_block_3",
+    "minecraft:light_block_4",
+    "minecraft:light_block_5",
+    "minecraft:light_block_6",
+    "minecraft:light_block_7",
+    "minecraft:light_block_8",
+    "minecraft:light_block_9",
+    "minecraft:light_block_10",
+    "minecraft:light_block_11",
+    "minecraft:light_block_12",
+    "minecraft:light_block_13",
+    "minecraft:light_block_14",
+    "minecraft:light_block_15"
 ];
 
 function operatorItemCheck() {

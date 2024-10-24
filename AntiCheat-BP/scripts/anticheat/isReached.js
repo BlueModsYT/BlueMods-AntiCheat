@@ -44,4 +44,3 @@ world.afterEvents.entityHitEntity.subscribe((data) => {
     admin.runCommandAsync(`playsound random.break @s`);
   });
 });
-    
