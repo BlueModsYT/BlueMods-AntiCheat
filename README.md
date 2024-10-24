@@ -16,18 +16,18 @@ You can ONLY download the anticheat on our official sites:
 - [GITHUB](https://github.com/BlueModsYT/BlueMods-AntiCheat/releases)
 
 ## **⛔ PREVENTIONS**
-No AFK
-Anti Reach
-Anti Crasher
-Badwords + Kick
-Anti Spamming
-Anti Force Nuker
-Anti Illegal Items
-Anti CBE Exploits
-Anti Creative Mode
-Anti Lore Containers
-Anti Operator Blocks
-Invalid Namespoof
+- No AFK
+- Anti Reach
+- Anti Crasher
+- Badwords + Kick
+- Anti Spamming
+- Anti Force Nuker
+- Anti Illegal Items
+- Anti CBE Exploits
+- Anti Creative Mode
+- Anti Lore Containers
+- Anti Operator Blocks
+- Invalid Namespoof
 
 ## **📡 SYSTEMS**
 - Projectile Sound
