@@ -37,7 +37,7 @@ Command.register({
     const commandActions = ["enable", "disable", "list"];
 
     if (!action || !commandActions.includes(action)) {
-        player.sendMessage(`§7[§b#§7] §cInvalid action! §aUse this Method§7: §3!module ${main.enabledisable} <command> or §3!module list`);
+        player.sendMessage(`§7[§b#§7] §cInvalid action! §aUse this Method§7: §3!module ${main.enabledisable} <§acommand§7> / §3!module list`);
         player.runCommandAsync(`playsound random.break @s`);
         return;
     }
