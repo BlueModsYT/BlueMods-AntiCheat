@@ -31,23 +31,23 @@ Command.register({
  
     if (player.hasTag("admin")) {
             data.player.runCommandAsync(`playsound note.bell @s`);
-            player.sendMessage(`\n§l§eList of Commands§r
+            player.sendMessage(`\n§l§bList of Commands§r
 §7> §a!rtp §7- §3allows you to teleport on random location.
 §7> §a!help §7- §3shows the list of the commands.
 §7> §a!ping §7- §3show the world's tps and ping.
 §7> §a!about §7- §3shows the developer of the addon.
 
-§l§eSpawn Commands§r
+§l§bSpawn Commands§r
 §7> §a!spawn §7- §3go back to lobby.
 §7> §a!rspawn §7- §3remove the current spawn set.
 §7> §a!setspawn §7- §3make a setspawn to able to use !spawn.
 
-§l§eHome Commands§r
+§l§bHome Commands§r
 §7> §a!home tp §7<§ehome_name§7> §7- §3teleport to your existing set home.
 §7> §a!home §7<§eset§7/§cremove§7> §7<§ehome_name§7> §7- §3set a home or remove it.
 §7> §a!home list§7- §3see the list of your created homes.
 
-§l§eTPA Commands§r
+§l§bTPA Commands§r
 §7> §a!tpa §asend ${main.player} §7- §3allows you to request a teleport from any players.
 §7> §a!tpa §aaccept §7- §3allows you to accept a current request from other player.
 §7> §a!tpa §cdecline §7- §3you can only decline a request from other player.
@@ -55,16 +55,16 @@ Command.register({
 §7> §a!tpa §dblock ${main.player} §7- §3allows you to block a player from sending a teleport request.
 §7> §a!tpa §dunblock ${main.player} §7- §3unblock the blocked player so they can able to send a request to you again.
 
-§l§eGamemode Commands§r
+§l§bGamemode Commands§r
 §7> §a!gma ${main.player} §7- §3change gamemode to adventure.
 §7> §a!gmc ${main.player} §7- §3change gamemode to creative.
 §7> §a!gms ${main.player} §7- §3change gamemode to survival.
 §7> §a!gmsp ${main.player} §7- §3change gamemode to spectator.
 §7> §a!vanish ${main.player} §7- §3makes yourself invisibility.
 
-§l§eModeration Commands§r
+§l§bModeration Commands§r
 §7> §a!kick ${main.player} ${main.reason} §7- §3kick a specific player in server.
-§7> §a!ban §aadd §7[§eduration§7] ${main.player} ${main.reason} §7- §3ban a specific player in server.
+§7> §a!ban §aadd §7[§gduration§7] ${main.player} ${main.reason} §7- §3ban a specific player in server.
 §7> §a!ban §cremove ${main.player} §7- §3unban a specific player in server.
 §7> §a!ban list §7- §3see the list of the banned players on the server.
 §7> §a!cmdsf ${main.enabledisable} §7- §3disabled command block logs and popping on chats. §7[§aMODULE§7]
@@ -84,8 +84,11 @@ Command.register({
 §7> §a!invwipe ${main.player} §7- §3this will clear the player(s) inventory.
 §7> §a!module ${main.enabledisable} <§acommand§7> §7- §3allows you to enable or disable a specific command. §7[§aMODULE§7]
 §7> §a!module list §7- §3see the list of commands module.
+§7> §a!pearl §7<§gduration§7> §7- §3change ender pearl cooldown.
+§7> §a!chatdisplay §7<§eset§7/§cremove§7> §7<§achatstyle§7> §7- §3change the style of the player's chat.
+§7> §a!rank ${main.addremove} §7<§arank§7> §7[§gcolor§7] ${main.player} §7- §3add rank's to player.
 
-§l§eOperator Commands§r
+§l§bOperator Commands§r
 §7> §a!op ${main.addremove} ${main.player} §7- §3op a specific player in server to immune to any anticheat.
 §7> §a!op list §7- §3see the list of the admins on the anticheat.
 §7> §a!notify ${main.addremove} ${main.player} §7- §3notification when someone got flagged by the anticheat.
@@ -102,14 +105,14 @@ ${main.developer}`);
         }
     if (!player.hasTag("admin")) {
         data.player.runCommandAsync(`playsound note.bell @s`);
-        player.sendMessage(`\n§l§eList of Commands§r
+        player.sendMessage(`\n§l§bList of Commands§r
 §7> §a!rtp §7- §3allows you to teleport on random location.
 §7> §a!help §7- §3shows the list of the commands.
 §7> §a!ping §7- §3show the world's tps and ping.
 §7> §a!about §7- §3shows the developer of the addon.
 §7> §a!spawn §7- §3go back to lobby.
 
-§l§eTPA Commands§r
+§l§bTPA Commands§r
 §7> §a!tpa §asend ${main.player} §7- §3allows you to request a teleport from any players.
 §7> §a!tpa §aaccept §7- §3allows you to accept a current request from other player.
 §7> §a!tpa §cdecline §7- §3you can only decline a request from other player.
@@ -117,7 +120,7 @@ ${main.developer}`);
 §7> §a!tpa §dblock ${main.player} §7- §3allows you to block a player from sending a teleport request.
 §7> §a!tpa §dunblock ${main.player} §7- §3unblock the blocked player so they can able to send a request to you again.
 
-§l§eHome Commands§r
+§l§bHome Commands§r
 §7> §a!home tp §7<§ehome_name§7> §7- §3teleport to your existing set home.
 §7> §a!home §7<§eset§7/§cremove§7> §7<§ehome_name§7> §7- §3set a home or remove it.
 §7> §a!home list§7- §3see the list of your created homes.
