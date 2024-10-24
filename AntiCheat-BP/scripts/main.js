@@ -30,6 +30,7 @@ import "./commands/staff/invsee.js";
 import "./commands/staff/invwipe.js";
 import "./commands/staff/incombat.js";
 import "./commands/staff/pearl.js";
+import "./commands/staff/rank.js";
 // bluemods : staff 
 import "./commands/staff/own.js";
 import "./commands/staff/op.js";
