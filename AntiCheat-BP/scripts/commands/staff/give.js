@@ -28,7 +28,7 @@ Command.register({
     
 
   if (args.length < 2) {
-        player.sendMessage('§7[§b#§7] §cInvalid action! §aUse this Method§7: §3!give §a<item> <amount> §e[data]');
+        player.sendMessage('§7[§b#§7] §cInvalid action! §aUse this Method§7: §3!give §7<§aitem§7> §7<§aamount§7> §7[§gdata§7]');
         return player.runCommandAsync('playsound random.break @s');
   }
 

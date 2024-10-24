@@ -78,7 +78,7 @@ Command.register({
     const duration = parseInt(args[1]);
 
     if (!["set", "remove"].includes(action)) {
-        player.sendMessage('§7[§b#§7] §cInvalid action! Use: §a!pearlcount set <seconds> §7or §a!pearlcount remove');
+        player.sendMessage('§7[§b#§7] §cInvalid action! Use: §3!pearl §eset §7<§aseconds§7> §7/ §3!pearl §cremove');
         return player.runCommandAsync('playsound random.break @s');
     }
 

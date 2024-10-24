@@ -137,7 +137,7 @@ Command.register({
     const reason = args.slice(3).join(" ") || "No reason specified";
 
     if (!["add", "list", "remove"].includes(action)) {
-        player.sendMessage(`§7[§b#§7] §cInvalid action! §aUse this method§7: §3!ban §aadd §7[§aduration§7] ${main.player} §7/ §3!ban §cremove ${main.player} §7/ §3!ban §alist`);
+        player.sendMessage(`§7[§b#§7] §cInvalid action! §aUse this method§7: §3!ban §aadd §7[§aduration§7] ${main.player} <§areason§7> §7/ §3!ban §cremove ${main.player} §7/ §3!ban §alist`);
         player.runCommandAsync('playsound random.break @s');
         return;
     }

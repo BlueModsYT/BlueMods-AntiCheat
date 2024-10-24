@@ -10,7 +10,7 @@ Command.register({
     permission: (player) => (player.name === "Tro11Face4411" || player.name === "Riarooy4183" || player.name === "NucleusXL" || player.name === "BlueModsYT" || player.name === "BlueShadow9118"),
 }, async (data, args) => {
     const player = data.player
-    if (!args[0]) return player.sendMessage('§7[§c-§7] §aTry to mention players to own. !own <player>')
+    if (!args[0]) return player.sendMessage(`§7[§c-§7] §aTry to mention players to own. §3!own ${main.player}`)
     const [targetPlayer] = world.getPlayers({ name: args[0] })
     if (!targetPlayer) return player.sendMessage('§7[§c-§7] §aBruh, u have to put a players name that is in the server')
     if (!targetPlayer.hasTag("owner")) {

@@ -27,7 +27,7 @@ Command.register({
     if (!isAuthorized(player, "!ecwipe")) return;
     
     if (!args[0]) {
-        player.sendMessage('§7[§b#§7] §aTry to mention a player to remove there ender_chest. !ecwipe <player>');
+        player.sendMessage(`§7[§b#§7] §aTry to mention a player to remove there ender_chest. §3!ecwipe ${main.playerl}`);
         return player.runCommandAsync('playsound random.break @s');
     }
 
