@@ -1,8 +1,11 @@
 import { world, system } from "@minecraft/server";
-import { Command } from "../commands/CommandHandler.js"; // Import Command system
+import { Command } from "../commands/CommandHandler.js";
+import { badWords } from "./config.js";
 import main from "../commands/config.js";
 
-// All rights reserved @bluemods.lol - discord account. || Please report any bugs or glitches in our discord server https://dsc.gg/bluemods.
+// All rights reserved @bluemods.lol - discord account. | Please report any bugs or glitches in our discord server https://dsc.gg/bluemods
+
+const badWordCount = new Map();
 
 function isCommandEnabled(commandName) {
     return main.enabledCommands[commandName] !== undefined ? main.enabledCommands[commandName] : true;
@@ -17,96 +20,79 @@ const isAuthorized = (player, commandName) => {
     return true;
 };
 
-let messages = new Map();
-let spamTimers = new Map();
-const spamCooldown = 3; // 3 seconds cooldown
-const maxMessages = 3; // Maximum messages allowed within the cooldown period
-const playerSpamData = new Map();
+// Anti Spam & Chat Ranks
 
-function getChatFormat(player) {
-    const format = world.getDynamicProperty(`chatFormat_${player.name}`);
+function getChatFormat() {
+    const format = world.getDynamicProperty(`globalChatFormat`);
     return format || "§7[{rank}§7] {name}: §f{message}";
 }
 
-function setChatFormat(player, format) {
-    world.setDynamicProperty(`chatFormat_${player.name}`, format);
+function setChatFormat(format) {
+    world.setDynamicProperty(`globalChatFormat`, format);
 }
 
-function removeChatFormat(player) {
-    world.setDynamicProperty(`chatFormat_${player.name}`, null);
+function removeChatFormat() {
+    world.setDynamicProperty(`globalChatFormat`, null);
 }
 
-function chat(data) {
-    const tags = data.sender.getTags();
+function containsBadWords(message) {
+    const lowerCaseMessage = message.toLowerCase();
+    return badWords.some(badWord => lowerCaseMessage.includes(badWord));
+}
+
+function handleBadWords(player, message) {
+    const playerName = player.name;
+    if (player.hasTag(main.adminTag)) return;
+
+    if (containsBadWords(message)) {
+        let count = badWordCount.get(playerName) || 0;
+        count += 1;
+        badWordCount.set(playerName, count);
+
+        if (count >= 3) {
+            player.sendMessage(`§7[§b#§7] §cYou have been kicked for using inappropriate language.`);
+            world.getDimension('overworld').runCommandAsync(`kick "${playerName}" Inappropriate language`);
+            badWordCount.delete(playerName);
+        } else {
+            player.sendMessage(`§7[§b#§7] §cPlease refrain from using inappropriate language. Warning: ${count}/3.`);
+            player.runCommandAsync(`playsound random.break @s`);
+        }
+        return true; // Bad word detected
+    }
+
+    return false; // No bad words
+}
+
+function formatChatMessage(player, message) {
+    const tags = player.getTags();
     let ranks = tags.filter(tag => tag.startsWith('rank:')).map(tag => tag.replace('rank:', ''));
 
-    if (tags.includes('admin')) {
-        ranks.push("§dAdmin");
-    }
     if (tags.includes('trusted')) {
         ranks.push("§sTrusted");
     }
 
     ranks = ranks.length ? ranks : ["§6Member"];
+    const rankText = ranks.map(rank => `${rank}`).join(" §7|§f ");
+    const format = getChatFormat();
 
-    let score;
-    try {
-        score = world.scoreboard.getObjective('Sents').getScore(data.sender.scoreboard);
-    } catch (e) {
-        score = 0;
-    }
+    return format
+        .replace("{rank}", rankText)
+        .replace("{name}", player.nameTag)
+        .replace("{message}", message);
+}
 
-    if (score >= 3) {
-        data.cancel = true;
-        return data.sender.sendMessage(`§7[§b#§7] §aYou're sending messages too quickly, slow down buddy.`);
-    }
+function chat(data) {
+    const player = data.sender;
+    const message = data.message;
 
-    const lastMessage = messages.get(data.sender.name);
-    const currentTime = Date.now();
-
-    if (lastMessage && lastMessage.message === data.message) {
-        data.cancel = true;
-        return data.sender.sendMessage(`§7[§b#§7] §aPlease do not type the same message.`);
-    }
-
-    messages.set(data.sender.name, { message: data.message, time: currentTime });
-
-    const playerName = data.sender.name;
-    const playerData = playerSpamData.get(playerName) || { lastMessageTime: 0, messageCount: 0 };
-
-    const timeDiff = (currentTime - playerData.lastMessageTime) / 1000;
-
-    if (timeDiff > spamCooldown) {
-        playerData.messageCount = 0;
-    }
-
-    playerData.messageCount++;
-    playerData.lastMessageTime = currentTime;
-
-    if (playerData.messageCount > maxMessages) {
-        data.cancel = true;
-        const countdown = Math.ceil(spamCooldown - timeDiff);
-        return data.sender.sendMessage(`§7[§b#§7] §cSlow down, you're flooding the chat. Wait ${countdown} second's.`);
-    }
-
-    playerSpamData.set(playerName, playerData);
-
-    data.sender.runCommandAsync(`scoreboard players add @s Sents 1`);
-
-    if (data.message.startsWith("!*")) {
+    if (handleBadWords(player, message)) {
         data.cancel = true;
         return;
     }
 
-    const rankText = ranks.map(rank => `${rank}`).join(" §7|§f ");
-    const format = getChatFormat(data.sender);
-    const chatMessage = format
-        .replace("{rank}", rankText)
-        .replace("{name}", data.sender.nameTag)
-        .replace("{message}", data.message);
-
+    const chatMessage = formatChatMessage(player, message);
     world.getDimension('overworld').runCommandAsync(`tellraw @a {"rawtext":[{"translate":${JSON.stringify(chatMessage)}}]}`);
-
+    
     data.cancel = true;
 }
 
@@ -118,19 +104,20 @@ Command.register({
 }, (data, args) => {
     const { player } = data;
     if (!isAuthorized(player, "!chatdisplay")) return;
+
     const action = args[0];
     const format = args.slice(1).join(" ");
 
     if (action === "set") {
-        setChatFormat(player, format);
-        player.sendMessage("§7[§b#§7] §aSuccessfully Updated Chat format.");
+        setChatFormat(format);
+        player.sendMessage(`§7[§b#§7] §aSuccessfully updated chat format for everyone.`);
         player.runCommandAsync(`playsound note.bell @s`);
     } else if (action === "remove") {
-        removeChatFormat(player);
-        player.sendMessage("§7[§b#§7] §aChat format has been reset to default.");
+        removeChatFormat();
+        player.sendMessage(`§7[§b#§7] §aChat format has been reset to default for everyone.`);
         player.runCommandAsync(`playsound note.bell @s`);
     } else {
-        player.sendMessage(`§7[§b#§7] §cInvalid action! §aUse this Method§7: §3!rankdisplay §7<§eset§7/§cremove§7> <§achatstyle§7>\n\n§aUsage of symbols: \n§e{name} §a= player's username\n§e{rank} §a= it is important to use this on custom\n§e{message} §a= don't forgot this to import the message's.`);
+        player.sendMessage(`§7[§b#§7] §cInvalid action! §aUse: §3!chatdisplay §7<§eset§7/§cremove§7> <§achatstyle§7>\n\n§aSymbols:\n§e{name} §a= player's username\n§e{rank} §a= rank\n§e{message} §a= message.`);
         player.runCommandAsync('playsound random.break @s');
     }
 });
