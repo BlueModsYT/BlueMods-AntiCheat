@@ -15,10 +15,10 @@ Command.register({
 
     const responseTime = Date.now() - start;
     
-    let pingStatus = "§aHigh";
-    if (responseTime > 150) {
-        pingStatus = "§cLow";
-    } else if (responseTime > 75) {
+    let pingStatus = "§aLow";
+    if (responseTime > 100) {
+        pingStatus = "§cHigh";
+    } else if (responseTime > 50) {
         pingStatus = "§gMedium";
     }
 
