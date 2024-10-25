@@ -15,7 +15,7 @@ You can ONLY download the anticheat on our official sites:
 - [DISCORD](https://discord.gg/bluemods-anticheat-913049851531522078)
 - [GITHUB](https://github.com/BlueModsYT/BlueMods-AntiCheat/releases)
 
-## **⛔ PREVENTIONS**
+## **⛔ FEATURES**
 - No AFK
 - Anti Reach
 - Anti Crasher
