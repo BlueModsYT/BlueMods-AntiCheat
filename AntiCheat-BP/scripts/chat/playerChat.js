@@ -6,6 +6,7 @@ import main from "../commands/config.js";
 // All rights reserved @bluemods.lol - discord account. | Please report any bugs or glitches in our discord server https://dsc.gg/bluemods
 
 const badWordCount = new Map();
+const lastMessages = new Map();
 
 function isCommandEnabled(commandName) {
     return main.enabledCommands[commandName] !== undefined ? main.enabledCommands[commandName] : true;
@@ -50,17 +51,30 @@ function handleBadWords(player, message) {
         badWordCount.set(playerName, count);
 
         if (count >= 3) {
-            player.sendMessage(`§7[§b#§7] §cYou have been kicked for using inappropriate language.`);
-            world.getDimension('overworld').runCommandAsync(`kick "${playerName}" Inappropriate language`);
+            world.getDimension('overworld').runCommandAsync(`kick "${playerName}" §bBlueMods §7> §cPlease refrain from using Inappropriate language`);
             badWordCount.delete(playerName);
         } else {
             player.sendMessage(`§7[§b#§7] §cPlease refrain from using inappropriate language. Warning: ${count}/3.`);
             player.runCommandAsync(`playsound random.break @s`);
         }
-        return true; // Bad word detected
+        return true;
     }
 
-    return false; // No bad words
+    return false; 
+}
+
+function handleDuplicateMessage(player, message) {
+    const playerName = player.name;
+    const lastMessage = lastMessages.get(playerName);
+
+    if (lastMessage === message) {
+        player.sendMessage("§7[§b#§7] §cPlease avoid sending duplicate messages.");
+        player.runCommandAsync("playsound random.break @s");
+        return true;
+    }
+
+    lastMessages.set(playerName, message);
+    return false;
 }
 
 function formatChatMessage(player, message) {
@@ -85,7 +99,7 @@ function chat(data) {
     const player = data.sender;
     const message = data.message;
 
-    if (handleBadWords(player, message)) {
+    if (handleBadWords(player, message) || handleDuplicateMessage(player, message)) {
         data.cancel = true;
         return;
     }
@@ -116,6 +130,14 @@ Command.register({
         removeChatFormat();
         player.sendMessage(`§7[§b#§7] §aChat format has been reset to default for everyone.`);
         player.runCommandAsync(`playsound note.bell @s`);
+    } else if (action === "enable") {
+        world.setDynamicProperty("chatDisplayEnabled", true);
+        player.sendMessage(`§7[§b#§7] §aSuccessfully Enabled Chat Display.`);
+        player.runCommandAsync(`playsound note.bell @s`);
+    } else if (action === "disable") {
+        world.setDynamicProperty("chatDisplayEnabled", false);
+        player.sendMessage(`§7[§b#§7] §aSuccessfully §cDisabled §aChat Display.`);
+        player.runCommandAsync(`playsound note.bell @s`);
     } else {
         player.sendMessage(`§7[§b#§7] §cInvalid action! §aUse: §3!chatdisplay §7<§eset§7/§cremove§7> <§achatstyle§7>\n\n§aSymbols:\n§e{name} §a= player's username\n§e{rank} §a= rank\n§e{message} §a= message.`);
         player.runCommandAsync('playsound random.break @s');
@@ -127,7 +149,8 @@ system.runInterval(() => {
 }, 6000);
 
 world.beforeEvents.chatSend.subscribe((data) => {
-    if (!data.message.startsWith(main.prefix)) {
+    const chatDisplayEnabled = world.getDynamicProperty("chatDisplayEnabled");
+    if (chatDisplayEnabled !== false && !data.message.startsWith(main.prefix)) {
         chat(data);
     }
 });
