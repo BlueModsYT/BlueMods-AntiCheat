@@ -27,6 +27,7 @@ You can ONLY download the anticheat on our official sites:
 - Anti Creative Mode
 - Anti Lore Containers
 - Anti Operator Blocks
+- Anti Duplicate Message
 - Invalid Namespoof
 
 ## **📡 SYSTEMS**
@@ -35,6 +36,8 @@ You can ONLY download the anticheat on our official sites:
 - Previous Banned (Hackers)
 - Custom Welcome System
 - Custom Chat Rank Displays
+- Modules for Commands
+- Enable/Disable Chat Display
 
 ## **❓ GUIDES**
 - Ensure you type `!op add <player>` before using `!?` or `!help`. (If `!op` is not functioning, use `/tag @s add admin`).
