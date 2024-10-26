@@ -1,10 +1,10 @@
 import "./commands/command.js";
 // bluemods: systems
-import "./anticheat/badwords/isBadwords.js";
 import "./anticheat/nuker/nuker.js";
 import "./anticheat/is32k.js";
 import "./anticheat/isAFK.js";
 import "./anticheat/isLored.js";
+import "./anticheat/isPhase.js";
 import "./anticheat/isOperator.js";
 import "./anticheat/isCrasher.js";
 import "./anticheat/isReached.js";
