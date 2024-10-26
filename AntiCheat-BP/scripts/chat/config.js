@@ -354,7 +354,6 @@ export const badWords = [
     "manko",
     "manshaft",
     "maricon",
-    "masterbat",
     "masterbate",
     "masturbacion",
     "masturbait",
