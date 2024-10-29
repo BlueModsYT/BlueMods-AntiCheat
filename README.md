@@ -1,10 +1,10 @@
 <p align="center"><img src="https://bluemods.neocities.org/p/ic_blue.png" alt="BlueMods" width="150" height="150"></p>
-<h1 align="center">BlueMods AntiCheat</h1>
-<p align="center">BlueMods AntiCheat for Minecraft Bedrock is a powerful tool designed to protect your server from hackers & cheaters.</p>
+<h1 align="center">BlueMods</h1>
+<p align="center">BlueMods: Essential Minecraft commands and systems for streamlined server management, reliable protections, and an enhanced player experience.</p>
 <p align="center">
-        <img src="https://img.shields.io/github/downloads/BlueModsYT/BlueMods-AntiCheat/total?style=for-the-badge" alt="GitHub Downloads">
-        <img src="https://img.shields.io/github/commit-activity/m/BlueModsYT/BlueMods-AntiCheat?style=for-the-badge" alt="Commits Per Week">
-        <img src="https://img.shields.io/github/last-commit/BlueModsYT/BlueMods-AntiCheat?style=for-the-badge" alt="Last Commit">
+        <img src="https://img.shields.io/github/downloads/BlueModsYT/BlueMods/total?style=for-the-badge" alt="GitHub Downloads">
+        <img src="https://img.shields.io/github/commit-activity/m/BlueModsYT/BlueMods?style=for-the-badge" alt="Commits Per Week">
+        <img src="https://img.shields.io/github/last-commit/BlueModsYT/BlueMods?style=for-the-badge" alt="Last Commit">
         <img src="https://img.shields.io/discord/913049851531522078?style=for-the-badge&label=Discord&color=0000ff&link=https%3A%2F%2Fdiscord.gg%2Fbluemods-anticheat-913049851531522078" alt="Discord">
 </p>
 
@@ -13,7 +13,7 @@
 You can ONLY download the anticheat on our official sites:
 - [MCPEDL](https://mcpedl.com/bluemods)
 - [DISCORD](https://discord.gg/bluemods-anticheat-913049851531522078)
-- [GITHUB](https://github.com/BlueModsYT/BlueMods-AntiCheat/releases)
+- [GITHUB](https://github.com/BlueModsYT/BlueMods/releases)
 
 ## **⛔ FEATURES**
 - No AFK
@@ -119,7 +119,7 @@ Operator Commands
 Total Commands: 57
 
 ## **📣 DOWNLOAD HERE**
-https://github.com/BlueModsYT/BlueMods-AntiCheat/releases
+https://github.com/BlueModsYT/BlueMods/releases
 
 Contact us by joining our official discord server for bug fix and suggestions.
 <p align="center"><img src="https://github.com/user-attachments/assets/da292086-bee4-4210-9b91-5ad6c451a052" alt="BlueMods" width="950" height="100"></p>
