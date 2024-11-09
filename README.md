@@ -23,7 +23,7 @@ You can ONLY download the anticheat on our official sites:
 - Anti Spamming
 - Anti Force Nuker
 - Anti Illegal Items
-- Anti CBE Exploits
+- Anti CBE Exploits (Prevent Admins from using it)
 - Anti Creative Mode
 - Anti Lore Containers
 - Anti Operator Blocks
