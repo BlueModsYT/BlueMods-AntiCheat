@@ -1,0 +1,61 @@
+{
+    "format_version": 2,
+    "metadata": {
+        "authors": [ "bluemods.lol", "trokkk.lol", "mp09" ],
+        "license": "AGPLv3",
+        "url": "https://discord.gg/ppPT3MvgCk",
+        "version": [
+            5,
+            6,
+            2
+        ]
+    },
+    "header": {
+        "name": "§l§bBlueMods §fAnti§cCheat §eBeta-v5.6.2§r",
+        "description": "BlueMods AntiCheat for Minecraft Bedrock is a powerful tool designed to prevent cheats, Required to turn on §c(Beta-API + Education Edition)",
+        "uuid": "00e25db5-cb82-47b4-927c-151d16cf2f0a",
+        "version": [
+            5,
+            6,
+            2
+        ],
+        "min_engine_version": [ 
+            1,
+            21,
+            40
+        ]
+    },
+    "modules": [
+        {
+            "type": "data",
+            "uuid": "bfec96d5-9104-4cf4-b09a-f661df9769e3",
+            "version": [
+                2,
+                2,
+                0
+            ]
+        },
+        {
+            "description": "Required to turn on §c(Beta-API + Education Edition)",
+            "language": "javascript",
+            "type": "script",
+            "uuid": "1d7f88d8-aed9-48f4-9a59-0653c3eaf0cd",
+            "version": [
+                2,
+                2,
+                0
+            ],
+            "entry": "scripts/bluemods.js"
+        }
+    ],
+        "dependencies": [
+        {
+            "module_name": "@minecraft/server",
+            "version": "1.16.0-beta"
+        },
+        {
+            "module_name": "@minecraft/server-ui",
+            "version": "1.4.0-beta"
+        }
+    ]
+          }
