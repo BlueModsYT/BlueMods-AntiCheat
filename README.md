@@ -1,6 +1,6 @@
 <p align="center"><img src="https://bluemods.neocities.org/p/ic_blue.png" alt="BlueMods" width="150" height="150"></p>
 <h1 align="center">BlueMods</h1>
-<p align="center">BlueMods: Essential Minecraft commands and systems for streamlined server management, reliable protections, and an enhanced player experience.</p>
+<p align="center">BlueMods AntiCheat for Minecraft Bedrock is a powerful tool designed to protect your server from hackers & cheaters.</p>
 <p align="center">
         <img src="https://img.shields.io/github/downloads/BlueModsYT/BlueMods/total?style=for-the-badge" alt="GitHub Downloads">
         <img src="https://img.shields.io/github/commit-activity/m/BlueModsYT/BlueMods?style=for-the-badge" alt="Commits Per Week">
