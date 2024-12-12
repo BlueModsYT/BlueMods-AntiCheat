@@ -8,12 +8,18 @@
         <img src="https://img.shields.io/discord/913049851531522078?style=for-the-badge&label=Discord&color=0000ff&link=https%3A%2F%2Fdiscord.gg%2Fbluemods-anticheat-913049851531522078" alt="Discord">
 </p>
 
-## **❓ FAQ**
-[?] Where can I download the Anticheat?
-You can ONLY download the anticheat on our official sites:
-- [MCPEDL](https://mcpedl.com/bluemods)
-- [DISCORD](https://discord.gg/bluemods-anticheat-913049851531522078)
-- [GITHUB](https://github.com/BlueModsYT/BlueMods/releases)
+## **❓ SOCIAL LINKS**
+- MODBAY: [MODBAY](<https://modbay.org/user/BlueMods/>)
+- WEBSITE: [BLUEMODS](<https://bluemods.neocities.org>)  
+- GITHUB: [GITHUB](<https://github.com/BlueModsYT/BlueMods-AntiCheat/releases>)  
+- MCPEDL: [MCPEDL](<https://mcpedl.com/bluemods>)  
+- YOUTUBE: [YOUTUBE](<https://youtube.com/@BlueModsYT>)
+- LOOTLABS: [LOOTLABS](<https://loot-link.com/s?c7f23bb4>)
+- DISCORD: [DISCORD](<https://discord.gg/ppPT3MvgCk>)
+- GUILDED: [GUILDED](<https://guilded.gg/u/ShadowBladeYT123>)
+- FACEBOOK: [FACEBOOK](<https://facebook.com/profile.php?id=61566407283474>)
+- X-TWITTER: [TWITTER](<https://x.com/BlueModsYT>)
+- MEDAL.TV: [MEDAL](<https://medal.tv/u/BlueMods>)
 
 ## **⛔ FEATURES**
 - No AFK
