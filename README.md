@@ -58,7 +58,7 @@
 **Why enable these?**  
 These settings are essential for running commands and features that operate in beta mode. By enabling them, you ensure that your server is secure from cheaters and the addon functions as intended.
 
-## **🤖 COMMANDS FOR ANTICHEAT**
+## **🤖 ADDON COMMANDS (OUTDATED)**
 - !rtp - allows you to teleport on random location.
 - !help - shows the list of the commands.
 - !ping - show the world's tps and ping.
@@ -123,9 +123,8 @@ Operator Commands
 - !trusted <add/remove> <player> - add trusted or remove on specific player.
 - !trusted list - see the list of the trusted on the anticheat.
 
-Total Commands: 57
-
 ## **📣 DOWNLOAD HERE**
+https://bluemods.neocities.org
 https://github.com/BlueModsYT/BlueMods/releases
 
 Contact us by joining our official discord server for bug fix and suggestions.
