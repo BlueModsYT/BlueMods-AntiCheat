@@ -1,11 +1,11 @@
 // bluemods: worldSystems
 import "./systems/8craftersDebugSticksConnectivity.js";
-import "./systems/nuker/nuker.js";
+import "./systems/nuker/isNuker.js";
 import "./systems/isAFK.js";
 import "./systems/isLored.js";
 import "./systems/isCrasher.js";
 import "./systems/isNameSpoof.js";
-import "./systems/items/isIllegal.js";
+import "./systems/isIllegal.js";
 // bluemods: chatFilter
 import "./chat/playerChat.js";
 import "./chat/projectTile.js";
