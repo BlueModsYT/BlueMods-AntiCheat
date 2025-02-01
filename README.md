@@ -75,7 +75,7 @@ These settings are essential for running commands and features that operate in b
 
 ---
 
-## **GENERAL COMMANDS**
+## **🛑 GENERAL COMMANDS**
 - `!rtp` - Teleport to a random location.
 - `!help` - Show the list of commands.
 - `!ping` - Check the world’s TPS and ping.
@@ -83,17 +83,17 @@ These settings are essential for running commands and features that operate in b
 - `!echest` - Get an ender chest.
 - `!daily` - Receive a random item.
 
-## **SPAWN COMMANDS**
+## **🛑 SPAWN COMMANDS**
 - `!spawn` - Teleport back to the spawn point.
 - `!rspawn` - Remove the current spawn point.
 - `!setspawn` - Set a new spawn point.
 
-## **HOME COMMANDS**
+## **🛑 HOME COMMANDS**
 - `!home tp <home_name>` - Teleport to a saved home.
 - `!home <set/remove> <home_name>` - Create or delete a home.
 - `!home list` - List all your saved homes.
 
-## **TPA COMMANDS**
+## **🛑 TPA COMMANDS**
 - `!tpa send <player>` - Send a teleport request to a player.
 - `!tpa accept` - Accept a teleport request.
 - `!tpa decline` - Decline a teleport request.
@@ -101,14 +101,14 @@ These settings are essential for running commands and features that operate in b
 - `!tpa block <player>` - Block a player from sending requests.
 - `!tpa unblock <player>` - Unblock a player.
 
-## **GAMEMODE COMMANDS**
+## **🛑 GAMEMODE COMMANDS**
 - `!gma <player>` - Change to Adventure mode.
 - `!gmc <player>` - Change to Creative mode.
 - `!gms <player>` - Change to Survival mode.
 - `!gmsp <player>` - Change to Spectator mode.
 - `!vanish <player>` - Toggle invisibility.
 
-## **MODERATION COMMANDS**
+## **🛑 MODERATION COMMANDS**
 - `!kick <player> <reason>` - Kick a player.
 - `!ban add [duration] <player> <reason>` - Ban a player.
 - `!ban remove <player>` - Unban a player.
@@ -133,7 +133,7 @@ These settings are essential for running commands and features that operate in b
 - `!chatdisplay <set/remove> <chatstyle>` - Customize chat display.
 - `!rank <add/remove> <rank> [color] <player>` - Assign or remove ranks.
 
-## **OPERATOR COMMANDS**
+## **🛑 OPERATOR COMMANDS**
 - `!op <add/remove> <player>` - Grant or revoke operator status.
 - `!op list` - List operators.
 - `!notify <add/remove> <player>` - Toggle anticheat notifications for a player.
