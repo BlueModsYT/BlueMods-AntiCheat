@@ -30,12 +30,14 @@
 - Anti Spamming
 - Anti Force Nuker
 - Anti Illegal Items
-- Anti CBE Exploits (Prevent Admins from using it)
+- Anti CBE Exploits
 - Anti Creative Mode
 - Anti Lore Containers
 - Anti Operator Blocks
 - Anti Duplicate Message
 - Invalid Namespoof
+
+- Why those patched prevention still here?: [Answer is in the Link / Secure.md](https://github.com/BlueModsYT/BlueMods/blob/main/SECURE.md)
 
 ## **📡 SYSTEMS**
 - Projectile Sound
@@ -47,9 +49,22 @@
 - Enable/Disable Chat Display
 
 ## **❓ GUIDES**
-- Ensure you type `!op add <player>` before using `!?` or `!help`. (If `!op` is not functioning, use `/tag @s add admin`).
-- When executing commands, be sure to use the player’s exact username, including capitalization.
-- **Important:** Do not grant "op" or "trusted" tags to unfamiliar players.
+**Download the Addon:**
+- Go to the official BlueMods website or GitHub page.
+- Download the BlueMods Addon file.
+**Import the Addon:**
+- Open your Minecraft world settings.
+- Import the downloaded BlueMods Addon into your world.
+- Make sure to enable **Beta APIs** and **Education Edition** in your world settings.
+**Check if the Addon Works:**
+- After importing, type `!ping` in the chat.
+- If the addon is working, you’ll get a response. If not, double-check the addon’s requirements.
+**Set Up Admin Permissions:**
+- Before using commands like `!?` or `!help`, you need to give a player admin rights.
+- Type: `!op add <player>` (replace `<player>` with the exact username, including capitalization).
+- If `!op` doesn’t work, use this command instead: `/tag @s add admin`.
+- **Using Commands:** Always use the player’s exact username (including uppercase and lowercase letters) when running commands.
+- **Important Tip:** Never give the **"op"** or **"trusted"** tags to players you don’t know or trust. This keeps your server safe.
 
 ## **♨️ REQUIREMENTS**
 - `Education Edition` - Must be enabled for `!mute` and `!unmute` commands to function.
@@ -58,74 +73,77 @@
 **Why enable these?**  
 These settings are essential for running commands and features that operate in beta mode. By enabling them, you ensure that your server is secure from cheaters and the addon functions as intended.
 
-## **🤖 ADDON COMMANDS (OUTDATED)**
-- !rtp - allows you to teleport on random location.
-- !help - shows the list of the commands.
-- !ping - show the world's tps and ping.
-- !about - shows the developer of the addon.
+---
 
-Spawn Commands
-- !spawn - go back to lobby.
-- !rspawn - remove the current spawn set.
-- !setspawn - make a setspawn to able to use !spawn.
+## **GENERAL COMMANDS**
+- `!rtp` - Teleport to a random location.
+- `!help` - Show the list of commands.
+- `!ping` - Check the world’s TPS and ping.
+- `!about` - Show the developer of the addon.
+- `!echest` - Get an ender chest.
+- `!daily` - Receive a random item.
 
-Home Commands
-- !home tp <home_name> - teleport to your existing set home.
-- !home <set/remove> <home_name> - set a home or remove it.
-- !home list - see the list of your created homes.
+## **SPAWN COMMANDS**
+- `!spawn` - Teleport back to the spawn point.
+- `!rspawn` - Remove the current spawn point.
+- `!setspawn` - Set a new spawn point.
 
-TPA Commands
-- !tpa send <player> - allows you to request a teleport from any players.
-- !tpa accept - allows you to accept a current request from other player.
-- !tpa decline - you can only decline a request from other player.
-- !tpa cancel - you can cancel a request from the player.
-- !tpa block <player> - allows you to block a player from sending a teleport request.
-- !tpa unblock <player> - unblock the blocked player so they can able to send a request to you again.
+## **HOME COMMANDS**
+- `!home tp <home_name>` - Teleport to a saved home.
+- `!home <set/remove> <home_name>` - Create or delete a home.
+- `!home list` - List all your saved homes.
 
-Gamemode Commands
-- !gma <player> - change gamemode to adventure.
-- !gmc <player> - change gamemode to creative.
-- !gms <player> - change gamemode to survival.
-- !gmsp <player> - change gamemode to spectator.
-- !vanish <player> - makes yourself invisibility.
+## **TPA COMMANDS**
+- `!tpa send <player>` - Send a teleport request to a player.
+- `!tpa accept` - Accept a teleport request.
+- `!tpa decline` - Decline a teleport request.
+- `!tpa cancel` - Cancel your sent request.
+- `!tpa block <player>` - Block a player from sending requests.
+- `!tpa unblock <player>` - Unblock a player.
 
-Moderation Commands
-- !kick <player> <reason> - kick a specific player in server.
-- !ban add [duration] <player> <reason> - ban a specific player in server.
-- !ban remove <player> - unban a specific player in server.
-- !ban list - see the list of the banned players on the server.
-- !cmdsf <enable/disable> - disabled command block logs and popping on chats. [MODULE]
-- !mute <add/remove> <player> - mute a specific player in server.
-- !mute list - see the list of muted user.
-- !freeze <add/remove> <player> - freeze a specific player.
-- !freeze list - see the list of freezed user.
-- !lagclear <default/mobs/all> - kill all items on the ground.
-- !give <item> <value> [data] - give yourself an item(s).
-- !troll <troll> <player> - troll someone in the server.
-- !welcome <join/leave> <set/remove> <text> - add or remove specific set text.
-- !banitem <add/remove> <item> - add or remove ban items.
-- !banitem list - see the list of banned.
-- !clearchat - clear your chat (only you can see it)
-- !ecwipe <player> - allows you to remove items on their ender_chest.
-- !invsee <player> - allows you to see other player(s) Inventory.
-- !invwipe <player> - this will clear the player(s) inventory.
-- !module <enable/disable> <command> - allows you to enable or disable a specific command. [MODULE]
-- !module list - see the list of commands module.
-- !pearl <duration> - change ender pearl cooldown.
-- !chatdisplay <set/remove> <hatstyle> - change the style of the player's chat.
-- !rank <add/remove> <rank> [color(optional)] <player> - add rank's to a player.
+## **GAMEMODE COMMANDS**
+- `!gma <player>` - Change to Adventure mode.
+- `!gmc <player>` - Change to Creative mode.
+- `!gms <player>` - Change to Survival mode.
+- `!gmsp <player>` - Change to Spectator mode.
+- `!vanish <player>` - Toggle invisibility.
 
-Operator Commands
-- !op <add/remove> <player> - op a specific player in server to immune to any anticheat.
-- !op list - see the list of the admins on the anticheat.
-- !notify <add/remove> <player> - notification when someone got flagged by the anticheat.
-- !notify list - see the list of the notify on the anticheat.
-- !trusted <add/remove> <player> - add trusted or remove on specific player.
-- !trusted list - see the list of the trusted on the anticheat.
+## **MODERATION COMMANDS**
+- `!kick <player> <reason>` - Kick a player.
+- `!ban add [duration] <player> <reason>` - Ban a player.
+- `!ban remove <player>` - Unban a player.
+- `!ban list` - List banned players.
+- `!mute <add/remove> <player>` - Mute or unmute a player.
+- `!mute list` - List muted players.
+- `!freeze <add/remove> <player>` - Freeze or unfreeze a player.
+- `!freeze list` - List frozen players.
+- `!lagclear <default/mobs/all>` - Clear dropped items or mobs.
+- `!give <item> <value> [data]` - Give yourself an item.
+- `!troll <troll> <player>` - Troll a player.
+- `!welcome <join/leave> <set/remove> <text>` - Set welcome/leave messages.
+- `!banitem <add/remove> <item>` - Ban or unban items.
+- `!banitem list` - List banned items.
+- `!clearchat` - Clear your chat.
+- `!ecwipe <player>` - Clear a player’s ender chest.
+- `!invsee <player>` - View a player’s inventory.
+- `!invwipe <player>` - Clear a player’s inventory.
+- `!module <enable/disable> <command>` - Enable or disable a command module.
+- `!module list` - List command modules.
+- `!pearl <duration>` - Set ender pearl cooldown.
+- `!chatdisplay <set/remove> <chatstyle>` - Customize chat display.
+- `!rank <add/remove> <rank> [color] <player>` - Assign or remove ranks.
+
+## **OPERATOR COMMANDS**
+- `!op <add/remove> <player>` - Grant or revoke operator status.
+- `!op list` - List operators.
+- `!notify <add/remove> <player>` - Toggle anticheat notifications for a player.
+- `!notify list` - List players with notifications enabled.
+- `!trusted <add/remove> <player>` - Add or remove trusted players.
+- `!trusted list` - List trusted players.
 
 ## **📣 DOWNLOAD HERE**
-https://bluemods.neocities.org
-https://github.com/BlueModsYT/BlueMods/releases
+- https://bluemods.neocities.org
+- https://github.com/BlueModsYT/BlueMods/releases
 
 Contact us by joining our official discord server for bug fix and suggestions.
-<p align="center"><img src="https://github.com/user-attachments/assets/da292086-bee4-4210-9b91-5ad6c451a052" alt="BlueMods" width="950" height="100"></p>
+<p align="center"><img src="https://github.com/user-attachments/assets/da292086-bee4-4210-9b91-5ad6c451a052" alt="BlueMods" width="350" height="100"></p>
