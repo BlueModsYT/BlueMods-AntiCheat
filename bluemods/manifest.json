@@ -1,7 +1,7 @@
 {
     "format_version": 2,
     "metadata": {
-        "authors": [ "bluemods.lol", "trokkk.lol", "mp09", "8crafter" ],
+        "authors": [ "bluemods.lol", "trokkk.lol", "mp09", "8Crafter" ],
         "license": "AGPLv3",
         "url": "https://bluemods.neocities.org",
         "version": [
@@ -11,7 +11,7 @@
         ]
     },
     "header": {
-        "name": "§l§bBlueMods §gEssential §aBeta-v5.7.0§r",
+        "name": "§l§bBlueMods §gBeta-v5.7.0§r",
         "description": "A command-based utility designed to enhance gameplay and provide basic prevention measures for realms and servers. Required to turn on §c(Beta-API + Education Edition)",
         "uuid": "00e25db5-cb82-47b4-927c-151d16cf2f0a",
         "version": [
@@ -58,4 +58,4 @@
             "version": "1.4.0-beta"
         }
     ]
-    }
+}
