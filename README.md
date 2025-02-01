@@ -36,7 +36,6 @@
 - Anti Operator Blocks
 - Anti Duplicate Message
 - Invalid Namespoof
-
 - Why those patched prevention still here?: [Answer is in the Link / Secure.md](https://github.com/BlueModsYT/BlueMods/blob/main/SECURE.md)
 
 ## **📡 SYSTEMS**
