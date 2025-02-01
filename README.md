@@ -23,8 +23,6 @@
 - MEDAL.TV: [MEDAL](<https://medal.tv/u/BlueMods>)
 
 ## **⛔ FEATURES**
-- No AFK
-- Anti Reach
 - Anti Crasher
 - Badwords + Kick
 - Anti Spamming
