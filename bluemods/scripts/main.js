@@ -1,7 +1,6 @@
 // bluemods: worldSystems
 import "./systems/8craftersDebugSticksConnectivity.js";
 import "./systems/nuker/isNuker.js";
-import "./systems/isAFK.js";
 import "./systems/isLored.js";
 import "./systems/isCrasher.js";
 import "./systems/isNameSpoof.js";
