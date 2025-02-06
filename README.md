@@ -44,6 +44,7 @@
 - Custom Chat Rank Displays
 - Modules for Commands
 - Enable/Disable Chat Display
+- Chat Configuration
 
 ## **❓ GUIDES**
 **Download the Addon:**
