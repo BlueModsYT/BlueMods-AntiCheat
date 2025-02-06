@@ -24,7 +24,7 @@
 
 ## **⛔ FEATURES**
 - Anti Crasher
-- Badwords + Kick
+- Anti Badwords
 - Anti Spamming
 - Anti Force Nuker
 - Anti Illegal Items
