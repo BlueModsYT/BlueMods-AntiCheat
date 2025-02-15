@@ -111,7 +111,9 @@ function chat(data) {
     const player = data.sender;
     const message = data.message;
 
-    if ((main.chatConfig.allowBadWords ? false : handleBadWords(player, message)) || (main.chatConfig.allowDuplicateMessages ? false : handleDuplicateMessage(player, message)) || (main.chatConfig.allowSpam ? false : isSpam(player))) {
+    if ((!main.chatConfig.allowBadWords && handleBadWords(player, message)) || 
+        (!main.chatConfig.allowDuplicateMessages && handleDuplicateMessage(player, message)) || 
+        (!main.chatConfig.allowSpam && isSpam(player))) {
         data.cancel = true;
         return;
     }
@@ -120,7 +122,6 @@ function chat(data) {
         data.cancel = false;
         return;
     }
-    console.log(debug_sticks_format_version)
 
     const chatMessage = formatChatMessage(player, message);
     world.getDimension('overworld').runCommandAsync(`tellraw @a {"rawtext":[{"translate":${JSON.stringify(chatMessage)}}]}`);
