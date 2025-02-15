@@ -20,29 +20,38 @@ const isAuthorized = (player, commandName) => {
 function displayCategory(player, categories, page) {
     const totalPages = categories.length;
 
-    if (page < 0 || page >= totalPages) {
+    const adjustedPage = page - 1;
+
+    if (adjustedPage < 0 || adjustedPage >= totalPages) {
         player.sendMessage("§7[§c-§7] §cInvalid page number.");
+        player.runCommandAsync(`playsound random.break @s`);
         return;
     }
 
-    const category = categories[page];
+    const category = categories[adjustedPage];
     player.sendMessage(`§l§b${category.name}§r`);
     category.commands.forEach(line => player.sendMessage(line));
 
     if (totalPages > 1) {
-        player.sendMessage(`§7Use §a!help <page> §7to view other categories.`);
+        player.sendMessage(`\n§7You're in Page: §a${page}§7/§a${totalPages} §7| Use §a!help <page> §7to view other categories.\n`);
     }
 }
 
 Command.register({
     name: "help",
-    description: "",
+    description: "Shows the list of commands.",
     aliases: ["?"]
 }, (data, args) => {
     const player = data.player;
     if (!isAuthorized(player, "!help")) return;
 
-    const page = args[0] ? parseInt(args[0]) - 1 : 0;
+    const page = args[0] ? parseInt(args[0]) : 1;
+
+    if (isNaN(page) || page < 1) {
+        player.sendMessage("§7[§c-§7] §cInvalid page number. Please use a number greater than or equal to 1.");
+        player.runCommandAsync(`playsound random.break @s`);
+        return;
+    }
 
     if (player.hasTag("admin")) {
         displayCategory(player, main.adminCategories, page);
