@@ -6,23 +6,39 @@ import main from "../commands/config.js";
 const adminTag = "admin";
 const trustedTag = "trusted";
 
-const MODULE_STATES_KEY = "moduleStatesKey";
+const MODULE_STATES_KEY = "moduleStates";
 
+// Initialize module states
+const defaultModuleStates = {
+    dangerItemCheck: true,
+    operatorItemCheck: true,
+    eggItemCheck: true,
+    unknownItemCheck: true
+};
+
+// Load saved module states
 system.run(() => {
     try {
         const storedStates = world.getDynamicProperty(MODULE_STATES_KEY);
         if (storedStates) {
-            main.moduleStates = JSON.parse(storedStates);
+            main.moduleStates = { ...defaultModuleStates, ...JSON.parse(storedStates) };
         } else {
-            world.setDynamicProperty(MODULE_STATES_KEY, JSON.stringify(main.moduleStates));
+            main.moduleStates = defaultModuleStates;
+            world.setDynamicProperty(MODULE_STATES_KEY, JSON.stringify(defaultModuleStates));
         }
     } catch (error) {
-        console.error(`Error parsing stored module states: ${error.message}`);
+        console.error(`Error loading module states: ${error.message}`);
+        main.moduleStates = defaultModuleStates;
     }
 });
 
-function savemoduleStates() {
-    world.setDynamicProperty(MODULE_STATES_KEY, JSON.stringify(main.moduleStates));
+// Save module states when modified
+function saveModuleStates() {
+    try {
+        world.setDynamicProperty(MODULE_STATES_KEY, JSON.stringify(main.moduleStates));
+    } catch (error) {
+        console.error(`Error saving module states: ${error.message}`);
+    }
 }
 
 Command.register({
@@ -63,7 +79,7 @@ Command.register({
             player.sendMessage(`§7[§b#§7] §cModule §e${actualModuleName} §cis already enabled.`);
         } else {
             main.moduleStates[actualModuleName] = true;
-            savemoduleStates();
+            saveModuleStates();
             player.sendMessage(`§7[§b#§7] §aModule §e${actualModuleName} §ahas been enabled.`);
         }
     } else if (action === "disable") {
@@ -72,7 +88,7 @@ Command.register({
             player.sendMessage(`§7[§b#§7] §cModule §e${actualModuleName} §cis already disabled.`);
         } else {
             main.moduleStates[actualModuleName] = false;
-            savemoduleStates();
+            saveModuleStates();
             player.sendMessage(`§7[§b#§7] §aModule §e${actualModuleName} §ahas been disabled.`);
         }
     }
