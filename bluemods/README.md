@@ -1,6 +1,7 @@
-# BlueMods AntiCheat  
-
-BlueMods AntiCheat for Minecraft Bedrock is a powerful tool designed to protect your server from hackers & cheaters
+<p align="center"><img src="https://bluemods.neocities.org/p/ic_blue.png" alt="BlueMods" width="150" height="150"></p>
+<h1 align="center">BlueMods</h1>
+<p align="center">https://bluemods.neocities.org</p>
+<p align="center">BlueMods AntiCheat for Minecraft Bedrock is a powerful tool designed to protect your server from hackers & cheaters.</p>
 
 ## ⚠️ Limitations  
 
@@ -12,9 +13,24 @@ The prevention system in our addon is **basic**, meaning not all exploits or che
 - Customizable settings for server owners to fine-tune protection.  
 - Regular updates to improve detection and prevention methods.  
 
-## 📌 Installation  
+## 📌 Installation
 
-1. Download the latest release from our [official website](https://bluemods.neocities.org) or [GitHub repository](https://github.com/BlueModsYT/BlueMods/releases).  
+**Download the Addon:**
+- Go to the official BlueMods website or GitHub page.
+- Download the BlueMods Addon file.
+**Import the Addon:**
+- Open your Minecraft world settings.
+- Import the downloaded BlueMods Addon into your world.
+- Make sure to enable **Beta APIs** and **Education Edition** in your world settings.
+**Check if the Addon Works:**
+- After importing, type `!ping` in the chat.
+- If the addon is working, you’ll get a response. If not, double-check the addon’s requirements.
+**Set Up Admin Permissions:**
+- Before using commands like `!?` or `!help`, you need to give a player admin rights.
+- Type: `!op add <player>` (replace `<player>` with the exact username, including capitalization).
+- If `!op` doesn’t work, use this command instead: `/tag @s add admin`.
+- **Using Commands:** Always use the player’s exact username (including uppercase and lowercase letters) when running commands.
+- **Important Tip:** Never give the **"op"** or **"trusted"** tags to players you don’t know or trust. This keeps your server safe.
 
 ## 🔧 Configuration  
 
@@ -27,7 +43,7 @@ We are actively working on enhancing the detection system to cover more exploits
 ## 💡 Contribute  
 
 Want to help improve BlueMods AntiCheat?  
-- Report issues on our [GitHub Issues](https://github.com/BlueModsYT/issues) page.  
+- Report issues on our [GitHub Issues](https://github.com/BlueModsYT/BlueMods-AntiCheat/issues) page.  
 - Submit pull requests with bug fixes or new features.  
 - Join our community for discussions and updates.  
 
