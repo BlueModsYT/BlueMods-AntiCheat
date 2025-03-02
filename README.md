@@ -80,6 +80,7 @@ These settings are essential for running commands and features that operate in b
 - `!about` - Show the developer of the addon.
 - `!echest` - Get an ender chest.
 - `!daily` - Receive a random item.
+- `!compass` - Show the Compass UI
 
 ## **🛑 SPAWN COMMANDS**
 - `!spawn` - Teleport back to the spawn point.
