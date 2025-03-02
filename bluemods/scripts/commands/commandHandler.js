@@ -45,26 +45,31 @@ world.beforeEvents.chatSend.subscribe((data) => {
 
     data.cancel = true;
 
-    const args = message
-        .substring(prefix.length)
-        .replace(/@(?=\w{2})|@(?!s)/g, '')
-        .trim()
-        .replace(/ {2,}/g, ' ')
-        .match(/".*?"|[\S]+/g)
-        ?.map(item => item.replaceAll('"', '')) ?? [];
+    try {
+        const args = message
+            .substring(prefix.length)
+            .replace(/@(?=\w{2})|@(?!s)/g, '')
+            .trim()
+            .replace(/ {2,}/g, ' ')
+            .match(/".*?"|[\S]+/g)
+            ?.map(item => item.replaceAll('"', '')) ?? [];
 
-    const cmd = args.shift()?.toLowerCase(); 
-    const cmdData = Command.registeredCommands.find(c => c.name === cmd || c.aliases.includes(cmd));
+        const cmd = args.shift()?.toLowerCase(); 
+        const cmdData = Command.registeredCommands.find(c => c.name === cmd || c.aliases.includes(cmd));
 
-    if (!cmdData) {
-        player.sendMessage(`§7[§c-§7] §cUnknown command: §g${message.replace(prefix, '')}§c. Please check that the command exists and that you have permission to use it.`);
-        return;
+        if (!cmdData) {
+            player.sendMessage(`§7[§c-§7] §cUnknown command: §g${message.replace(prefix, '')}§c. Please check that the command exists and that you have permission to use it.`);
+            return;
+        }
+
+        if (cmdData.permission && !cmdData.permission(player)) {
+            player.sendMessage(`§7[§c-§7] §cYou do not have permission to use this command.`);
+            return;
+        }
+
+        cmdData.callback({ player, message }, args);
+    } catch (error) {
+        console.error(`Command execution error: ${error.message}`);
+        player.sendMessage(`§7[§c-§7] §cAn error occurred while executing the command.`);
     }
-
-    if (cmdData.permission && !cmdData.permission(player)) {
-        player.sendMessage(`§7[§c-§7] §cYou do not have permission to use this command.`);
-        return;
-    }
-
-    cmdData.callback({ player, message }, args);
 });

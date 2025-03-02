@@ -360,7 +360,7 @@ Command.register({
         player.sendMessage(`§7[§b#§7] §cInvalid action! §aUse this Method§7: §3!cmdsf ${main.enabledisable}`);
         player.runCommandAsync(`playsound random.break @s`);
     }
-}); 
+});
 
 Command.register({
     name: "ecwipe",
@@ -421,83 +421,108 @@ Command.register({
     if (!isAuthorized(player, "!freeze")) return;
     
     const action = args[0]?.toLowerCase();
-    const targetName = args[1] || player.name;
+    const targetName = args[1];
+    
+    if (!targetName) {
+        player.sendMessage('§7[§b#§7] §cPlease specify a player name.');
+        return;
+    }
+
     const [targetPlayer] = world.getPlayers({ name: targetName });
     
     if (action === "list") {
-        const freezedPlayers = world.getPlayers().filter(p => p.hasTag('freezed')).map(p => p.name).join('§7,§r ');
-        player.sendMessage(`§7[§b#§7] §aFreezed: §e${freezedPlayers || 'No freezed player found'}`);
+        const frozenPlayers = world.getPlayers()
+            .filter(p => p.hasTag('freezed'))
+            .map(p => p.name)
+            .join('§7, §r');
+        player.sendMessage(`§7[§b#§7] §aFrozen Players: §e${frozenPlayers || 'None'}`);
         return;
     }
 
     if (!["add", "remove"].includes(action)) {
-        player.sendMessage(`§7[§b#§7] §cInvalid action! §aUse this Method§7: §3!freeze §aadd ${main.player} §7/ §3!freeze §cremove ${main.player} §7/ §3!freeze §alist`);
-        player.runCommandAsync('playsound random.break @s');
+        player.sendMessage(`§7[§b#§7] §cInvalid action! Use: §3!freeze §aadd/remove <player> §7or §3!freeze list`);
         return;
     }
 
     if (!targetPlayer) {
-        player.sendMessage('§7[§b#§7] §aPlayer not found! Please specify a valid player name.');
-        player.runCommandAsync('playsound random.break @s');
+        player.sendMessage('§7[§b#§7] §cPlayer not found!');
+        return;
+    }
+
+    if (targetPlayer.hasTag(main.adminTag) || targetPlayer.name === player.name) {
+        player.sendMessage(`§7[§b#§7] §cYou cannot freeze yourself or another admin.`);
+        return;
+    }
+
+    const isFreezed = targetPlayer.hasTag("freezed");
+    if (action === "add" && isFreezed) {
+        player.sendMessage(`§7[§b#§7] §c${targetPlayer.name} is already frozen.`);
+        return;
+    }
+    if (action === "remove" && !isFreezed) {
+        player.sendMessage(`§7[§b#§7] §c${targetPlayer.name} is not frozen.`);
         return;
     }
 
     try {
         if (action === "add") {
-            if (targetPlayer.hasTag(main.adminTag) || targetPlayer.name === player.name) {
-                player.sendMessage(`§7[§b#§7] §cYou cannot freeze yourself or admin.`);
-                return;
-            }
-            
-            if (!targetPlayer.hasTag("freezed")) {
-                await system.run(() => targetPlayer.addTag("freezed"));
-                player.runCommandAsync(`playsound note.bell @s`);
-                player.runCommandAsync(`inputpermission set "${targetPlayer.name}" camera disabled`);
-                player.runCommandAsync(`inputpermission set "${targetPlayer.name}" movement disabled`);
-                player.sendMessage(`§7[§b#§7] §aSuccessfully §3added §amute status to §e${targetPlayer.name}`);
-                
-                // Notification for Admins
-                world.getPlayers({ tags: ["notify"] }).forEach(admin => {
-                    admin.sendMessage(`§7[§e#§7] §e${player.name} §ais using §3!freeze add §ato §e${targetPlayer.name}`);
-                    admin.runCommandAsync(`playsound note.pling @s`);
-                });
-            } else {
-                player.runCommandAsync('playsound random.break @s');
-                player.sendMessage(`§7[§b#§7] §c${targetPlayer.name} this player is already freezed`);
-            }
-        } else if (action === "remove") {
-            if (targetPlayer.hasTag("freezed")) {
-                await system.run(() => targetPlayer.removeTag("freezed"));
-                player.runCommandAsync(`playsound note.bell @s`);
-                player.runCommandAsync(`inputpermission set "${targetPlayer.name}" camera disabled`);
-                player.runCommandAsync(`inputpermission set "${targetPlayer.name}" movement disabled`);
-                player.sendMessage(`§7[§b#§7] §aSuccessfully §cremoved §amute status from §e${targetPlayer.name}`);
-                
-                // Notification for Admins
-                world.getPlayers({ tags: ["notify"] }).forEach(admin => {
-                    admin.sendMessage(`§7[§e#§7] §e${player.name} §ais using §3!freeze remove §ato §e${targetPlayer.name}`);
-                    admin.runCommandAsync(`playsound note.pling @s`);
-                });
-            } else {
-                player.runCommandAsync('playsound random.break @s');
-                player.sendMessage(`§7[§b#§7] §c${targetPlayer.name} this player is not freezed.`);
-            }
+            await targetPlayer.addTag("freezed");
+            await targetPlayer.runCommandAsync(`ability @s movement false`);
+            player.sendMessage(`§7[§b#§7] §aFroze §e${targetPlayer.name}`);
+        } else {
+            await targetPlayer.removeTag("freezed");
+            await targetPlayer.runCommandAsync(`ability @s movement true`);
+            player.sendMessage(`§7[§b#§7] §aUnfroze §e${targetPlayer.name}`);
         }
+        
+        // Notify admins
+        world.getPlayers({ tags: ["notify"] }).forEach(admin => {
+            admin.sendMessage(`§7[§e#§7] §e${player.name} §a${action}ed freeze on §e${targetPlayer.name}`);
+            admin.runCommandAsync(`playsound note.pling @s`);
+        });
     } catch (error) {
-        player.sendMessage(`§7[§b#§7] §cError modifying player tags: ${error.message}`);
+        player.sendMessage(`§7[§b#§7] §cError: ${error.message}`);
     }
 });
 
 Command.register({
-  name: "give",
-  description: "",
-  aliases: ['i'],
-  permission: (player) => player.hasTag(main.adminTag),
+    name: "give",
+    description: "",
+    aliases: ['i'],
+    permission: (player) => player.hasTag(main.adminTag),
 }, (data, args) => {
-  const player = data.player;
+    const player = data.player;
     if (!isAuthorized(player, "!give")) return;
     
-
-  if (args.length < 2) {
+    if (args.length < 2) {
         player.sendMessage('§7[§b#§7] §cInvalid action! §aUse this Method§7: §3!give §7<§aitem§7> §7<§aamount§7> §7[§gdata§7]');
-        return player.runCommandAsync('playsound random.b
+        player.runCommandAsync('playsound random.break @s');
+        return;
+    }
+
+    const item = args[0];
+    const amount = parseInt(args[1]);
+    const data = args[2] || 0;
+
+    if (isNaN(amount) || amount < 1) {
+        player.sendMessage('§7[§b#§7] §cAmount must be a positive number');
+        player.runCommandAsync('playsound random.break @s');
+        return;
+    }
+
+    try {
+        const formattedItem = item.startsWith('minecraft:') ? item : `minecraft:${item}`;
+        player.runCommandAsync(`give @s ${formattedItem} ${amount} ${data}`);
+        player.sendMessage(`§7[§b#§7] §aGave §e${amount}x ${formattedItem} §awith data §e${data}`);
+        player.runCommandAsync('playsound random.levelup @s');
+
+        // Notification for Admins
+        world.getPlayers({ tags: ["notify"] }).forEach(admin => {
+            admin.sendMessage(`§7[§e#§7] §e${player.name} §agave themselves §e${amount}x ${formattedItem}`);
+            admin.runCommandAsync(`playsound note.pling @s`);
+        });
+    } catch (error) {
+        player.sendMessage(`§7[§b#§7] §cError giving item: ${error.message}`);
+        player.runCommandAsync('playsound random.break @s');
+    }
+});
