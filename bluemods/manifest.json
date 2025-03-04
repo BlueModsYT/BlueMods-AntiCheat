@@ -7,17 +7,17 @@
         "version": [
             5,
             7,
-            0
+            10
         ]
     },
     "header": {
-        "name": "§l§bBlueMods §gBeta-v5.7.0§r",
+        "name": "§l§bBlueMods §gBeta-v5.7.10§r",
         "description": "A command-based utility designed to enhance gameplay and provide basic prevention measures for realms and servers. Required to turn on §c(Beta-API + Education Edition)",
         "uuid": "00e25db5-cb82-47b4-927c-151d16cf2f0a",
         "version": [
             5,
             7,
-            0
+            10
         ],
         "min_engine_version": [ 
             1,
