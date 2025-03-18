@@ -1,7 +1,7 @@
 // all rights reserved @bluemods.lol - discord account. | Please report any bugs or glitches in our discord server https://dsc.gg/bluemods
 
 /*
- @author trokkk
+ @author bluemods, trokkk, mp09
  @link https://bluemods.neocities.org
  @description Prevent players from using illegal items 
 */
@@ -238,4 +238,72 @@ export const isLored = [
     "minecrart:structure_block",
     "minecrart:jigsaw",
     "minecraft:crafter"
+];
+
+export const isEnchant = [
+    "wooden_sword",
+    "stone_sword",
+    "iron_sword",
+    "golden_sword",
+    "diamond_sword",
+    "netherite_sword",
+    "wooden_pickaxe",
+    "stone_pickaxe",
+    "iron_pickaxe",
+    "golden_pickaxe",
+    "diamond_pickaxe",
+    "netherite_pickaxe",
+    "wooden_axe",
+    "stone_axe",
+    "iron_axe",
+    "golden_axe",
+    "diamond_axe",
+    "netherite_axe",
+    "wooden_shovel",
+    "stone_shovel",
+    "iron_shovel",
+    "golden_shovel",
+    "diamond_shovel",
+    "netherite_shovel",
+    "wooden_hoe",
+    "stone_hoe",
+    "iron_hoe",
+    "golden_hoe",
+    "diamond_hoe",
+    "netherite_hoe",
+    "shears",
+    "fishing_rod",
+    "flint_and_steel",
+    "carrot_on_a_stick",
+    "warped_fungus_on_a_stick",
+    "leather_helmet",
+    "chainmail_helmet",
+    "iron_helmet",
+    "golden_helmet",
+    "diamond_helmet",
+    "netherite_helmet",
+    "leather_chestplate",
+    "chainmail_chestplate",
+    "iron_chestplate",
+    "golden_chestplate",
+    "diamond_chestplate",
+    "netherite_chestplate",
+    "leather_leggings",
+    "chainmail_leggings",
+    "iron_leggings", 
+    "golden_leggings",
+    "diamond_leggings",
+    "netherite_leggings",
+    "leather_boots",
+    "chainmail_boots",
+    "iron_boots",
+    "golden_boots",
+    "diamond_boots",
+    "netherite_boots",
+    "elytra",
+    "bow",
+    "crossbow",
+    "shield",
+    "book",
+    "enchanted_book"
 ];
