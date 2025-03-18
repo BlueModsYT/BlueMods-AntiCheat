@@ -1,0 +1,2 @@
+// all rights reserve @bluemods.lol - discord account. || please report any bugs or glitches in our discord server https://dsc.gg/bluemods.  
+{"format_version":"1.21.60","minecraft:item":{"description":{"identifier":"bluemods:itemui","menu_category":{"category":"equipment"}},"components":{"minecraft:icon":"bluemods","minecraft:display_name":{"value":"§bBlueMods §7| §aMenu"},"minecraft:max_stack_size":1,"minecraft:allow_off_hand":true,"minecraft:glint":true}}}
