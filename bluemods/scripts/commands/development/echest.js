@@ -1,8 +1,8 @@
 import { system, world } from "@minecraft/server";
-import { Command } from "../CommandHandler.js";
+import { Command } from "../../systems/handler/CommandHandler.js";
 import main from "../config.js";
 
-// all rights reserved @bluemods.lol - discord account. || please report any bugs or glitches in our discord server https://dsc.gg/bluemods
+// all rights reserved @bluemods.lol - discord account. || Please report any bugs or glitches in our Discord server: https://dsc.gg/bluemods
 
 function isCommandEnabled(commandName) {
     return main.enabledCommands[commandName] !== undefined ? main.enabledCommands[commandName] : true;
@@ -22,7 +22,7 @@ const PLAYER_COOLDOWN_KEY = "echestCooldown";
 
 Command.register({
     name: "echest",
-    description: "",
+    description: "Gives an Ender Chest with a cooldown.",
     aliases: [],
 }, (data) => {
     const { player } = data;
@@ -40,6 +40,24 @@ Command.register({
         player.sendMessage(
             `§7[§b#§7] §cYou must wait §e${hours}h ${minutes}m §cto use the Ender Chest again.`
         );
+        player.runCommandAsync("playsound random.break @s");
+        return;
+    }
+
+    const inventory = player.getComponent("inventory")?.container;
+    if (!inventory) return;
+
+    let hasEChest = false;
+    for (let i = 0; i < inventory.size; i++) {
+        const item = inventory.getItem(i);
+        if (item && item.typeId === "minecraft:ender_chest") {
+            hasEChest = true;
+            break;
+        }
+    }
+
+    if (hasEChest) {
+        player.sendMessage("§7[§b#§7] §cYou already have an Ender Chest.");
         player.runCommandAsync("playsound random.break @s");
         return;
     }

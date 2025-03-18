@@ -1,34 +1,21 @@
 import { world, system } from "@minecraft/server";
-import { Command } from "../CommandHandler.js";
+import { Command } from "../../systems/handler/CommandHandler.js";
+import spawnManager from "../../systems/handler/SpawnHandler.js";
 import main from "../config.js";
 
-// all rights reserved @bluemods.lol - discord account. || please report any bugs or glitches in our discord server https://dsc.gg/bluemods
+// all rights reserved @bluemods.lol - discord account. || Please report any bugs or glitches in our Discord server: https://dsc.gg/bluemods
 
-let SPAWN_LOCATION = world.getDynamicProperty("spawnLocation") || null;
+const TELEPORT_COUNTDOWN = 5;
 const teleportingPlayers = new Map();
-
-function saveSpawnLocation(location) {
-    world.setDynamicProperty("spawnLocation", JSON.stringify(location));
-}
-
-function saveSpawnProtectionRadius(radius) {
-    world.setDynamicProperty("spawnProtectionRadius", radius);
-}
-
-function loadSpawnLocation() {
-    const locationData = world.getDynamicProperty("spawnLocation");
-    return locationData ? JSON.parse(locationData) : null;
-}
-
-SPAWN_LOCATION = loadSpawnLocation();
 
 Command.register({
     name: "spawn",
-    description: "Teleport to the spawn location",
+    description: "Teleport to the spawn location.",
     aliases: [],
 }, (data) => {
     const { player } = data;
     const { id } = player;
+    const SPAWN_LOCATION = spawnManager.getSpawnLocation();
 
     if (!SPAWN_LOCATION) {
         player.sendMessage('§7[§c-§7] §cSpawn location has not been set by an admin.');
@@ -41,32 +28,21 @@ Command.register({
         return;
     }
 
-    const initialPosition = player?.location ? { x: player.location.x, y: player.location.y, z: player.location.z } : null;
-    if (!initialPosition) {
-        player.sendMessage('§7[§c-§7] §cError: Unable to determine your position. Teleportation failed.');
-        return;
-    }
-
+    const initialPosition = { x: player.location.x, y: player.location.y, z: player.location.z };
     player.sendMessage('§7[§a/§7] §aTeleporting to spawn in §e5 seconds§a. Do not move!');
 
-    teleportingPlayers.set(id, { initialPosition, countdown: 5 });
+    teleportingPlayers.set(id, { initialPosition, countdown: TELEPORT_COUNTDOWN });
 
     const countdownInterval = system.runInterval(() => {
         const playerData = teleportingPlayers.get(id);
         if (!playerData || !player) {
             system.clearRun(countdownInterval);
+            teleportingPlayers.delete(id);
             return;
         }
 
         const { countdown, initialPosition } = playerData;
-        const currentPosition = player.location ? { x: player.location.x, y: player.location.y, z: player.location.z } : null;
-
-        if (!currentPosition) {
-            player.sendMessage('§7[§c-§7] §cError: Unable to determine your position. Teleportation failed.');
-            teleportingPlayers.delete(id);
-            system.clearRun(countdownInterval);
-            return;
-        }
+        const currentPosition = { x: player.location.x, y: player.location.y, z: player.location.z };
 
         if (
             currentPosition.x !== initialPosition.x ||
@@ -86,6 +62,9 @@ Command.register({
             player.sendMessage(`§7[§a/§7] §aTeleporting to spawn in §e${playerData.countdown} seconds§a...`);
             player.runCommandAsync('playsound random.orb @s');
         } else {
+            system.clearRun(countdownInterval);
+            teleportingPlayers.delete(id);
+
             player.runCommandAsync(`tp @s ${SPAWN_LOCATION.x} ${SPAWN_LOCATION.y} ${SPAWN_LOCATION.z}`)
                 .then(() => {
                     player.sendMessage('§7[§a/§7] §aYou have been teleported to spawn.');
@@ -100,36 +79,27 @@ Command.register({
                     player.sendMessage('§7[§c-§7] §cError: Teleportation failed. Please try again.');
                     console.error(`Teleport error: ${error.message}`);
                 });
-
-            teleportingPlayers.delete(id);
-            system.clearRun(countdownInterval);
         }
     }, 20);
 });
 
 Command.register({
     name: "setspawn",
-    description: "Set the spawn location",
+    description: "Set the spawn location.",
     aliases: [],
     permission: (player) => player.hasTag(main.adminTag),
 }, (data) => {
     const { player } = data;
 
-    if (SPAWN_LOCATION) {
-        player.sendMessage('§7[§c-§7] §cSpawn location is already set. Use §3!rspawn §cto remove it before setting a new one.');
-        player.runCommandAsync('playsound random.break @s');
-        return;
-    }
-
-    SPAWN_LOCATION = {
+    const location = {
         x: player.location.x,
         y: player.location.y,
         z: player.location.z
     };
 
-    saveSpawnLocation(SPAWN_LOCATION);
+    spawnManager.setSpawnLocation(location);
 
-    player.sendMessage(`§7[§a/§7] §aSpawn location set to your current position: §e${SPAWN_LOCATION.x} ${SPAWN_LOCATION.y} ${SPAWN_LOCATION.z}`);
+    player.sendMessage(`§7[§a/§7] §aSpawn location set to your current position: §e${location.x} ${location.y} ${location.z}`);
     player.runCommandAsync(`playsound random.levelup @s`);
     // Notification for Admins
     world.getPlayers({ tags: ["notify"] }).forEach(admin => {
@@ -140,20 +110,13 @@ Command.register({
 
 Command.register({
     name: "rspawn",
-    description: "Remove the spawn location",
+    description: "Remove the spawn location.",
     aliases: [],
     permission: (player) => player.hasTag(main.adminTag),
 }, (data) => {
     const { player } = data;
 
-    if (!SPAWN_LOCATION) {
-        player.sendMessage('§7[§c-§7] §cThere is no spawn location set to remove.');
-        return;
-    }
-
-    SPAWN_LOCATION = null;
-
-    world.setDynamicProperty("spawnLocation", null);
+    spawnManager.clearSpawnLocation();
 
     player.sendMessage('§7[§a/§7] §aThe spawn location has been removed.');
     player.runCommandAsync(`playsound random.break @s`);

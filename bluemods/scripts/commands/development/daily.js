@@ -1,5 +1,6 @@
 import { world, system } from '@minecraft/server';
-import { Command } from "../CommandHandler.js";
+import { Command } from "../../systems/handler/CommandHandler.js";
+import { getRemainingCooldownTime } from "../../systems/handler/ModuleHandler.js";
 import main from "../config.js";
 
 // all rights reserved @bluemods.lol - discord account. || Please report any bugs or glitches in our Discord server: https://dsc.gg/bluemods
@@ -17,42 +18,31 @@ const isAuthorized = (player, commandName) => {
     return true;
 };
 
-const COOLDOWN_TIME = 12 * 60 * 60 * 1000;
-const PLAYER_COOLDOWN_KEY = "dailyCooldown";
+const DAILY_REWARDS_KEY = "dailyRewards";
+const DAILY_COOLDOWN_KEY = "dailyCooldown";
+let dailyRewards = [];
 
-const playerCooldowns = new Map();
+system.run(() => {
+    const storedDailyRewards = world.getDynamicProperty(DAILY_REWARDS_KEY);
+    if (!storedDailyRewards) {
+        dailyRewards = main.daily;
+        world.setDynamicProperty(DAILY_REWARDS_KEY, JSON.stringify(dailyRewards));
+    } else {
+        dailyRewards = JSON.parse(storedDailyRewards);
+    }
+});
 
-Command.register({
-    name: "daily",
-    description: "",
-    aliases: [],
-}, (data) => {
-    const { player } = data;
-    if (!isAuthorized(player, "!daily")) return;
-    const playerKey = `${player.id}:${PLAYER_COOLDOWN_KEY}`;
-
-    const lastClaimTime = playerCooldowns.get(playerKey) || world.getDynamicProperty(playerKey);
+function claimDailyReward(player) {
+    const playerKey = `${player.id}:${DAILY_COOLDOWN_KEY}`;
     const currentTime = Date.now();
 
-    if (lastClaimTime && currentTime - lastClaimTime < COOLDOWN_TIME) {
-        const remainingTime = Math.ceil((COOLDOWN_TIME - (currentTime - lastClaimTime)) / 60000);
-        const hours = Math.floor(remainingTime / 60);
-        const minutes = remainingTime % 60;
-
-        player.sendMessage(
-            `§7[§b#§7] §cYou already claimed your daily reward! Try again in ${hours}h ${minutes}m.`
-        );
-        player.runCommandAsync("playsound random.break @s");
-        return;
-    }
-
-    const totalChance = main.daily.reduce((sum, reward) => sum + reward.chance, 0);
+    const totalChance = dailyRewards.reduce((sum, reward) => sum + reward.chance, 0);
     const randomValue = Math.random() * totalChance;
 
     let accumulatedChance = 0;
     let selectedReward;
 
-    for (const reward of main.daily) {
+    for (const reward of dailyRewards) {
         accumulatedChance += reward.chance;
         if (randomValue <= accumulatedChance) {
             selectedReward = reward;
@@ -72,6 +62,35 @@ Command.register({
     );
     player.runCommandAsync("playsound random.levelup @s");
 
-    playerCooldowns.set(playerKey, currentTime);
     world.setDynamicProperty(playerKey, currentTime);
+}
+
+Command.register({
+    name: "daily",
+    description: "",
+    aliases: [],
+}, (data) => {
+    const { player } = data;
+    if (!isAuthorized(player, "!daily")) return;
+
+    const remainingTime = getRemainingCooldownTime(player);
+    if (remainingTime > 0) {
+        const days = Math.floor(remainingTime / (24 * 60 * 60 * 1000));
+        const hours = Math.floor((remainingTime % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
+        const minutes = Math.floor((remainingTime % (60 * 60 * 1000)) / (60 * 1000));
+        const seconds = Math.floor((remainingTime % (60 * 1000)) / 1000);
+
+        let message = "§7[§b#§7] §cYou already claimed your daily reward! Try again in ";
+
+        if (days > 0) message += `${days}d `;
+        if (hours > 0) message += `${hours}h `;
+        if (minutes > 0) message += `${minutes}m `;
+        if (seconds > 0) message += `${seconds}s`;
+
+        player.sendMessage(message.trim());
+        player.runCommandAsync("playsound random.break @s");
+        return;
+    }
+
+    claimDailyReward(player);
 });

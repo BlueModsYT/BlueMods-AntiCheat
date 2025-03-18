@@ -1,4 +1,4 @@
-import { Command } from "../CommandHandler.js";
+import { Command } from "../../systems/handler/CommandHandler.js";
 import { world, system } from "@minecraft/server";
 import main from "../config.js";
 
@@ -10,12 +10,12 @@ function isCommandEnabled(commandName) {
     return main.enabledCommands[commandName] !== undefined ? main.enabledCommands[commandName] : true;
 }
 
-function saveEnabledCommands() {
+export function saveEnabledCommands() {
     const commandsString = JSON.stringify(main.enabledCommands);
     world.setDynamicProperty(enabledCommandsKey, commandsString);
 }
 
-function loadEnabledCommands() {
+export function loadEnabledCommands() {
     const savedCommandsString = world.getDynamicProperty(enabledCommandsKey);
     if (savedCommandsString) {
         try {
@@ -39,7 +39,7 @@ Command.register({
     const commandActions = ["enable", "disable", "list"];
 
     if (!action || !commandActions.includes(action)) {
-        player.sendMessage(`§7[§b#§7] §cInvalid action! §aUse this Method§7: §3!cmdtoggle ${main.enabledisable} <§acommand§7> / §3!cmdtoggle list`);
+        player.sendMessage(`§7[§b#§7] §cInvalid action! §aUse: §3!cmdtoggle enable|disable <command> / !cmdtoggle list`);
         player.runCommandAsync(`playsound random.break @s`);
         return;
     }

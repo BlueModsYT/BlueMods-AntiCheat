@@ -1,5 +1,5 @@
 import { world, system } from "@minecraft/server";
-import { Command } from "../CommandHandler.js";
+import { Command } from "../../systems/handler/CommandHandler.js";
 import main from "../config.js";
 
 // All rights reserved @bluemods.lol - discord account. || Please report any bugs or glitches in our Discord server https://dsc.gg/bluemods
@@ -39,7 +39,7 @@ function displayCategory(player, categories, page) {
 
 Command.register({
     name: "help",
-    description: "Shows the list of commands.",
+    description: "",
     aliases: ["?"]
 }, (data, args) => {
     const player = data.player;
