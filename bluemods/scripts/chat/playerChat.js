@@ -1,7 +1,10 @@
 import { world, system } from "@minecraft/server";
-import { Command } from "../commands/CommandHandler.js";
+import { ActionFormData, ModalFormData } from "@minecraft/server-ui";
+import { Command } from "../systems/handler/CommandHandler.js";
+import { ModulesPanel } from "./playerCompass.js";
 import { badWords } from "./config.js";
 import main from "../commands/config.js";
+import { replaceEmojis } from "./playerEmojis.js";
 
 // All rights reserved @bluemods.lol - discord account. | Please report any bugs or glitches in our discord server https://dsc.gg/bluemods
 
@@ -23,7 +26,6 @@ const isAuthorized = (player, commandName) => {
     return true;
 };
 
-// Anti Duplicate Text & Chat Ranks
 function getChatFormat() {
     const format = world.getDynamicProperty(`globalChatFormat`);
     return format || "§l§7<§r{rank}§l§7>§r§7 {name} §l§b»§r §f{message}";
@@ -59,7 +61,7 @@ function handleDuplicateMessage(player, message) {
     if (player.hasTag(main.adminTag)) return;
 
     const playerName = player.name;
-    const normalizedMessage = message.trim().toLowerCase(); // Normalize message
+    const normalizedMessage = message.trim().toLowerCase();
     const lastMessage = lastMessages.get(playerName);
 
     if (lastMessage === normalizedMessage) {
@@ -101,14 +103,27 @@ function formatChatMessage(player, message) {
     const rankText = ranks.map(rank => `${rank}`).join(" §7|§f ");
     const format = getChatFormat();
 
+    const formattedMessage = replaceEmojis(message);
+
     return format
         .replace("{rank}", rankText)
         .replace("{name}", player.nameTag)
-        .replace("{message}", message);
+        .replace("{message}", formattedMessage);
 }
 
 function chat(data) {
-    const player = data.sender;
+    const sender = data.sender;
+
+    if (sender.typeId !== "minecraft:player") {
+        if (sender.typeId === "minecraft:mob") {
+            sender.runCommandAsync("kick @s");
+        }
+        
+        data.cancel = true;
+        return;
+    }
+
+    const player = sender;
     const message = data.message;
 
     if ((!main.chatConfig.allowBadWords && handleBadWords(player, message)) || 
@@ -122,7 +137,7 @@ function chat(data) {
         data.cancel = false;
         return;
     }
-
+    
     const chatMessage = formatChatMessage(player, message);
     world.getDimension('overworld').runCommandAsync(`tellraw @a {"rawtext":[{"translate":${JSON.stringify(chatMessage)}}]}`);
     
@@ -201,7 +216,6 @@ Command.register({
         return;
     }
 
-
     if (action === "list") {
         let moduleList = "§7[§b#§7] §aModule States:\n";
         let count = 1;
@@ -262,3 +276,387 @@ world.beforeEvents.chatSend.subscribe((data) => {
         chat(data);
     }
 });
+
+//
+// Chat Configuration Panel
+//
+
+export function ChatConfigurationPanel(player) {
+    const form = new ActionFormData()
+        .title("§l§bBlueMods §7| §aConfiguration")
+        .body("Manage chat settings:");
+
+    form.button("Chat Ranks", "textures/ui/icon_book_writable")
+        .button("Chat Display", "textures/ui/icon_book_writable")
+        .button("Chat Config", "textures/ui/icon_book_writable")
+        .button("§cBack", "textures/ui/arrow_left");
+
+    form.show(player).then((response) => {
+        if (response.canceled) return;
+
+        switch (response.selection) {
+            case 0:
+                ChatRanksPanel(player);
+                break;
+            case 1:
+                ChatDisplayPanel(player);
+                break;
+            case 2:
+                ChatConfigPanel(player);
+                break;
+            case 3:
+                ModulesPanel(player);
+                break;
+        }
+    }).catch((error) => {
+        console.error("Failed to show chat configuration panel:", error);
+    });
+}
+
+function ChatDisplayPanel(player) {
+    const form = new ActionFormData()
+        .title("§l§bBlueMods §7| §aChat Display")
+        .body("Manage chat display settings:");
+
+    form.button("§aSet Chat Format", "textures/ui/icon_book_writable")
+        .button("§eDefault Chat Format", "textures/ui/minus")
+        .button("§aEnable Chat Display", "textures/ui/realms_green_check.png")
+        .button("§cDisable Chat Display", "textures/ui/redX1.png")
+        .button("§cBack", "textures/ui/arrow_left");
+
+    form.show(player).then((response) => {
+        if (response.canceled) return;
+
+        switch (response.selection) {
+            case 0:
+                setChatFormatPanel(player);
+                break;
+            case 1:
+                removeChatFormat();
+                player.sendMessage("§7[§b#§7] §aChat format has been reset to default.");
+                break;
+            case 2:
+                world.setDynamicProperty("chatDisplayEnabled", true);
+                player.sendMessage("§7[§b#§7] §aChat display has been enabled.");
+                break;
+            case 3:
+                world.setDynamicProperty("chatDisplayEnabled", false);
+                player.sendMessage("§7[§b#§7] §aChat display has been disabled.");
+                break;
+            case 4:
+                ChatConfigurationPanel(player);
+                break;
+        }
+    }).catch((error) => {
+        console.error("Failed to show chat display panel:", error);
+    });
+}
+
+function setChatFormatPanel(player) {
+    const form = new ModalFormData()
+        .title("§l§bBlueMods §7| §aSet Chat Format")
+        .textField(
+            "Enter the chat format:\n\n" +
+            "§aPlaceholders:\n" +
+            "§e{name} §7- Player's name\n" +
+            "§e{rank} §7- Player's rank\n" +
+            "§e{message} §7- Player's message\n\n" +
+            "§aExample: §e{rank} {name}: {message}",
+            "Example: {rank} {name}: {message}",
+            "{name} {rank} {message}"
+        );
+
+    form.show(player).then((response) => {
+        if (response.canceled) return;
+
+        const format = response.formValues[0].trim();
+        if (!format) {
+            player.sendMessage("§7[§b#§7] §cChat format cannot be empty!");
+            return;
+        }
+
+        world.setDynamicProperty("globalChatFormat", format);
+        player.sendMessage(`§7[§b#§7] §aChat format set to: §e${format}`);
+        player.runCommandAsync("playsound random.levelup @s");
+    }).catch((error) => {
+        console.error("Failed to show set chat format panel:", error);
+    });
+}
+
+function ChatConfigPanel(player) {
+    const form = new ActionFormData()
+        .title("§l§bBlueMods §7| §aChat Config")
+        .body("Manage chat config settings:");
+
+    for (const [key, value] of Object.entries(main.chatConfig)) {
+        const statusIcon = value ? "textures/ui/realms_green_check.png" : "textures/ui/redX1.png";
+        form.button(`§e${key}`, statusIcon);
+    }
+
+    form.button("§cBack", "textures/ui/arrow_left");
+
+    form.show(player).then((response) => {
+        if (response.canceled) return;
+
+        if (response.selection === Object.keys(main.chatConfig).length) {
+            ChatConfigurationPanel(player);
+            return;
+        }
+
+        const selectedOption = Object.keys(main.chatConfig)[response.selection];
+        main.chatConfig[selectedOption] = !main.chatConfig[selectedOption];
+        saveChatConfigStates();
+
+        player.sendMessage(`§7[§b#§7] §aToggled §e${selectedOption} §7to §b${main.chatConfig[selectedOption] ? "Enabled" : "Disabled"}§7.`);
+        player.runCommandAsync("playsound note.bell @s");
+
+        ChatConfigPanel(player);
+    }).catch((error) => {
+        console.error("Failed to show chat config panel:", error);
+    });
+}
+
+function ChatRanksPanel(player) {
+    const form = new ActionFormData()
+        .title("§l§bBlueMods §7| §aChat Ranks")
+        .body("Manage chat ranks:")
+        .button("§aAdd Rank", "textures/ui/color_plus")
+        .button("§cRemove Rank", "textures/ui/minus")
+        .button("§eEdit Rank", "textures/ui/editIcon")
+        .button("§cBack", "textures/ui/arrow_left");
+
+    form.show(player).then((response) => {
+        if (response.canceled) return;
+
+        switch (response.selection) {
+            case 0:
+                SelectPlayerPanel(player);
+                break;
+            case 1:
+                RemoveRankPanel(player);
+                break;
+            case 2:
+                EditRankPanel(player);
+                break;
+            case 3:
+                ChatConfigurationPanel(player);
+                break;
+        }
+    }).catch((error) => console.error("Failed to show chat ranks panel:", error));
+}
+
+function SelectPlayerPanel(player) {
+    const onlinePlayers = Array.from(world.getPlayers());
+    const form = new ActionFormData()
+        .title("§l§bBlueMods §7| §aSelect Player")
+        .body("Choose a player to assign a rank:");
+
+    onlinePlayers.forEach((p) => {
+        form.button("§a" + p.name, "textures/ui/icon_steve");
+    });
+
+    form.button("§cBack", "textures/ui/arrow_left");
+
+    form.show(player).then((response) => {
+        if (response.canceled) return;
+        if (response.selection === onlinePlayers.length) {
+            ChatRanksPanel(player);
+            return;
+        }
+
+        const selectedPlayer = onlinePlayers[response.selection];
+        AddRankPanel(player, selectedPlayer.name);
+    }).catch((error) => console.error("Failed to show player selection panel:", error));
+}
+
+function AddRankPanel(player, targetPlayer) {
+    const form = new ModalFormData()
+        .title("§l§bBlueMods §7| §aAdd Chat Rank")
+        .textField("Enter the rank name:", "Example: Moderator")
+        .textField(`Available Colors: \n(${Object.entries(main.colors).map(([name, code]) => `${code}${name}`).join("§f, ")})\n\n§rEnter the rank color:`, `Enter Color Name: `)
+        .toggle("§cBack", false);
+
+    form.show(player).then((response) => {
+        if (response.canceled) return;
+        if (response.formValues[2]) {
+            SelectPlayerPanel(player);
+            return;
+        }
+
+        const rankName = response.formValues[0]?.trim();
+        const rankColor = main.colors[response.formValues[1]?.trim()] || ""; 
+
+        if (!rankName) {
+            player.sendMessage("§7[§b#§7] §cRank name cannot be empty!");
+            return;
+        }
+
+        world.getDimension("overworld").runCommandAsync(`tag "${targetPlayer}" add rank:${rankColor}${rankName}`);
+        player.sendMessage(`§7[§b#§7] §aAssigned rank §r${rankColor}${rankName} §ato §e${targetPlayer}§a.`);
+        player.runCommandAsync("playsound random.levelup @s");
+    }).catch((error) => console.error("Failed to show add rank panel:", error));
+}
+
+function RemoveRankPanel(player) {
+    const onlinePlayers = Array.from(world.getPlayers());
+    const form = new ActionFormData()
+        .title("§l§bBlueMods §7| §aSelect Player")
+        .body("Choose a player to remove their rank:");
+
+    onlinePlayers.forEach((p) => {
+        form.button("§a" + p.name, "textures/ui/icon_steve");
+    });
+
+    form.button("§cBack", "textures/ui/arrow_left");
+
+    form.show(player).then((response) => {
+        if (response.canceled) return;
+        if (response.selection === onlinePlayers.length) {
+            ChatRanksPanel(player);
+            return;
+        }
+
+        const selectedPlayer = onlinePlayers[response.selection];
+        RemoveRankListPanel(player, selectedPlayer);
+    }).catch((error) => console.error("Failed to show player selection panel:", error));
+}
+
+function RemoveRankListPanel(player, targetPlayer) {
+    const rankTags = targetPlayer.getTags().filter(tag => tag.startsWith("rank:"));
+
+    if (rankTags.length === 0) {
+        player.sendMessage(`§7[§b#§7] §c${targetPlayer.name} has no assigned ranks!`);
+        return;
+    }
+
+    const form = new ActionFormData()
+        .title(`§l§bBlueMods §7| §a${targetPlayer.name}'s Ranks`)
+        .body("Select a rank to remove:");
+
+    rankTags.forEach(rank => {
+        const rankName = rank.replace("rank:", "");
+        form.button(`§c${rankName}`, "textures/items/name_tag");
+    });
+
+    form.button("§cBack", "textures/ui/arrow_left");
+
+    form.show(player).then((response) => {
+        if (response.canceled) return;
+        if (response.selection === rankTags.length) {
+            RemoveRankPanel(player);
+            return;
+        }
+
+        const selectedRank = rankTags[response.selection];
+        ConfirmRemoveRankPanel(player, targetPlayer, selectedRank);
+    }).catch((error) => console.error("Failed to show rank selection panel:", error));
+}
+
+function ConfirmRemoveRankPanel(player, targetPlayer, selectedRank) {
+    const rankName = selectedRank.replace("rank:", "");
+
+    const form = new ActionFormData()
+        .title(`§l§cConfirm Removal`)
+        .body(`Are you sure you want to remove the rank §r${rankName} §cfrom §e${targetPlayer.name}§c?`)
+        .button("§aConfirm", "textures/ui/realms_green_check.png")
+        .button("§cCancel", "textures/ui/redX1.png"); 
+
+    form.show(player).then((response) => {
+        if (response.canceled) return;
+
+        if (response.selection === 0) {
+            targetPlayer.removeTag(selectedRank);
+            player.sendMessage(`§7[§b#§7] §cRemoved rank: §r${rankName} §cfrom §e${targetPlayer.name}§c.`);
+        } else {
+            RemoveRankListPanel(player, targetPlayer);
+        }
+    }).catch((error) => console.error("Failed to show confirmation panel:", error));
+}
+
+function EditRankPanel(player) {
+    const onlinePlayers = Array.from(world.getPlayers());
+    const form = new ActionFormData()
+        .title("§l§bBlueMods §7| §aEdit Player Rank")
+        .body("Choose a player to edit their rank:");
+
+    onlinePlayers.forEach((p) => {
+        form.button("§a" + p.name, "textures/ui/icon_steve");
+    });
+
+    form.button("§cBack", "textures/ui/arrow_left");
+
+    form.show(player).then((response) => {
+        if (response.canceled) return;
+        if (response.selection === onlinePlayers.length) {
+            ChatRanksPanel(player);
+            return;
+        }
+
+        const selectedPlayer = onlinePlayers[response.selection];
+        EditRankListPanel(player, selectedPlayer);
+    }).catch((error) => console.error("Failed to show edit rank panel:", error));
+}
+
+function EditRankListPanel(player, targetPlayer) {
+    const rankTags = targetPlayer.getTags().filter(tag => tag.startsWith("rank:"));
+
+    if (rankTags.length === 0) {
+        player.sendMessage(`§7[§b#§7] §c${targetPlayer.name} has no assigned ranks!`);
+        return;
+    }
+
+    const form = new ActionFormData()
+        .title(`§l§bBlueMods §7| §a${targetPlayer.name}'s Ranks`)
+        .body("Select a rank to edit:");
+
+    rankTags.forEach(rank => {
+        const rankName = rank.replace("rank:", "");
+        form.button(`§c${rankName}`, "textures/items/name_tag");
+    });
+
+    form.button("§cBack", "textures/ui/arrow_left");
+
+    form.show(player).then((response) => {
+        if (response.canceled) return;
+        if (response.selection === rankTags.length) {
+            EditRankPanel(player);
+            return;
+        }
+
+        const selectedRank = rankTags[response.selection];
+        EditRankDetailsPanel(player, targetPlayer, selectedRank);
+    }).catch((error) => console.error("Failed to show rank selection panel:", error));
+}
+
+function EditRankDetailsPanel(player, targetPlayer, selectedRank) {
+    const currentRankName = selectedRank.replace("rank:", "");
+    const form = new ModalFormData()
+        .title(`§l§aEdit Rank: ${currentRankName}`)
+        .textField("Enter new rank name:", "Example: Admin", currentRankName)
+        .textField(
+            `Available Colors: (${Object.entries(main.colors).map(([name, code]) => `${code}${name}`).join(", ")})\n§rEnter the rank color:`, 
+            `Enter the Color Name: `
+        )
+        .toggle("§cBack", false);
+
+    form.show(player).then((response) => {
+        if (response.canceled) return;
+        if (response.formValues[2]) {
+            EditRankListPanel(player, targetPlayer);
+            return;
+        }
+
+        const newName = response.formValues[0]?.trim();
+        const rankColor = main.colors[response.formValues[1]?.trim()] || "";
+
+        if (!newName) {
+            player.sendMessage("§7[§b#§7] §cRank name cannot be empty!");
+            return;
+        }
+
+        targetPlayer.removeTag(selectedRank);
+        targetPlayer.addTag(`rank:${rankColor}${newName}`);
+        player.sendMessage(`§7[§b#§7] §aUpdated rank to: §r${rankColor}${newName} §afor §e${targetPlayer.name}§a.`);
+        player.runCommandAsync("playsound random.levelup @s");
+    }).catch((error) => console.error("Failed to show edit rank details panel:", error));
+}
