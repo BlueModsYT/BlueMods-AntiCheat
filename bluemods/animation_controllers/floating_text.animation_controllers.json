@@ -1,0 +1,2 @@
+// all rights reserve @bluemods.lol - discord account. || please report any bugs or glitches in our discord server https://dsc.gg/bluemods.  
+{"format_version":"1.10.0","animation_controllers":{"controller.animation.commands":{"states":{"default":{"transitions":[{"command":"query.is_alive"}]},"command":{"on_entry":["/execute @s ~ ~ ~ /tp @s ~ ~ ~"],"transitions":[{"default":"query.is_alive"}]}}}}}
