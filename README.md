@@ -1,5 +1,5 @@
 <p align="center"><img src="https://bluemods.neocities.org/p/ic_blue.png" alt="BlueMods" width="150" height="150"></p>
-<h1 align="center">BlueMods</h1>
+<h1 align="center">BlueMods AntiCheat</h1>
 <p align="center">https://bluemods.neocities.org</p>
 <p align="center">BlueMods AntiCheat for Minecraft Bedrock is a powerful tool designed to protect your server from hackers & cheaters.</p>
 <p align="center">
