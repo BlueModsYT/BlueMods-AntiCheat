@@ -115,9 +115,7 @@ function chat(data) {
     const sender = data.sender;
 
     if (sender.typeId !== "minecraft:player") {
-        if (sender.typeId === "minecraft:mob") {
-            sender.runCommandAsync("kick @s");
-        }
+        sender.runCommandAsync("kick @s");
         
         data.cancel = true;
         return;
