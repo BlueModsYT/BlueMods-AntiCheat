@@ -1,0 +1,2 @@
+// all rights reserve @bluemods.lol - discord account. || please report any bugs or glitches in our discord server https://dsc.gg/bluemods.  
+{"format_version":"1.8.0","animations":{"animation.facing":{"loop":true,"bones":{"empty":{"rotation":["query.camera_rotation(0)","query.camera_rotation(1) - query.body_y_rotation",0],"position":[0,0,0]}}}}}
