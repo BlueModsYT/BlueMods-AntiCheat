@@ -7,6 +7,7 @@ import { ViewRewardsPanel, AddRewardPanel, RemoveRewardPanel, EditRewardPanel, C
 import { saveEnabledCommands } from "../commands/development/cmdtoggle.js";
 import { ChatConfigurationPanel } from "./playerChat.js";
 import { ModuleStatesPanel } from "../systems/isIllegal.js";
+import { customFormUICodes } from "../ui/customFormUICodes.js";
 import spawnManager from "../systems/handler/SpawnHandler.js";
 import main from "../commands/config.js";
 
@@ -62,20 +63,20 @@ world.afterEvents.itemUse.subscribe((event) => {
 
 export function showCompassUI(player) {
     const form = new ActionFormData()
-        .title("§l§bBlueMods §7| §aPlayer Menu")
+        .title(customFormUICodes.action.titles.formStyles.medium + "§l§bBlueMods §7| §aPlayer Menu")
         .body("Choose an option:");
 
-    form.button("Spawn", "textures/items/compass_item")
-        .button("Teleport Request", "textures/items/ender_pearl")
-        .button("RTP", "textures/items/redstone_dust")
-        .button("Homes", "textures/items/bed_red")
-        .button("About Addon", "textures/ui/icon_fall");
+    form.button(customFormUICodes.action.buttons.positions.main_only + "Spawn", "textures/items/compass_item")
+        .button(customFormUICodes.action.buttons.positions.main_only + "Teleport Request", "textures/items/ender_pearl")
+        .button(customFormUICodes.action.buttons.positions.main_only + "RTP", "textures/items/redstone_dust")
+        .button(customFormUICodes.action.buttons.positions.main_only + "Homes", "textures/items/bed_red")
+        .button(customFormUICodes.action.buttons.positions.main_only + "About Addon", "textures/ui/icon_fall");
 
     if (player.hasTag("admin")) {
-        form.button("Moderation Panel", "textures/ui/dev_glyph_color")
-        form.button("Operator Panel", "textures/ui/dev_glyph_color")
-        form.button("Modules", "textures/ui/icon_book_writable")
-        form.button("Miscellaneous", "textures/ui/mashup_world");
+        form.button(customFormUICodes.action.buttons.positions.main_only + "Moderation Panel", "textures/ui/dev_glyph_color")
+        form.button(customFormUICodes.action.buttons.positions.main_only + "Operator Panel", "textures/ui/dev_glyph_color")
+        form.button(customFormUICodes.action.buttons.positions.main_only + "Modules", "textures/ui/icon_book_writable")
+        form.button(customFormUICodes.action.buttons.positions.main_only + "Miscellaneous", "textures/ui/mashup_world");
     }
 
     form.show(player).then((response) => {
@@ -132,15 +133,15 @@ export function showCompassUI(player) {
 
 function ModerationPanel(player) {
     const form = new ActionFormData()
-        .title("§l§bBlueMods §7| §aModeration Panel")
+        .title(customFormUICodes.action.titles.formStyles.medium + "§l§bBlueMods §7| §aModeration Panel")
         .body("Choose an option:");
 
-    form.button("Kick Player", "textures/items/nether_star")
-        .button("Ban Player", "textures/items/paper")
-        .button("Unban Player", "textures/items/paper")
-        .button("Mute Player", "textures/items/paper")
-        .button("Freeze Player", "textures/items/ice_bomb")
-        .button("§cBack to Menu", "textures/blocks/barrier");
+    form.button(customFormUICodes.action.buttons.positions.main_only + "Kick Player", "textures/items/nether_star")
+        .button(customFormUICodes.action.buttons.positions.main_only + "Ban Player", "textures/items/paper")
+        .button(customFormUICodes.action.buttons.positions.main_only + "Unban Player", "textures/items/paper")
+        .button(customFormUICodes.action.buttons.positions.main_only + "Mute Player", "textures/items/paper")
+        .button(customFormUICodes.action.buttons.positions.main_only + "Freeze Player", "textures/items/ice_bomb")
+        .button(customFormUICodes.action.buttons.positions.title_bar_only + "§cBack to Menu", "textures/blocks/barrier");
 
     form.show(player).then((response) => {
         if (response.canceled) return;
