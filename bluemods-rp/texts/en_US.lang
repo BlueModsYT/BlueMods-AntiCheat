@@ -1,0 +1,66 @@
+entity.bluemods:floating_text.name=§bBlueMods §7| §aFloating text
+item.spawn_egg.entity.bluemods:floating_text.name=§bBlueMods §7| §aFloating text
+
+command.rtp.description=Teleport to a random location.
+command.help.description=Shows the list of commands.
+command.ping.description=Shows the world's TPS and ping.
+command.about.description=Shows the developer of the addon.
+command.echest.description=Get an ender chest.
+command.daily.description=Receive a random item.
+
+command.spawn.description=Teleport back to the spawn point.
+command.rspawn.description=Remove the current spawn point.
+command.setspawn.description=Set a new spawn point.
+
+command.home.description=Teleport to your home.
+command.homeset.description=Create or delete a home.
+command.homelist.description=List all your saved homes.
+
+command.tpasend.description=Request a teleport to another player.
+command.tpaccept.description=Accept a teleport request.
+command.tpadecline.description=Decline a teleport request.
+command.tpacancel.description=Cancel your sent request.
+command.tpablock.description=Block a player from sending requests.
+command.tpaunblock.description=Unblock a player.
+
+command.gma.description=Change gamemode to adventure.
+command.gmc.description=Change gamemode to creative.
+command.gms.description=Change gamemode to survival.
+command.gmsp.description=Change gamemode to spectator.
+command.vanish.description=Make yourself invisible.
+
+command.kick.description=Kick a player from the server.
+command.banadd.description=Add or remove a Ban from the player.
+command.banremove.description=Remove a ban from the player.
+command.banlist.description=List of banned player.
+command.cmdsf.description=Toggle command block logs.
+command.mute.description=Mute a player.
+command.mutelist.description=List of muted player.
+command.freeze.description=Freeze a player.
+command.freezelist.description=List of freezed player.
+command.lagclear.description=Clear lagging entities.
+command.give.description=Give yourself an item.
+command.troll.description=Troll another player.
+command.welcome.description=Set welcome messages.
+command.banitem.description=Ban an item from being used.
+command.banitemlist.description=List of banned item.
+command.clearchat.description=Clear your chat.
+command.ecwipe.description=Wipe a player's ender chest.
+command.invsee.description=View another player's inventory (text).
+command.invwipe.description=Wipe a player's inventory.
+command.cmdtoggle.description=Toggle Command
+command.cmdtogglelist.description=List of toggle commands.
+command.pearl.description=Change ender pearl cooldown.
+command.chatdisplay.description=Change the chat display style.
+command.chatdisplayset.description=Set a new chatdisplay
+command.rank.description=Add or remove a rank from a player.
+command.chatconfig.description=set the value of an integer chat configuration option.
+command.chatconfigset.description=enable or disable a boolean chat configuration option.
+command.chatconfiglist.description=see the list of available chat configuration options.
+
+command.op.description=Add or remove operator status to a player.
+command.oplist.description=List of operator player.
+command.notify.description=Notify when a player is flagged.
+command.notifylist.description=List of notified player.
+command.trusted.description=Add or remove trusted status to a player.
+command.trustedlist.description=List of trusted player.
