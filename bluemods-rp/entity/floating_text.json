@@ -1,0 +1,2 @@
+// all rights reserve @bluemods.lol - discord account. || please report any bugs or glitches in our discord server https://dsc.gg/bluemods.  
+{"format_version":"1.10.0","minecraft:client_entity":{"description":{"identifier":"bluemods:floating_text","materials":{"default":"entity_alphablend"},"geometry":{"default":"geometry.floating_text"},"scripts":{"animate":["facing"]},"animations":{"facing":"animation.facing"},"spawn_egg":{"texture":"floating_text","texture_index":0}}}}
