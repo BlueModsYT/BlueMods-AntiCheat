@@ -1,0 +1,66 @@
+entity.bluemods:floating_text.name=§bBlueMods §7| §aFloating text
+item.spawn_egg.entity.bluemods:floating_text.name=§bBlueMods §7| §aFloating text
+
+command.rtp.description=Teleportar para um local aleatório.
+command.help.description=Mostra a lista de comandos.
+command.ping.description=Mostra o TPS e o ping do mundo.
+command.about.description=Mostra o desenvolvedor do addon.
+command.echest.description=Obter um baú do ender.
+command.daily.description=Receber um item aleatório.
+
+command.spawn.description=Teleportar de volta para o ponto de spawn.
+command.rspawn.description=Remover o ponto de spawn atual.
+command.setspawn.description=Definir um novo ponto de spawn.
+
+command.home.description=Teleportar para sua casa.
+command.homeset.description=Criar ou excluir uma casa.
+command.homelist.description=Listar todas as suas casas salvas.
+
+command.tpasend.description=Solicitar um teleporte para outro jogador.
+command.tpaccept.description=Aceitar uma solicitação de teleporte.
+command.tpadecline.description=Recusar uma solicitação de teleporte.
+command.tpacancel.description=Cancelar sua solicitação enviada.
+command.tpablock.description=Bloquear um jogador de enviar solicitações.
+command.tpaunblock.description=Desbloquear um jogador.
+
+command.gma.description=Alterar o modo de jogo para aventura.
+command.gmc.description=Alterar o modo de jogo para criativo.
+command.gms.description=Alterar o modo de jogo para sobrevivência.
+command.gmsp.description=Alterar o modo de jogo para espectador.
+command.vanish.description=Tornar-se invisível.
+
+command.kick.description=Expulsar um jogador do servidor.
+command.banadd.description=Adicionar ou remover um banimento de um jogador.
+command.banremove.description=Remover um banimento de um jogador.
+command.banlist.description=Lista de jogadores banidos.
+command.cmdsf.description=Alternar logs de blocos de comando.
+command.mute.description=Silenciar um jogador.
+command.mutelist.description=Lista de jogadores silenciados.
+command.freeze.description=Congelar um jogador.
+command.freezelist.description=Lista de jogadores congelados.
+command.lagclear.description=Limpar entidades que causam lag.
+command.give.description=Dar um item a si mesmo.
+command.troll.description=Trollar outro jogador.
+command.welcome.description=Definir mensagens de boas-vindas.
+command.banitem.description=Banir um item de ser usado.
+command.banitemlist.description=Lista de itens banidos.
+command.clearchat.description=Limpar o chat.
+command.ecwipe.description=Limpar o baú do ender de um jogador.
+command.invsee.description=Ver o inventário de outro jogador (texto).
+command.invwipe.description=Limpar o inventário de um jogador.
+command.cmdtoggle.description=Alternar comando.
+command.cmdtogglelist.description=Lista de comandos alternáveis.
+command.pearl.description=Alterar o tempo de recarga da pérola do ender.
+command.chatdisplay.description=Alterar o estilo de exibição do chat.
+command.chatdisplayset.description=Definir um novo estilo de exibição do chat.
+command.rank.description=Adicionar ou remover um rank de um jogador.
+command.chatconfig.description=Definir o valor de uma opção de configuração de chat inteira.
+command.chatconfigset.description=Ativar ou desativar uma opção de configuração de chat booleana.
+command.chatconfiglist.description=Ver a lista de opções de configuração de chat disponíveis.
+
+command.op.description=Adicionar ou remover o status de operador de um jogador.
+command.oplist.description=Lista de jogadores operadores.
+command.notify.description=Notificar quando um jogador for sinalizado.
+command.notifylist.description=Lista de jogadores notificados.
+command.trusted.description=Adicionar ou remover o status de confiança de um jogador.
+command.trustedlist.description=Lista de jogadores confiáveis.
