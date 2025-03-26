@@ -45,8 +45,10 @@ ${main.bmdescription}
 §7> §aAddon Version§7: ${main.bmversion}
 ${debug_sticks_format_version !== null ? "§7> §aConnected Version of 8Crafter's Debug Sticks Add-On§7: " + debug_sticks_format_version : ""}
 
-§aDevelopers:
-${main.developer}`)
+${main.developer}
+
+§aDevelopers§7:
+§a${main.bluemods.join("§7, §a")}`)
     // Notification for Admins:
     world.getPlayers({ tags: ["notify"] }).forEach(admin => {
         admin.sendMessage(`§7[§e#§7] §e${player.name} §ais using §3!about`);

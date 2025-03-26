@@ -365,6 +365,7 @@ function AboutForm(player) {
         .body(
             `§l§bBlueMods §fAnti§cCheat§r\n` +
             `§7- Version: ${main.bmversion}\n` +
+            (debug_sticks_format_version !== null ? `§7- Connected Version of 8Crafter's Debug Sticks Add-On: §g${debug_sticks_format_version}\n` : "") +
             `§7- Developers: §a${devs}\n` +
             `§7- Description: ${main.bmdescription}\n\n` +
             `§eClick the button below to copy the Discord link!`

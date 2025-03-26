@@ -5,7 +5,7 @@ export const main = {
     adminTag: "admin",
     trustTag: "trusted",
     notifyTag: "notify",
-    developer: "§b@bluemods.lol §7| §3https://dsc.gg/bluemods\n§b@trokkk.lol\n§b@mp09\n§b@8Crafter",
+    developer: "§b@bluemods.lol §7| §3https://dsc.gg/bluemods",
     bmversion: "§gBeta-v5.7.20",
     mcversion: "§g1.21.70",
     bmdescription: "§3BlueMods AntiCheat for Minecraft Bedrock is a powerful tool designed to protect your server from hackers & cheaters.",
