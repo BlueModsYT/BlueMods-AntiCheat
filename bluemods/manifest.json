@@ -6,29 +6,29 @@
         "url": "https://bluemods.neocities.org",
         "version": [
             5,
-            7,
-            15
+            8,
+            0
         ]
     },
     "header": {
-        "name": "§l§bBlueMods §gBeta-v5.7.15§r",
-        "description": "A command-based utility designed to enhance gameplay and provide basic prevention measures for realms and servers. Required to turn on §c(Beta-API + Education Edition)",
-        "uuid": "00e25db5-cb82-47b4-927c-151d16cf2f0a",
+        "name": "§l§bBlueMods §aBehavior §gBeta-v5.8.0§r",
+        "description": "BlueMods AntiCheat for Minecraft Bedrock is a powerful tool designed to protect your server from hackers & cheaters. Required to turn on §c(Beta-API + Education Edition)",
+        "uuid": "6568a874-bfd7-4ccb-a63f-dba79cf935cb",
         "version": [
             5,
-            7,
-            15
+            8,
+            0
         ],
         "min_engine_version": [ 
             1,
             21,
-            60
+            70
         ]
     },
     "modules": [
         {
             "type": "data",
-            "uuid": "bfec96d5-9104-4cf4-b09a-f661df9769e3",
+            "uuid": "9f0e4ac8-01e8-4ac5-b6d3-aa1f6893bdc7",
             "version": [
                 2,
                 2,
@@ -50,12 +50,16 @@
     ],
     "dependencies": [
         {
+            "uuid": "75ae9127-8b1b-4b38-a62b-a672538b4778",
+            "version": [ 5, 8, 0 ]
+        },
+        {
             "module_name": "@minecraft/server",
-            "version": "1.18.0-beta"
+            "version": "2.0.0-beta"
         },
         {
             "module_name": "@minecraft/server-ui",
-            "version": "1.4.0-beta"
+            "version": "2.0.0-beta"
         }
     ]
 }
