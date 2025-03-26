@@ -36,15 +36,16 @@ Command.register({
     const player = data.player
     if (!isAuthorized(player, "!about")) return;
     
-    data.system.run(() => player.runCommand(`playsound note.bell @s`))
+    system.run(() => data.player.runCommand(`playsound note.bell @s`))
     data.player.sendMessage(`
     §l§bBlueMods §cAnti§fCheat §r
 ${main.bmdescription}
 
-§7> §aMC Supported: ${main.mcversion}
+§7> §aMC Supported§7: ${main.mcversion}
 §7> §aAddon Version§7: ${main.bmversion}
 ${debug_sticks_format_version !== null ? "§7> §aConnected Version of 8Crafter's Debug Sticks Add-On§7: " + debug_sticks_format_version : ""}
 
+§aDevelopers:
 ${main.developer}`)
     // Notification for Admins:
     world.getPlayers({ tags: ["notify"] }).forEach(admin => {
