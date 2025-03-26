@@ -24,7 +24,7 @@ function isCommandEnabled(commandName) {
 const isAuthorized = (player, commandName) => {  
     if (!isCommandEnabled(commandName)) {  
         ErrorPanel(player, `§cThis command §e${commandName} §cis currently disabled.\n\n\n\n\n\n\n\n\n`);  
-        player.runCommandAsync(`playsound random.break @s`);  
+        system.run(() => player.runCommand(`playsound random.break @s`));  
         return false;  
     }  
     return true;  
@@ -258,7 +258,7 @@ function handleRTP(player) {
             currentPosition.z !== initialPosition.z
         ) {
             player.sendMessage('§7[§c-§7] §cTeleportation canceled because you moved.');
-            player.runCommandAsync('playsound random.break @s');
+            system.run(() => player.runCommand('playsound random.break @s'));
             teleportingPlayers.delete(id);
             system.clearRun(countdownInterval);
             return;
@@ -268,15 +268,15 @@ function handleRTP(player) {
 
         if (playerData.countdown > 0) {
             player.sendMessage(`§7[§a/§7] §aRandom teleporting in §e${playerData.countdown} seconds§a...`);
-            player.runCommandAsync('playsound random.orb @s');
+            system.run(() => player.runCommand('playsound random.orb @s'));
         } else {
             system.clearRun(countdownInterval);
-            player.runCommandAsync(`/effect @s resistance 25 255 true`);
+            system.run(() => player.runCommand(`/effect @s resistance 25 255 true`));
 
-            player.runCommandAsync(`/spreadplayers ~ ~ 500 1000 @s`)
+            system.run(() => player.runCommand(`/spreadplayers ~ ~ 500 1000 @s`))
                 .then(() => {
                     player.sendMessage('§7[§a/§7] §aYou have been randomly teleported.');
-                    player.runCommandAsync('playsound random.levelup @s');
+                    system.run(() => player.runCommand('playsound random.levelup @s'));
                 })
                 .catch((error) => {
                     player.sendMessage('§7[§c-§7] §cError: Unable to teleport. Please try again.');
@@ -294,7 +294,7 @@ function handleSpawn(player) {
 
     if (!SPAWN_LOCATION) {
         player.sendMessage('§7[§c-§7] §cSpawn location has not been set by an admin.');
-        player.runCommandAsync('playsound random.break @s');
+        system.run(() => player.runCommand('playsound random.break @s'));
         return;
     }
 
@@ -324,7 +324,7 @@ function handleSpawn(player) {
             currentPosition.z !== initialPosition.z
         ) {
             player.sendMessage('§7[§c-§7] §cTeleportation to spawn canceled because you moved.');
-            player.runCommandAsync('playsound random.break @s');
+            system.run(() => player.runCommand('playsound random.break @s'));
             teleportingPlayers.delete(id);
             system.clearRun(countdownInterval);
             return;
@@ -334,16 +334,16 @@ function handleSpawn(player) {
 
         if (playerData.countdown > 0) {
             player.sendMessage(`§7[§a/§7] §aTeleporting to spawn in §e${playerData.countdown} seconds§a...`);
-            player.runCommandAsync('playsound random.orb @s');
+            system.run(() => player.runCommand('playsound random.orb @s'));
         } else {
-            player.runCommandAsync(`tp @s ${SPAWN_LOCATION.x} ${SPAWN_LOCATION.y} ${SPAWN_LOCATION.z}`)
+            system.run(() => player.runCommand(`tp @s ${SPAWN_LOCATION.x} ${SPAWN_LOCATION.y} ${SPAWN_LOCATION.z}`))
                 .then(() => {
                     player.sendMessage('§7[§a/§7] §aYou have been teleported to spawn.');
-                    player.runCommandAsync('playsound random.levelup @s');
+                    system.run(() => player.runCommand('playsound random.levelup @s'));
                     // Notification for Admins
                     world.getPlayers({ tags: ["notify"] }).forEach(admin => {
                         admin.sendMessage(`§7[§e#§7] §e${player.name} §ais using §3!spawn `);
-                        admin.runCommandAsync(`playsound note.pling @s`);
+                        system.run(() => admin.runCommand(`playsound note.pling @s`));
                     });
                 })
                 .catch(error => {
@@ -413,13 +413,13 @@ function showKickPlayerForm(player) {
 
         if (targetPlayer.id === player.id) {
             player.sendMessage("§7[§b#§7] §cYou cannot kick yourself.");
-            player.runCommandAsync('playsound random.break @s');
+            system.run(() => player.runCommand('playsound random.break @s'));
             return;
         }
 
-        targetPlayer.runCommandAsync(`kick "${targetPlayer.name}" "§bBlueMods §7>> You have been kicked.\n§eReason: §c${reason}"`);
+        system.run(() => targetPlayer.runCommand(`kick "${targetPlayer.name}" "§bBlueMods §7>> You have been kicked.\n§eReason: §c${reason}"`));
         player.sendMessage(`§7[§b#§7] §e${targetPlayer.name} §ahas been kicked.`);
-        player.runCommandAsync('playsound random.levelup @s');
+        system.run(() => player.runCommand('playsound random.levelup @s'));
     }).catch((error) => {
         console.error("Failed to show kick player form:", error);
     });
@@ -448,7 +448,7 @@ function showBanPlayerForm(player) {
 
         if (targetPlayer.id === player.id) {
             player.sendMessage("§7[§b#§7] §cYou cannot ban yourself.");
-            player.runCommandAsync('playsound random.break @s');
+            system.run(() => player.runCommand('playsound random.break @s'));
             return;
         }
 
@@ -465,7 +465,7 @@ function showUnbanPlayerForm(player) {
 
     if (bannedPlayerNames.length === 0) {
         player.sendMessage("§7[§b#§7] §cNo players are currently banned.");
-        player.runCommandAsync('playsound random.break @s');
+        system.run(() => player.runCommand('playsound random.break @s'));
         return;
     }
 
@@ -509,7 +509,7 @@ function showMutePlayerForm(player) {
 
         if (targetPlayer.id === player.id) {
             player.sendMessage("§7[§b#§7] §cYou cannot mute yourself.");
-            player.runCommandAsync('playsound random.break @s');
+            system.run(() => player.runCommand('playsound random.break @s'));
             return;
         }
 
@@ -547,7 +547,7 @@ function showFreezePlayerForm(player) {
 
         if (targetPlayer.id === player.id) {
             player.sendMessage("§7[§b#§7] §cYou cannot freeze yourself.");
-            player.runCommandAsync('playsound random.break @s');
+            system.run(() => player.runCommand('playsound random.break @s'));
             return;
         }
 
@@ -892,7 +892,7 @@ function CommandsPanel(player) {
         saveEnabledCommands();
 
         player.sendMessage(`§7[§b#§7] §aToggled §e${selectedCommand} §7to §b${main.enabledCommands[selectedCommand] ? "Enabled" : "Disabled"}§7.`);
-        player.runCommandAsync("playsound note.bell @s");
+        system.run(() => player.runCommand("playsound note.bell @s"));
 
         CommandsPanel(player);
     }).catch((error) => {
@@ -1028,7 +1028,7 @@ function CreateFloatText(player) {
         const coords = parseCoordinates(player, response.formValues[1]);
 
         const [x, y, z] = coords;
-        player.runCommandAsync(`summon bluemods:floating_text ${x} ${y} ${z} ~~ minecraft:become_neutral "${text}"`);
+        system.run(() => player.runCommand(`summon bluemods:floating_text ${x} ${y} ${z} ~~ minecraft:become_neutral "${text}"`));
         player.sendMessage(`§aFloating text created: §e"${text}"§a at (§b${x}, ${y}, ${z}§a)`);
     }).catch((error) => {
         console.error("Error in FloatingPanel:", error);
@@ -1342,7 +1342,7 @@ function ReportUserPanel(player) {
         } else {
             admins.forEach(admin => {
                 admin.sendMessage(reportMessage);
-                admin.runCommandAsync("playsound random.orb @s");
+                system.run(() => admin.runCommand("playsound random.orb @s"));
             });
         }
 

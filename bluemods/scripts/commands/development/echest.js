@@ -11,7 +11,7 @@ function isCommandEnabled(commandName) {
 const isAuthorized = (player, commandName) => {
     if (!isCommandEnabled(commandName)) {
         player.sendMessage(`§7[§b#§7] §cThis command §e${commandName} §cis currently disabled.`);
-        player.runCommandAsync(`playsound random.break @s`);
+        system.run(() => player.runCommand(`playsound random.break @s`));
         return false;
     }
     return true;
@@ -40,7 +40,7 @@ Command.register({
         player.sendMessage(
             `§7[§b#§7] §cYou must wait §e${hours}h ${minutes}m §cto use the Ender Chest again.`
         );
-        player.runCommandAsync("playsound random.break @s");
+        system.run(() => player.runCommand("playsound random.break @s"));
         return;
     }
 
@@ -58,14 +58,14 @@ Command.register({
 
     if (hasEChest) {
         player.sendMessage("§7[§b#§7] §cYou already have an Ender Chest.");
-        player.runCommandAsync("playsound random.break @s");
+        system.run(() => player.runCommand("playsound random.break @s"));
         return;
     }
 
-    player.runCommandAsync("give @s ender_chest 1")
+    system.run(() => player.runCommand("give @s ender_chest 1"))
         .then(() => {
             player.sendMessage("§7[§a/§7] §aYou have received an Ender Chest!");
-            player.runCommandAsync("playsound random.levelup @s");
+            system.run(() => player.runCommand("playsound random.levelup @s"));
 
             world.setDynamicProperty(playerKey, currentTime);
         })

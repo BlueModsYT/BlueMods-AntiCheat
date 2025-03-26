@@ -12,7 +12,7 @@ function isCommandEnabled(commandName) {
 const isAuthorized = (player, commandName) => {
     if (!isCommandEnabled(commandName)) {
         player.sendMessage(`§7[§b#§7] §cThis command §e${commandName} §cis currently disabled.`);
-        player.runCommandAsync(`playsound random.break @s`);
+        system.run(() => player.runCommand(`playsound random.break @s`));
         return false;
     }
     return true;
@@ -34,14 +34,14 @@ Command.register({
 
     if (!["add", "list", "remove"].includes(action)) {
         player.sendMessage(`§7[§b#§7] §cInvalid action! §aUse this method§7: §3!ban §aadd §7[§aduration§7] ${main.player} <§areason§7> §7/ §3!ban §cremove ${main.player} §7/ §3!ban §alist`);
-        player.runCommandAsync('playsound random.break @s');
+        system.run(() => player.runCommand('playsound random.break @s'));
         return;
     }
 
     if (action === "add") {
         if (!targetName) {
             player.sendMessage(`§7[§b#§7] §cPlease specified a player to ban`);
-            player.runCommandAsync('playsound random.break @s');
+            system.run(() => player.runCommand('playsound random.break @s'));
             return;
         }
     
@@ -59,13 +59,13 @@ Command.register({
 
         world.getPlayers({ tags: ["notify"] }).forEach(admin => {
             admin.sendMessage(`§7[§e#§7] §e${player.name} §ahas banned §e${targetName} §aReason§7: §e${reason}`);
-            admin.runCommandAsync(`playsound note.pling @s`);
+            system.run(() => admin.runCommand(`playsound note.pling @s`));
         });
     } 
     else if (action === "list") {
         if (bannedPlayers.length === 0) {
             player.sendMessage('§7[§b#§7] §cNo players are currently banned.');
-            player.runCommandAsync('playsound random.break @s');
+            system.run(() => player.runCommand('playsound random.break @s'));
         } else {
             const banList = bannedPlayers.map(p => {
                 let expirationText = p.expiration ? `Until ${new Date(p.expiration).toLocaleString()}` : "Permanent";
@@ -110,13 +110,13 @@ Command.register({
 
     if (!["add", "remove", "list"].includes(action)) {
         player.sendMessage('§7[§b#§7] §cInvalid action! §aUse this Method§7: §3!banitem §aadd §7<§aitem§7> / §3!banitem §cremove §7<§aitem§7> / §3!banitem §alist.');
-        return player.runCommandAsync('playsound random.break @s');
+        return system.run(() => player.runCommand('playsound random.break @s'));
     }
 
     if (action === "add") {
         if (!itemName) {
             player.sendMessage('§7[§b#§7] §cPlease specify an item to ban.');
-            player.runCommandAsync('playsound random.break @s');
+            system.run(() => player.runCommand('playsound random.break @s'));
             return;
         }
 
@@ -124,7 +124,7 @@ Command.register({
 
         if (bannedItems.includes(formattedItemName)) {
             player.sendMessage(`§7[§b#§7] §cThe item §e${formattedItemName}§c is already banned.`);
-            player.runCommandAsync('playsound random.bell @s');
+            system.run(() => player.runCommand('playsound random.bell @s'));
             return;
         }
         
@@ -132,12 +132,12 @@ Command.register({
         saveBannedItems();
         
         player.sendMessage(`§7[§b#§7] §e${formattedItemName} §ahas been added to the banned items list.`);
-        player.runCommandAsync('playsound note.bell @s');
+        system.run(() => player.runCommand('playsound note.bell @s'));
 
     } else if (action === "remove") {
         if (!itemName) {
             player.sendMessage('§7[§b#§7] §cPlease specify an item to remove from the ban list.');
-            player.runCommandAsync('playsound random.break @s');
+            system.run(() => player.runCommand('playsound random.break @s'));
             return;
         }
 
@@ -145,7 +145,7 @@ Command.register({
         const index = bannedItems.indexOf(formattedItemName);
         if (index === -1) {
             player.sendMessage(`§7[§b#§7] §cThe item §e${formattedItemName}§c is not banned.`);
-            player.runCommandAsync('playsound random.break @s');
+            system.run(() => player.runCommand('playsound random.break @s'));
             return;
         }
 
@@ -153,7 +153,7 @@ Command.register({
         saveBannedItems();
 
         player.sendMessage(`§7[§b#§7] §e${formattedItemName} §ahas been removed from the banned items list.`);
-        player.runCommandAsync('playsound note.bell @s');
+        system.run(() => player.runCommand('playsound note.bell @s'));
 
     } else if (action === "list") {
         if (bannedItems.length === 0) {
@@ -162,7 +162,7 @@ Command.register({
             const itemList = bannedItems.map(item => `§e${item}`).join(", ");
             player.sendMessage(`§7[§b#§7] §aBanned items: §e${itemList}`);
         }
-        player.runCommandAsync('playsound note.bell @s');
+        system.run(() => player.runCommand('playsound note.bell @s'));
     }
 });
 
@@ -171,9 +171,9 @@ world.afterEvents.itemUse.subscribe((event) => {
 
     // if (player.hasTag(main.adminTag)) return;
     if (bannedItems.includes(itemStack.typeId)) {
-        player.runCommandAsync('clear @s ' + itemStack.typeId);
+        system.run(() => player.runCommand('clear @s ' + itemStack.typeId));
         player.sendMessage(`§7[§b#§7] §cThe item §e${itemStack.typeId} §chas been banned and removed from your inventory.`);
-        player.runCommandAsync('playsound random.break @s');
+        system.run(() => player.runCommand('playsound random.break @s'));
     }
 });
 
@@ -186,7 +186,7 @@ system.runInterval(() => {
             if (item && bannedItems.includes(item.typeId)) {
                 inventory.setItem(i, null);
                 player.sendMessage(`§7[§b#§7] §cThe item §e${item.typeId}§c is banned and has been removed.`);
-                player.runCommandAsync('playsound random.break @s');
+                system.run(() => player.runCommand('playsound random.break @s'));
             }
         }
     }
@@ -203,7 +203,7 @@ Command.register({
     
     
     player.sendMessage(`\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n`);
-    player.runCommandAsync(`playsound note.bell @s`);
+    system.run(() => player.runCommand(`playsound note.bell @s`));
 });
 
 Command.register({
@@ -218,28 +218,28 @@ Command.register({
     const enable = "enable", disable = "disable";
     
     if (disable.includes(args[0])) { 
-        player.runCommandAsync(`playsound note.bell @s`);
-        player.runCommandAsync('gamerule commandblockoutput false');
-        player.runCommandAsync('gamerule sendcommandfeedback false');
+        system.run(() => player.runCommand(`playsound note.bell @s`));
+        system.run(() => player.runCommand('gamerule commandblockoutput false'));
+        system.run(() => player.runCommand('gamerule sendcommandfeedback false'));
         player.sendMessage(`§7[§b#§7] §aSuccesfully §cdisabled §aCommand Logs`);
         // Notification for Admins
         world.getPlayers({ tags: ["notify"] }).forEach(admin => {
             admin.sendMessage(`§7[§e#§7] §e${player.name} §ais using §3!cmdsf disable`);
-            admin.runCommandAsync(`playsound note.pling @s`);
+            system.run(() => admin.runCommand(`playsound note.pling @s`));
         });
     } else if (enable.includes(args[0])) {
-        player.runCommandAsync(`playsound note.bell @s`);
-        player.runCommandAsync('gamerule commandblockoutput true');
-        player.runCommandAsync('gamerule sendcommandfeedback true');
+        system.run(() => player.runCommand(`playsound note.bell @s`));
+        system.run(() => player.runCommand('gamerule commandblockoutput true'));
+        system.run(() => player.runCommand('gamerule sendcommandfeedback true'));
         player.sendMessage(`§7[§b#§7] §aSuccesfully §3enabled §aCommand Logs`);
         // Notification for Admins
         world.getPlayers({ tags: ["notify"] }).forEach(admin => {
             admin.sendMessage(`§7[§e#§7] §e${player.name} §ais using §3!cmdsf enable`);
-            admin.runCommandAsync(`playsound note.pling @s`);
+            system.run(() => admin.runCommand(`playsound note.pling @s`));
         });
     } else {
         player.sendMessage(`§7[§b#§7] §cInvalid action! §aUse this Method§7: §3!cmdsf ${main.enabledisable}`);
-        player.runCommandAsync(`playsound random.break @s`);
+        system.run(() => player.runCommand(`playsound random.break @s`));
     }
 }); 
 
@@ -254,7 +254,7 @@ Command.register({
     
     if (!args[0]) {
         player.sendMessage(`§7[§b#§7] §aTry to mention a player to remove there ender_chest. §3!ecwipe ${main.playerl}`);
-        return player.runCommandAsync('playsound random.break @s');
+        return system.run(() => player.runCommand('playsound random.break @s'));
     }
 
     let targetPlayer;
@@ -266,26 +266,26 @@ Command.register({
 
     if (!targetPlayer) {
         player.sendMessage('§7[§b#§7] §aPlayer name must be someone currently on the server');
-        return player.runCommandAsync('playsound random.break @s');
+        return system.run(() => player.runCommand('playsound random.break @s'));
     }
 
     if (targetPlayer === player) {
          player.sendMessage('§7[§b#§7] §cYou cannot clear your own ender_chest.');
-         return player.runCommandAsync('playsound random.break @s');
+         return system.run(() => player.runCommand('playsound random.break @s'));
     }
      if (targetPlayer.hasTag(main.adminTag)) {
          player.sendMessage('§7[§b#§7] §cYou can\'t clear a staff member ender_chest.');
-         return player.runCommandAsync('playsound random.break @s');
+         return system.run(() => player.runCommand('playsound random.break @s'));
     }
 
     try {
-        player.runCommandAsync(`playsound note.bell @s`)
+        system.run(() => player.runCommand(`playsound note.bell @s`))
         player.sendMessage(`§7[§b#§7] §aSuccessfully §cremove ender_chest items on §e${targetPlayer.name}.`);
-        for (let i = 0; i < 27; i++) player.runCommandAsync(`replaceitem entity "${targetPlayer.name}" slot.enderchest ${i} air`);
+        for (let i = 0; i < 27; i++) system.run(() => player.runCommand(`replaceitem entity "${targetPlayer.name}" slot.enderchest ${i} air`));
         // Notification for Admins
         world.getPlayers({ tags: ["notify"] }).forEach(admin => {
             admin.sendMessage(`§7[§e#§7] §e${player.name} §ais using §3!ecwipe to ${targetPlayer.name}`);
-            admin.runCommandAsync(`playsound note.pling @s`);
+            system.run(() => admin.runCommand(`playsound note.pling @s`));
         });
     } catch (error) {
         player.sendMessage(`§7[§b#§7] §aError adding notify tag: ${error.message}`);
@@ -313,13 +313,13 @@ Command.register({
 
     if (!["add", "remove"].includes(action)) {
         player.sendMessage(`§7[§b#§7] §cInvalid action! §aUse this Method§7: §3!freeze §aadd ${main.player} §7/ §3!freeze §cremove ${main.player} §7/ §3!freeze §alist`);
-        player.runCommandAsync('playsound random.break @s');
+        system.run(() => player.runCommand('playsound random.break @s'));
         return;
     }
 
     if (!targetPlayer) {
         player.sendMessage('§7[§b#§7] §aPlayer not found! Please specify a valid player name.');
-        player.runCommandAsync('playsound random.break @s');
+        system.run(() => player.runCommand('playsound random.break @s'));
         return;
     }
 
@@ -332,35 +332,35 @@ Command.register({
             
             if (!targetPlayer.hasTag("freezed")) {
                 await system.run(() => targetPlayer.addTag("freezed"));
-                player.runCommandAsync(`playsound note.bell @s`);
-                player.runCommandAsync(`inputpermission set "${targetPlayer.name}" camera disabled`);
-                player.runCommandAsync(`inputpermission set "${targetPlayer.name}" movement disabled`);
+                system.run(() => player.runCommand(`playsound note.bell @s`));
+                system.run(() => player.runCommand(`inputpermission set "${targetPlayer.name}" camera disabled`));
+                system.run(() => player.runCommand(`inputpermission set "${targetPlayer.name}" movement disabled`));
                 player.sendMessage(`§7[§b#§7] §aSuccessfully §3added §amute status to §e${targetPlayer.name}`);
                 
                 // Notification for Admins
                 world.getPlayers({ tags: ["notify"] }).forEach(admin => {
                     admin.sendMessage(`§7[§e#§7] §e${player.name} §ais using §3!freeze add §ato §e${targetPlayer.name}`);
-                    admin.runCommandAsync(`playsound note.pling @s`);
+                    system.run(() => admin.runCommand(`playsound note.pling @s`));
                 });
             } else {
-                player.runCommandAsync('playsound random.break @s');
+                system.run(() => player.runCommand('playsound random.break @s'));
                 player.sendMessage(`§7[§b#§7] §c${targetPlayer.name} this player is already freezed`);
             }
         } else if (action === "remove") {
             if (targetPlayer.hasTag("freezed")) {
                 await system.run(() => targetPlayer.removeTag("freezed"));
-                player.runCommandAsync(`playsound note.bell @s`);
-                player.runCommandAsync(`inputpermission set "${targetPlayer.name}" camera disabled`);
-                player.runCommandAsync(`inputpermission set "${targetPlayer.name}" movement disabled`);
+                system.run(() => player.runCommand(`playsound note.bell @s`));
+                system.run(() => player.runCommand(`inputpermission set "${targetPlayer.name}" camera disabled`));
+                system.run(() => player.runCommand(`inputpermission set "${targetPlayer.name}" movement disabled`));
                 player.sendMessage(`§7[§b#§7] §aSuccessfully §cremoved §amute status from §e${targetPlayer.name}`);
                 
                 // Notification for Admins
                 world.getPlayers({ tags: ["notify"] }).forEach(admin => {
                     admin.sendMessage(`§7[§e#§7] §e${player.name} §ais using §3!freeze remove §ato §e${targetPlayer.name}`);
-                    admin.runCommandAsync(`playsound note.pling @s`);
+                    system.run(() => admin.runCommand(`playsound note.pling @s`));
                 });
             } else {
-                player.runCommandAsync('playsound random.break @s');
+                system.run(() => player.runCommand('playsound random.break @s'));
                 player.sendMessage(`§7[§b#§7] §c${targetPlayer.name} this player is not freezed.`);
             }
         }
@@ -381,7 +381,7 @@ Command.register({
 
   if (args.length < 2) {
         player.sendMessage('§7[§b#§7] §cInvalid action! §aUse this Method§7: §3!give §7<§aitem§7> §7<§aamount§7> §7[§gdata§7]');
-        return player.runCommandAsync('playsound random.break @s');
+        return system.run(() => player.runCommand('playsound random.break @s'));
   }
 
   const [item, amount, ...dataArgs] = args;
@@ -392,7 +392,7 @@ Command.register({
     return player.sendMessage('§7[§b#§7] §cAmount must be a valid number greater than 0.');
   }
 
-  player.runCommandAsync(`give @s ${item} ${parsedAmount} ${dataValue}`)
+  system.run(() => player.runCommand(`give @s ${item} ${parsedAmount} ${dataValue}`))
     .then(() => {
       player.sendMessage(`§7[§b#§7] §aSuccessfully gave yourself §e${parsedAmount} ${item}§a(s).`);
     })
@@ -413,7 +413,7 @@ Command.register({
 
     if (args.length < 1) {
         player.sendMessage(`§7[§b#§7] §cInvalid action! §aUse this Method§7: §3!invsee ${main.player}`);
-        player.runCommandAsync('playsound random.break @s');
+        system.run(() => player.runCommand('playsound random.break @s'));
         return;
     }
 
@@ -436,16 +436,16 @@ Command.register({
             // Notification for Admins
             world.getPlayers({ tags: ["notify"] }).forEach(admin => {
                 admin.sendMessage(`§7[§e#§7] §e${player.name} §ais using §3!invsee §ato §e${targetPlayer.name}`);
-                admin.runCommandAsync(`playsound note.pling @s`);
+                system.run(() => admin.runCommand(`playsound note.pling @s`));
             });
         } else {
             player.sendMessage(`§7[§b#§7] §cLooks like this user §e${targetPlayerName} §chas an empty inventory.`);
-            player.runCommandAsync('playsound random.break @s');
+            system.run(() => player.runCommand('playsound random.break @s'));
             return;
         }
     } else {
         player.sendMessage(`§7[§b#§7] §aPlayer name must be someone currently on the server`);
-        player.runCommandAsync('playsound random.break @s');
+        system.run(() => player.runCommand('playsound random.break @s'));
         return;
     }
 });
@@ -462,24 +462,24 @@ Command.register({
 
     if (args.length < 1) {
         player.sendMessage(`§7[§b#§7] §cInvalid action! §aUse this Method§7: §3!invwipe ${main.player}`);
-        return player.runCommandAsync('playsound random.break @s');
+        return system.run(() => player.runCommand('playsound random.break @s'));
     }
 
     const targetPlayerName = args[0];
     const targetPlayer = world.getPlayers().find(p => p.name === targetPlayerName);
 
     if (targetPlayer) {
-        player.runCommandAsync(`clear ${targetPlayerName}`);
-        player.runCommandAsync(`playsound level.up @s`);
+        system.run(() => player.runCommand(`clear ${targetPlayerName}`));
+        system.run(() => player.runCommand(`playsound level.up @s`));
         player.sendMessage(`§7[§b#§7] §aSuccessfully Cleared §e${targetPlayerName}§a's inventory.`);
         // Notification for Admins
         world.getPlayers({ tags: ["notify"] }).forEach(admin => {
             admin.sendMessage(`§7[§e#§7] §e${player.name} §ais using §3!invsee §ato §e${targetPlayer.name}`);
-            admin.runCommandAsync(`playsound note.pling @s`);
+            system.run(() => admin.runCommand(`playsound note.pling @s`));
         });
     } else {
         player.sendMessage(`§7[§b#§7] §aPlayer name must be someone currently on the server`);
-        player.runCommandAsync(`playsound random.break @s`);
+        system.run(() => player.runCommand(`playsound random.break @s`));
     }
 });
 
@@ -495,7 +495,7 @@ Command.register({
 
     if (args.length < 2) {
         player.sendMessage('§7[§b#§7] §aUse this method to kick the user§7: §3!kick §a<player> <reason>');
-        return player.runCommandAsync('playsound random.break @s');
+        return system.run(() => player.runCommand('playsound random.break @s'));
     }
 
     const targetPlayerName = args[0];
@@ -510,26 +510,26 @@ Command.register({
     
     if (!targetPlayer) {
         player.sendMessage('§7[§b#§7] §aPlayer name must be someone currently on the server');
-        return player.runCommandAsync('playsound random.break @s');
+        return system.run(() => player.runCommand('playsound random.break @s'));
     }
     
     if (targetPlayer === player) {
         player.sendMessage('§7[§b#§7] §cYou cannot kick yourself.');
-        return player.runCommandAsync('playsound random.break @s');
+        return system.run(() => player.runCommand('playsound random.break @s'));
     }
     if (targetPlayer.hasTag(main.adminTag)) {
         player.sendMessage('§7[§b#§7] §cYou can\'t kick a staff member.');
-        return player.runCommandAsync('playsound random.break @s');
+        return system.run(() => player.runCommand('playsound random.break @s'));
     }
     
     try {
-        player.runCommandAsync(`playsound note.bell @s`);
+        system.run(() => player.runCommand(`playsound note.bell @s`));
         player.sendMessage(`§7[§b#§7] §aSuccessfully kicked out §e${targetPlayer.name} §afrom the server for§7: §g${reason}`);
-        player.runCommandAsync(`kick "${targetPlayer.name}" "\n§bBlueMods §7>> §aYou have been kicked from the server\n§eModerator§7: §g${player.name}\n§eReason§7: §g${reason}"`);
+        system.run(() => player.runCommand(`kick "${targetPlayer.name}" "\n§bBlueMods §7>> §aYou have been kicked from the server\n§eModerator§7: §g${player.name}\n§eReason§7: §g${reason}"`));
         // Notification for Admins
         world.getPlayers({ tags: ["notify"] }).forEach(admin => {
             admin.sendMessage(`§7[§e#§7] §e${player.name} §ais using §3!kick §ato §e${targetPlayer.name} §aReason§7: §e${reason}`);
-            admin.runCommandAsync(`playsound note.pling @s`);
+            system.run(() => admin.runCommand(`playsound note.pling @s`));
         });
     } catch (error) {
         player.sendMessage(`§7[§b#§7] §aError executing kick: ${error.message}`);
@@ -549,23 +549,23 @@ Command.register({
     
     if (!["default", "mobs", "all"].includes(action)) {
         player.sendMessage('§7[§b#§7] §cInvalid action! §aUse this Method§7: §3!lagclear §adefault §7/ §3!lagclear §amobs §7/ §3!lagclear §aall');
-        player.runCommandAsync('playsound random.break @s');
+        system.run(() => player.runCommand('playsound random.break @s'));
         return;
     }
     
     if (action === "default") {
-        player.runCommandAsync(`kill @e[type=item]`);
-        player.runCommandAsync(`kill @e[type=arrow]`);
-        player.runCommandAsync(`kill @e[type=xp_orb]`);
-        player.runCommandAsync(`playsound note.bell @s`);
+        system.run(() => player.runCommand(`kill @e[type=item]`));
+        system.run(() => player.runCommand(`kill @e[type=arrow]`));
+        system.run(() => player.runCommand(`kill @e[type=xp_orb]`));
+        system.run(() => player.runCommand(`playsound note.bell @s`));
         player.sendMessage(`§7[§b#§7] §aSuccesfully use Default§7: §aItem Entities, XP Orbs, Arrows.`);
     } else if (action === "mobs") {
-        player.runCommandAsync(`kill @e[type=!player, type=!armor_stand]`);
-        player.runCommandAsync(`playsound note.bell @s`);
+        system.run(() => player.runCommand(`kill @e[type=!player, type=!armor_stand]`));
+        system.run(() => player.runCommand(`playsound note.bell @s`));
         player.sendMessage(`§7[§b#§7] §aSuccessfully use Mobs§7: §aMob Entities.`);
     } else if (action === "all") {
-        player.runCommandAsync(`kill @e[type=!player]`);
-        player.runCommandAsync(`playsound note.bell @s`);
+        system.run(() => player.runCommand(`kill @e[type=!player]`));
+        system.run(() => player.runCommand(`playsound note.bell @s`));
         player.sendMessage(`§7[§b#§7] §aSuccessfully use All§7: §aAll Mob Entities.`);
     }
 }); 
@@ -649,13 +649,13 @@ Command.register({
 
     if (!["add", "remove"].includes(action)) {
         player.sendMessage(`§7[§b#§7] §cInvalid action! §aUse this Method§7: §3!notify §aadd ${main.player} §7/ §3!notify §cremove ${main.player} §7/ §3!notify §alist`);
-        player.runCommandAsync('playsound random.break @s');
+        system.run(() => player.runCommand('playsound random.break @s'));
         return;
     }
 
     if (!targetPlayer) {
         player.sendMessage('§7[§b#§7] §aPlayer not found! Please specify a valid player name.');
-        player.runCommandAsync('playsound random.break @s');
+        system.run(() => player.runCommand('playsound random.break @s'));
         return;
     }
 
@@ -663,7 +663,7 @@ Command.register({
         if (action === "add") {
             if (!targetPlayer.hasTag("notify")) {
                 await system.run(() => targetPlayer.addTag("notify"));
-                player.runCommandAsync(`playsound note.bell @s`);
+                system.run(() => player.runCommand(`playsound note.bell @s`));
                 player.sendMessage(`§7[§b#§7] §aSuccessfully §3added §anotify status to §e${targetPlayer.name}`);
                 
             } else {
@@ -672,7 +672,7 @@ Command.register({
         } else if (action === "remove") {
             if (targetPlayer.hasTag("notify")) {
                 await system.run(() => targetPlayer.removeTag("notify"));
-                player.runCommandAsync(`playsound note.bell @s`);
+                system.run(() => player.runCommand(`playsound note.bell @s`));
                 player.sendMessage(`§7[§b#§7] §aSuccessfully §cremoved §anotify status from §e${targetPlayer.name}`);
                 
             } else {
@@ -705,13 +705,13 @@ Command.register({
 
     if (!["add", "remove"].includes(action)) {
         player.sendMessage(`§7[§b#§7] §cInvalid action! §aUse this Method§7: §3!op §aadd ${main.player} §7/ §3!op §cremove ${main.player} §7/ §3!op §alist`);
-        player.runCommandAsync('playsound random.break @s');
+        system.run(() => player.runCommand('playsound random.break @s'));
         return;
     }
 
     if (!targetPlayer) {
         player.sendMessage('§7[§b#§7] §aPlayer not found! Please specify a valid player name.');
-        player.runCommandAsync('playsound random.break @s');
+        system.run(() => player.runCommand('playsound random.break @s'));
         return;
     }
 
@@ -719,7 +719,7 @@ Command.register({
         if (action === "add") {
             if (!targetPlayer.hasTag("admin")) {
                 await system.run(() => targetPlayer.addTag("admin"));
-                player.runCommandAsync(`playsound note.bell @s`);
+                system.run(() => player.runCommand(`playsound note.bell @s`));
                 player.sendMessage(`§7[§b#§7] §aSuccessfully §3added §aadmin status to §e${targetPlayer.name}`);
                 
             } else {
@@ -728,7 +728,7 @@ Command.register({
         } else if (action === "remove") {
             if (targetPlayer.hasTag("admin")) {
                 await system.run(() => targetPlayer.removeTag("admin"));
-                player.runCommandAsync(`playsound note.bell @s`);
+                system.run(() => player.runCommand(`playsound note.bell @s`));
                 player.sendMessage(`§7[§b#§7] §aSuccessfully §cremoved §aadmin status from §e${targetPlayer.name}`);
                 
             } else {
@@ -753,7 +753,7 @@ system.runInterval(() => {
 
         if (cooldownEndTick && currentTick >= cooldownEndTick) {
             player.sendMessage("§7[§b#§7] §aYou can now use Ender Pearls again!");
-            player.runCommandAsync(`playsound note.bell @s`);
+            system.run(() => player.runCommand(`playsound note.bell @s`));
             playerCooldowns.delete(playerName);
         }
     }
@@ -775,7 +775,7 @@ world.beforeEvents.itemUse.subscribe((event) => {
                 const remainingSeconds = Math.ceil(remainingTicks / 20);
 
                 player.sendMessage(`§7[§b#§7] §cYou are on cooldown for using Ender Pearls! Please wait §e${remainingSeconds} §cseconds.`);
-                player.runCommandAsync(`playsound random.break @s`);
+                system.run(() => player.runCommand(`playsound random.break @s`));
                 
                 event.cancel = true;
                 return;
@@ -802,23 +802,23 @@ Command.register({
 
     if (!["set", "remove"].includes(action)) {
         player.sendMessage('§7[§b#§7] §cInvalid action! Use: §3!pearl §eset §7<§aseconds§7> §7/ §3!pearl §cremove');
-        return player.runCommandAsync('playsound random.break @s');
+        return system.run(() => player.runCommand('playsound random.break @s'));
     }
 
     if (action === "set") {
         if (isNaN(duration) || duration < MIN_COOLDOWN_SECONDS) {
             player.sendMessage(`§7[§b#§7] §cInvalid duration! It must be at least §e${MIN_COOLDOWN_SECONDS} §cseconds.`);
-            return player.runCommandAsync('playsound random.break @s');
+            return system.run(() => player.runCommand('playsound random.break @s'));
         }
 
         defaultCooldownSeconds = duration;
         player.sendMessage(`§7[§b#§7] §aEnder Pearl cooldown set to §e${duration} §aseconds.`);
-        player.runCommandAsync('playsound random.levelup @s');
+        system.run(() => player.runCommand('playsound random.levelup @s'));
 
     } else if (action === "remove") {
         defaultCooldownSeconds = 10;  // Reset to default 10s
         player.sendMessage(`§7[§b#§7] §aEnder Pearl cooldown reset to default §e${defaultCooldownSeconds} §aseconds.`);
-        player.runCommandAsync('playsound random.levelup @s');
+        system.run(() => player.runCommand('playsound random.levelup @s'));
     }
 });
 
@@ -833,7 +833,7 @@ Command.register({
 
     if (args.length < 3 || args.length > 4) {
         player.sendMessage(`§7[§b#§7] §cInvalid action! §aUse this Method§7: §3!rank ${main.addremove} §7<§arank§7> §7[§gcolor(optional)§7] ${main.player}`);
-        return player.runCommandAsync(`playsound random.break @s`);
+        return system.run(() => player.runCommand(`playsound random.break @s`));
     }
 
     const action = args[0].toLowerCase();
@@ -846,7 +846,7 @@ Command.register({
             rankColor = main.colors[colorName];
         } else {
             player.sendMessage(`§7[§b#§7] §cInvalid color! §aAvailable colors§7: §0black §7| §1dark_blue §7| §2dark_green §7| §3dark_aqua §7| §4dark_red §7| §5dark_purple §7| §6gold §7| §7gray §7| §8dark_gray §7| §9blue §7| §agreen §7| §baqua §7| §cred §7| §dlight_purple §7| §eyellow §7| §fwhite`); ///////////////
-            return player.runCommandAsync(`playsound random.break @s`);
+            return system.run(() => player.runCommand(`playsound random.break @s`));
         }
     }
 
@@ -855,7 +855,7 @@ Command.register({
 
     if (!targetPlayer) {
         player.sendMessage(`§7[§b#§7] §cPlayer "${playerName}" not found.`);
-        return player.runCommandAsync(`playsound random.break @s`);
+        return system.run(() => player.runCommand(`playsound random.break @s`));
     }
 
     let ranks = targetPlayer.getTags().filter(tag => tag.startsWith("rank:"));
@@ -863,23 +863,23 @@ Command.register({
     if (action === "add") {
         if (ranks.length >= 3) {
             player.sendMessage("§7[§b#§7] §cThe player already has the maximum of 3 ranks.");
-            return player.runCommandAsync(`playsound random.break @s`);
+            return system.run(() => player.runCommand(`playsound random.break @s`));
         }
-        targetPlayer.runCommandAsync(`tag "${playerName}" add "rank:${rankColor}${rankName}"`);
+        system.run(() => targetPlayer.runCommand(`tag "${playerName}" add "rank:${rankColor}${rankName}"`));
         player.sendMessage(`§7[§b#§7] §aAdded rank "${rankColor}${rankName}§a" to ${playerName}.`);
-        player.runCommandAsync(`playsound note.bell @s`);
+        system.run(() => player.runCommand(`playsound note.bell @s`));
     } else if (action === "remove") {
         const rankToRemove = `rank:${rankColor}${rankName}`;
         if (!ranks.includes(rankToRemove)) {
             player.sendMessage(`§7[§b#§7] §cThe player does not have the rank "${rankColor}${rankName}§c".`);
-            return player.runCommandAsync(`playsound random.break @s`);
+            return system.run(() => player.runCommand(`playsound random.break @s`));
         }
-        targetPlayer.runCommandAsync(`tag "${playerName}" remove "${rankToRemove}"`);
+        system.run(() => targetPlayer.runCommand(`tag "${playerName}" remove "${rankToRemove}"`));
         player.sendMessage(`§7[§b#§7] §aRemoved rank "${rankColor}${rankName}§a" from ${playerName}.`);
-        player.runCommandAsync(`playsound random.bell @s`);
+        system.run(() => player.runCommand(`playsound random.bell @s`));
     } else {
         player.sendMessage("§7[§b#§7] §cInvalid action! §aUse 'add' or 'remove'.");
-        return player.runCommandAsync(`playsound random.break @s`);
+        return system.run(() => player.runCommand(`playsound random.break @s`));
     }
 });
 
@@ -902,13 +902,13 @@ Command.register({
     if (cooldowns[id] && currentTime - cooldowns[id] < COOLDOWN_TIME) {
         const remainingTime = ((COOLDOWN_TIME - (currentTime - cooldowns[id])) / 1000).toFixed(1);
         player.sendMessage(`§7[§b#§7] §aPlease wait §e${remainingTime}s §abefore using the troll command again.`);
-        return player.runCommandAsync('playsound random.break @s');
+        return system.run(() => player.runCommand('playsound random.break @s'));
     }
 
     if (args.length < 2) {
         player.sendMessage('§7[§b#§7] §cInvalid action! §aUse this Method§7: !troll <troll> <player>');
         player.sendMessage('§7[§b#§7] §aTroll list §7(§ecreeper§7/§eendermen§7/§eghast§7/§ezombie§7/§eskeleton§7)');
-        return player.runCommandAsync('playsound random.break @s');
+        return system.run(() => player.runCommand('playsound random.break @s'));
     }
 
     const trollType = args[0];
@@ -916,35 +916,35 @@ Command.register({
 
     if (!trollTypes.includes(trollType)) {
         player.sendMessage('§7[§b#§7] §aInvalid troll type. You have to choose one of these §7(§ecreeper§7/§eendermen§7/§eghast§7/§ezombie§7/§eskeleton§7)');
-        return player.runCommandAsync('playsound random.break @s');
+        return system.run(() => player.runCommand('playsound random.break @s'));
     }
 
     const targetPlayer = world.getPlayers().find(p => p.name === targetPlayerName);
     if (!targetPlayer) {
         player.sendMessage(`§7[§b#§7] §cCan\'t find the player§7: §e${targetPlayerName}`);
-        return player.runCommandAsync('playsound random.break @s');
+        return system.run(() => player.runCommand('playsound random.break @s'));
     }
 
     switch (trollType) {
         case "creeper":
             player.sendMessage(`§7[§b#§7] §aSuccessfully sent a creeper troll to§7: §e${targetPlayerName}`);
-            player.runCommandAsync(`playsound random.fuse "${targetPlayerName}"`);
+            system.run(() => player.runCommand(`playsound random.fuse "${targetPlayerName}"`));
             break;
         case "endermen":
             player.sendMessage(`§7[§b#§7] §aSuccessfully sent an endermen troll to§7: §e${targetPlayerName}`);
-            player.runCommandAsync(`playsound mob.endermen.scream "${targetPlayerName}"`);
+            system.run(() => player.runCommand(`playsound mob.endermen.scream "${targetPlayerName}"`));
             break;
         case "ghast":
             player.sendMessage(`§7[§b#§7] §aSuccessfully sent a ghast troll to§7: §e${targetPlayerName}`);
-            player.runCommandAsync(`playsound mob.ghast.scream "${targetPlayerName}"`);
+            system.run(() => player.runCommand(`playsound mob.ghast.scream "${targetPlayerName}"`));
             break;
         case "zombie":
             player.sendMessage(`§7[§b#§7] §aSuccessfully sent a zombie troll to§7: §e${targetPlayerName}`);
-            player.runCommandAsync(`playsound mob.zombie.say "${targetPlayerName}"`);
+            system.run(() => player.runCommand(`playsound mob.zombie.say "${targetPlayerName}"`));
             break;
         case "skeleton":
             player.sendMessage(`§7[§b#§7] §aSuccessfully sent a skeleton troll to§7: §e${targetPlayerName}`);
-            player.runCommandAsync(`playsound mob.skeleton.say "${targetPlayerName}"`);
+            system.run(() => player.runCommand(`playsound mob.skeleton.say "${targetPlayerName}"`));
             break;
     }
 
@@ -972,13 +972,13 @@ Command.register({
 
     if (!["add", "remove"].includes(action)) {
         player.sendMessage(`§7[§b#§7] §cInvalid action! §aUse this Method§7: §3!trusted §aadd ${main.player} §7/ §3!trusted §cremove ${main.player} §7/ §3!trusted §alist`);
-        player.runCommandAsync('playsound random.break @s');
+        system.run(() => player.runCommand('playsound random.break @s'));
         return;
     }
 
     if (!targetPlayer) {
         player.sendMessage('§7[§b#§7] §aPlayer not found! Please specify a valid player name.');
-        player.runCommandAsync('playsound random.break @s');
+        system.run(() => player.runCommand('playsound random.break @s'));
         return;
     }
 
@@ -986,7 +986,7 @@ Command.register({
         if (action === "add") {
             if (!targetPlayer.hasTag("trusted")) {
                 await system.run(() => targetPlayer.addTag("trusted"));
-                player.runCommandAsync(`playsound note.bell @s`);
+                system.run(() => player.runCommand(`playsound note.bell @s`));
                 player.sendMessage(`§7[§b#§7] §aSuccessfully §3added §atrusted status to §e${targetPlayer.name}`);
                 
             } else {
@@ -995,7 +995,7 @@ Command.register({
         } else if (action === "remove") {
             if (targetPlayer.hasTag("trusted")) {
                 await system.run(() => targetPlayer.removeTag("trusted"));
-                player.runCommandAsync(`playsound note.bell @s`);
+                system.run(() => player.runCommand(`playsound note.bell @s`));
                 player.sendMessage(`§7[§b#§7] §aSuccessfully §cremoved §atrusted status from §e${targetPlayer.name}`);
                 
             } else {

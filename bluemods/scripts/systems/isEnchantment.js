@@ -43,7 +43,7 @@ function enchantCheck() {
 
                     world.getPlayers({ tags: ["notify"] }).forEach(admin => {
                         admin.sendMessage(`§7[§d#§7] §e${player.name} §ais trying to get illegal enchantments§7: §e${item.typeId.replace("minecraft:", "")}`);
-                        admin.runCommandAsync(`playsound random.break @s`);
+                        system.run(() => admin.runCommand(`playsound random.break @s`));
                     });
                 }
             }

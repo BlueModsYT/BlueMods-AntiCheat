@@ -237,13 +237,13 @@ world.afterEvents.playerSpawn.subscribe((event) => {
         player.addTag("ban_database");
 
         world.sendMessage(`§7[§aGlobal§7] §e${player.name} §ahas been permanently banned by §bBlueMods §eDatabase.`);
-        player.runCommandAsync('playsound note.bell @a');
+        system.run(()=>player.runCommand('playsound note.bell @a'));
 
         world.getPlayers({ tags: ["notify"] }).forEach(admin => {
             admin.sendMessage(`§7[§d#§7] §e${player.name} §chas attempted to join but is banned.`);
-            admin.runCommandAsync('playsound random.break @s');
+            system.run(()=>admin.runCommand('playsound random.break @s'));
         });
 
-        player.runCommandAsync(`kick "${player.name}" \n§cYou are permanently banned from this server.\n§eReason: §aBanned by §bBlueMods §eDatabase`);
+        system.run(()=>player.runCommand(`kick "${player.name}" \n§cYou are permanently banned from this server.\n§eReason: §aBanned by §bBlueMods §eDatabase`));
     }
 });

@@ -11,7 +11,7 @@ function isCommandEnabled(commandName) {
 const isAuthorized = (player, commandName) => {
     if (!isCommandEnabled(commandName)) {
         player.sendMessage(`§7[§b#§7] §cThis command §e${commandName} §cis currently disabled.`);
-        player.runCommandAsync(`playsound random.break @s`);
+        system.run(() => player.runCommand(`playsound random.break @s`));
         return false;
     }
     return true;
@@ -56,7 +56,7 @@ Command.register({
 
     let executeCommand = `execute in ${dimensionId} run tp @s ${x} ${y} ${z}`;
 
-    player.runCommandAsync(executeCommand).then(() => {
+    system.run(() => player.runCommand(executeCommand)).then(() => {
         player.sendMessage("§7[§b#§7] §aYou have been teleported back to your death location.");
         deathLocations.delete(playerName);
     }).catch(() => {

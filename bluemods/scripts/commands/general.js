@@ -12,7 +12,7 @@ function isCommandEnabled(commandName) {
 const isAuthorized = (player, commandName) => {
     if (!isCommandEnabled(commandName)) {
         player.sendMessage(`§7[§b#§7] §cThis command §e${commandName} §cis currently disabled.`);
-        player.runCommandAsync(`playsound random.break @s`);
+        system.run(() => player.runCommand(`playsound random.break @s`));
         return false;
     }
     return true;
@@ -36,7 +36,7 @@ Command.register({
     const player = data.player
     if (!isAuthorized(player, "!about")) return;
     
-    data.player.runCommandAsync(`playsound note.bell @s`)
+    data.system.run(() => player.runCommand(`playsound note.bell @s`))
     data.player.sendMessage(`
     §l§bBlueMods §cAnti§fCheat §r
 ${main.bmdescription}
@@ -49,7 +49,7 @@ ${main.developer}`)
     // Notification for Admins:
     world.getPlayers({ tags: ["notify"] }).forEach(admin => {
         admin.sendMessage(`§7[§e#§7] §e${player.name} §ais using §3!about`);
-        admin.runCommandAsync(`playsound note.pling @s`);
+        system.run(() => admin.runCommand(`playsound note.pling @s`));
     });
 });
 
@@ -84,14 +84,14 @@ Command.register({
             break;
         default:
             player.sendMessage(`§7[§b#§7] §cUnknown action: §e${action}§c. Use §3!home <tp/set/remove/list>`);
-            player.runCommandAsync('playsound random.break @s');
+            system.run(() => player.runCommand('playsound random.break @s'));
     }
 });
 
 export function setHome(player, homeName) {
     if (!homeName) {
         player.sendMessage('§7[§c-§7] §cPlease specify a home name.');
-        return player.runCommandAsync(`playsound random.break @s`);
+        return system.run(() => player.runCommand(`playsound random.break @s`));
     }
 
     let homeDataJson = player.getDynamicProperty(HOME_DYNAMIC_PROPERTY);
@@ -99,7 +99,7 @@ export function setHome(player, homeName) {
 
     if (Object.keys(homes).length >= MAX_HOME_SLOTS) {
         player.sendMessage(`§7[§c-§7] §cYou can only set up to ${MAX_HOME_SLOTS} homes. Use §3!home remove <home_name> §cto remove an existing home.`);
-        return player.runCommandAsync(`playsound random.break @s`);
+        return system.run(() => player.runCommand(`playsound random.break @s`));
     }
 
     homes[homeName] = {
@@ -110,26 +110,26 @@ export function setHome(player, homeName) {
     player.setDynamicProperty(HOME_DYNAMIC_PROPERTY, JSON.stringify(homes));
 
     player.sendMessage(`§7[§a/§7] §aHome §e${homeName} §aset successfully!`);
-    player.runCommandAsync(`playsound note.bell @s`);
+    system.run(() => player.runCommand(`playsound note.bell @s`));
 }
 
 export function teleportHome(player, homeName) {
     if (!homeName) {
         player.sendMessage('§7[§c-§7] §cPlease specify the home name you want to teleport to.');
-        return player.runCommandAsync(`playsound random.break @s`);
+        return system.run(() => player.runCommand(`playsound random.break @s`));
     }
 
     const homeDataJson = player.getDynamicProperty(HOME_DYNAMIC_PROPERTY);
     if (!homeDataJson) {
         player.sendMessage('§7[§c-§7] §cYou don\'t have any homes set. Use §3!home set <home_name> §cto create one.');
-        return player.runCommandAsync(`playsound random.break @s`);
+        return system.run(() => player.runCommand(`playsound random.break @s`));
     }
 
     const homes = JSON.parse(homeDataJson);
 
     if (!homes[homeName]) {
         player.sendMessage(`§7[§c-§7] §cHome §e${homeName} §cdoes not exist. Check your home name.`);
-        return player.runCommandAsync(`playsound random.break @s`);
+        return system.run(() => player.runCommand(`playsound random.break @s`));
     }
 
     const home = homes[homeName];
@@ -160,7 +160,7 @@ export function teleportHome(player, homeName) {
             currentPosition.z !== initialPosition.z
         ) {
             player.sendMessage('§7[§c-§7] §cTeleportation to home canceled because you moved.');
-            player.runCommandAsync('playsound random.break @s');
+            system.run(() => player.runCommand('playsound random.break @s'));
             teleportingPlayers.delete(player.id);
             system.clearRun(countdownInterval);
             return;
@@ -170,7 +170,7 @@ export function teleportHome(player, homeName) {
 
         if (playerData.countdown > 0) {
             player.sendMessage(`§7[§a/§7] §aTeleporting to your home in §e${playerData.countdown} seconds§a...`);
-            player.runCommandAsync('playsound random.orb @s');
+            system.run(() => player.runCommand('playsound random.orb @s'));
         } else {
             system.clearRun(countdownInterval);
 
@@ -178,10 +178,10 @@ export function teleportHome(player, homeName) {
             const dimension = home.dimension === "minecraft:overworld" ? "overworld" :
                               home.dimension === "minecraft:nether" ? "nether" : "the_end";
             
-            player.runCommandAsync(`execute in ${dimension} run tp @s ${x} ${y} ${z}`)
+            system.run(() => player.runCommand(`execute in ${dimension} run tp @s ${x} ${y} ${z}`))
                 .then(() => {
                     player.sendMessage(`§7[§a/§7] §aTeleported to your home §e${homeName}§a.`);
-                    player.runCommandAsync(`playsound random.levelup @s`);
+                    system.run(() => player.runCommand(`playsound random.levelup @s`));
                 })
                 .catch((error) => {
                     player.sendMessage('§7[§c-§7] §cError: Unable to teleport to your home. Please try again.');
@@ -196,20 +196,20 @@ export function teleportHome(player, homeName) {
 export function removeHome(player, homeName) {
     if (!homeName) {
         player.sendMessage('§7[§c-§7] §cPlease specify the home name you want to remove.');
-        return player.runCommandAsync(`playsound random.break @s`);
+        return system.run(() => player.runCommand(`playsound random.break @s`));
     }
 
     let homeDataJson = player.getDynamicProperty(HOME_DYNAMIC_PROPERTY);
     if (!homeDataJson) {
         player.sendMessage('§7[§c-§7] §cYou don\'t have any homes set.');
-        return player.runCommandAsync(`playsound random.break @s`);
+        return system.run(() => player.runCommand(`playsound random.break @s`));
     }
 
     let homes = JSON.parse(homeDataJson);
 
     if (!homes[homeName]) {
         player.sendMessage(`§7[§c-§7] §cHome §e${homeName} §cdoes not exist.`);
-        return player.runCommandAsync(`playsound random.break @s`);
+        return system.run(() => player.runCommand(`playsound random.break @s`));
     }
 
     delete homes[homeName];
@@ -217,14 +217,14 @@ export function removeHome(player, homeName) {
     player.setDynamicProperty(HOME_DYNAMIC_PROPERTY, JSON.stringify(homes));
 
     player.sendMessage(`§7[§a/§7] §aHome §e${homeName} §ahas been removed.`);
-    player.runCommandAsync(`playsound note.bell @s`);
+    system.run(() => player.runCommand(`playsound note.bell @s`));
 }
 
 export function listHomes(player) {
     let homeDataJson = player.getDynamicProperty(HOME_DYNAMIC_PROPERTY);
     if (!homeDataJson) {
         player.sendMessage('§7[§c-§7] §cYou don\'t have any homes set.');
-        return player.runCommandAsync(`playsound random.break @s`);
+        return system.run(() => player.runCommand(`playsound random.break @s`));
     }
 
     let homes = JSON.parse(homeDataJson);
@@ -232,11 +232,11 @@ export function listHomes(player) {
 
     if (homeList.length === 0) {
         player.sendMessage('§7[§c-§7] §cYou don\'t have any homes set.');
-        return player.runCommandAsync(`playsound random.break @s`);
+        return system.run(() => player.runCommand(`playsound random.break @s`));
     }
 
     player.sendMessage(`§7[§a/§7] §aYour saved homes: §e${homeList.join(', ')}`);
-    player.runCommandAsync(`playsound random.levelup @s`);
+    system.run(() => player.runCommand(`playsound random.levelup @s`));
 }
 
 Command.register({
@@ -247,7 +247,7 @@ Command.register({
     const { player } = data;
     const start = Date.now();
 
-    await player.runCommandAsync(`testfor @s`);
+    await system.run(() => player.runCommand(`testfor @s`));
 
     const responseTime = Date.now() - start;
     
@@ -261,7 +261,7 @@ Command.register({
     const worldTPS = Math.min(20, 20);
     player.sendMessage(`§7[§a#§7] §aPing§7: §e${responseTime}ms §7[${pingStatus}§7] | §aTPS: §e${worldTPS}§7/§e20`);
 
-    player.runCommandAsync(`playsound random.orb @s`);
+    system.run(() => player.runCommand(`playsound random.orb @s`));
 });
 
 Command.register({
@@ -300,7 +300,7 @@ Command.register({
             currentPosition.z !== initialPosition.z
         ) {
             player.sendMessage('§7[§c-§7] §cTeleportation canceled because you moved.');
-            player.runCommandAsync('playsound random.break @s');
+            system.run(() => player.runCommand('playsound random.break @s'));
             teleportingPlayers.delete(id);
             system.clearRun(countdownInterval);
             return;
@@ -310,15 +310,15 @@ Command.register({
 
         if (playerData.countdown > 0) {
             player.sendMessage(`§7[§a/§7] §aRandom teleporting in §e${playerData.countdown} seconds§a...`);
-            player.runCommandAsync('playsound random.orb @s');
+            system.run(() => player.runCommand('playsound random.orb @s'));
         } else {
             system.clearRun(countdownInterval);
-            player.runCommandAsync(`/effect @s resistance 25 255 true`);
+            system.run(() => player.runCommand(`/effect @s resistance 25 255 true`));
 
-            player.runCommandAsync(`/spreadplayers ~ ~ 500 1000 @s`)
+            system.run(() => player.runCommand(`/spreadplayers ~ ~ 500 1000 @s`))
                 .then(() => {
                     player.sendMessage('§7[§a/§7] §aYou have been randomly teleported.');
-                    player.runCommandAsync(`playsound random.levelup @s`);
+                    system.run(() => player.runCommand(`playsound random.levelup @s`));
                 })
                 .catch((error) => {
                     player.sendMessage('§7[§c-§7] §cError: Unable to teleport. Please try again.');
@@ -339,7 +339,7 @@ Command.register({
 
     if (!args[0]) {
         player.sendMessage("§7[§b#§7] §cInvalid usage! Use §3!tpa send <player> / !tpa accept / !tpa decline / !tpa block <player> / !tpa unblock <player>.");
-        return player.runCommandAsync(`playsound random.break @s`);
+        return system.run(() => player.runCommand(`playsound random.break @s`));
     }
 
     switch (args[0].toLowerCase()) {
@@ -368,6 +368,6 @@ Command.register({
             break;
         default:
             player.sendMessage("§7[§b#§7] §cInvalid usage! Use §3!tpa send <player> / !tpa accept / !tpa decline / !tpa block <player> / !tpa unblock <player>.");
-            player.runCommandAsync(`playsound random.break @s`);
+            system.run(() => player.runCommand(`playsound random.break @s`));
     }
 });

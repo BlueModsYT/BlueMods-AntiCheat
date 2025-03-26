@@ -86,7 +86,7 @@ export function AddRewardPanel(player) {
 
         if (!itemName || itemName.trim() === "") {
             player.sendMessage("§7[§c-§7] §cItem name cannot be empty.");
-            player.runCommandAsync("playsound random.break @s");
+            system.run(() => player.runCommand("playsound random.break @s"));
             return;
         }
 
@@ -96,7 +96,7 @@ export function AddRewardPanel(player) {
         saveDailyRewards();
 
         player.sendMessage(`§7[§b#§7] §aAdded reward: §e${count}x ${itemName} §7(§a${chance}% Chance§7)`);
-        player.runCommandAsync("playsound note.bell @s");
+        system.run(() => player.runCommand("playsound note.bell @s"));
 
         DailyRewardsPanel(player);
     }).catch((error) => {
@@ -131,7 +131,7 @@ export function RemoveRewardPanel(player) {
         saveDailyRewards();
 
         player.sendMessage(`§7[§b#§7] §cRemoved reward: §e${removedReward.count}x ${removedReward.item} §7(§a${removedReward.chance}% Chance§7)`);
-        player.runCommandAsync("playsound random.break @s");
+        system.run(() => player.runCommand("playsound random.break @s"));
 
         RemoveRewardPanel(player);
     }).catch((error) => {
@@ -182,7 +182,7 @@ export function EditRewardForm(player, reward, index) {
 
         if (!itemName || itemName.trim() === "") {
             player.sendMessage("§7[§c-§7] §cItem name cannot be empty.");
-            player.runCommandAsync("playsound random.break @s");
+            system.run(() => player.runCommand("playsound random.break @s"));
             return;
         }
 
@@ -190,7 +190,7 @@ export function EditRewardForm(player, reward, index) {
         saveDailyRewards();
 
         player.sendMessage(`§7[§b#§7] §aUpdated reward: §e${count}x ${itemName} §7(§a${chance}% Chance§7)`);
-        player.runCommandAsync("playsound note.bell @s");
+        system.run(() => player.runCommand("playsound note.bell @s"));
 
         EditRewardPanel(player);
     }).catch((error) => {
@@ -212,14 +212,14 @@ export function CustomCooldownPanel(player) {
 
         if (timeValue === null) {
             player.sendMessage("§7[§c-§7] §cInvalid cooldown format. Use '10s', '1h', '30m', or '2d'.");
-            player.runCommandAsync("playsound random.break @s");
+            system.run(() => player.runCommand("playsound random.break @s"));
             return;
         }
 
         setDailyCooldownTime(timeValue);
 
         player.sendMessage(`§7[§b#§7] §aDaily cooldown time set to §e${cooldownInput}§a.`);
-        player.runCommandAsync("playsound note.bell @s");
+        system.run(() => player.runCommand("playsound note.bell @s"));
 
         DailyRewardsPanel(player);
     }).catch((error) => {

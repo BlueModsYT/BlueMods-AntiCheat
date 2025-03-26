@@ -18,7 +18,7 @@ function checkIllegalPosition(player) {
             const spawnLocation = spawnManager.getSpawnLocation();
 
             if (spawnLocation) {
-                player.runCommandAsync(`tp @s ${spawnLocation.x} ${spawnLocation.y} ${spawnLocation.z}`);
+                system.run(() => player.runCommand(`tp @s ${spawnLocation.x} ${spawnLocation.y} ${spawnLocation.z}`));
             } else {
                 console.warn(`Failed to teleport player ${player.name}: Spawn location is not defined.`);
             }
@@ -32,7 +32,7 @@ function checkIllegalPosition(player) {
 
         world.getPlayers({ tags: ["notify"] }).forEach(admin => {
             admin.sendMessage(`§7[§d#§7] §e${player.name} §ahas been kicked for illegal position (${Math.round(x)}, ${Math.round(y)}, ${Math.round(z)})`);
-            admin.runCommandAsync(`playsound random.break @s`);
+            system.run(() => admin.runCommand(`playsound random.break @s`));
         });
     }
 }

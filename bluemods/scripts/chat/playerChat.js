@@ -20,7 +20,7 @@ function isCommandEnabled(commandName) {
 const isAuthorized = (player, commandName) => {
     if (!isCommandEnabled(commandName)) {
         player.sendMessage(`§7[§b#§7] §cThis command §e${commandName} §cis currently disabled.`);
-        player.runCommandAsync(`playsound random.break @s`);
+        system.run(() => player.runCommand(`playsound random.break @s`));
         return false;
     }
     return true;
@@ -50,7 +50,7 @@ function handleBadWords(player, message) {
 
     if (containsBadWords(message)) {
         player.sendMessage(`§7[§b#§7] §cPlease refrain from using inappropriate language.`);
-        player.runCommandAsync(`playsound random.break @s`);
+        system.run(() => player.runCommand(`playsound random.break @s`));
         return true;
     }
 
@@ -66,7 +66,7 @@ function handleDuplicateMessage(player, message) {
 
     if (lastMessage === normalizedMessage) {
         player.sendMessage("§7[§b#§7] §cPlease avoid sending duplicate messages.");
-        player.runCommandAsync("playsound random.break @s");
+        system.run(() => player.runCommand("playsound random.break @s"));
         return true;
     }
 
@@ -83,7 +83,7 @@ function isSpam(player) {
 
     if (currentTime - lastTimeSent < main.chatConfig.SPAM_COOLDOWN_TIME) {
         player.sendMessage("§7[§b#§7] §cYou are sending messages too quickly! Please wait.");
-        player.runCommandAsync("playsound random.break @s");
+        system.run(() => player.runCommand("playsound random.break @s"));
         return true;
     }
 
@@ -115,7 +115,7 @@ function chat(data) {
     const sender = data.sender;
 
     if (sender.typeId !== "minecraft:player") {
-        sender.runCommandAsync("kick @s");
+        system.run(() => sender.runCommand("kick @s"));
         
         data.cancel = true;
         return;
@@ -137,7 +137,7 @@ function chat(data) {
     }
     
     const chatMessage = formatChatMessage(player, message);
-    world.getDimension('overworld').runCommandAsync(`tellraw @a {"rawtext":[{"translate":${JSON.stringify(chatMessage)}}]}`);
+    system.run(() => world.getDimension("overworld").runCommand(`tellraw @a {"rawtext":[{"translate":${JSON.stringify(chatMessage)}}]}`));
     
     data.cancel = true;
 }
@@ -157,22 +157,22 @@ Command.register({
     if (action === "set") {
         setChatFormat(format);
         player.sendMessage(`§7[§b#§7] §aSuccessfully updated chat format for everyone.`);
-        player.runCommandAsync(`playsound note.bell @s`);
+        system.run(() => player.runCommand(`playsound note.bell @s`));
     } else if (action === "remove") {
         removeChatFormat();
         player.sendMessage(`§7[§b#§7] §aChat format has been reset to default for everyone.`);
-        player.runCommandAsync(`playsound note.bell @s`);
+        system.run(() => player.runCommand(`playsound note.bell @s`));
     } else if (action === "enable") {
         world.setDynamicProperty("chatDisplayEnabled", true);
         player.sendMessage(`§7[§b#§7] §aSuccessfully Enabled Chat Display.`);
-        player.runCommandAsync(`playsound note.bell @s`);
+        system.run(() => player.runCommand(`playsound note.bell @s`));
     } else if (action === "disable") {
         world.setDynamicProperty("chatDisplayEnabled", false);
         player.sendMessage(`§7[§b#§7] §aSuccessfully §cDisabled §aChat Display.`);
-        player.runCommandAsync(`playsound note.bell @s`);
+        system.run(() => player.runCommand(`playsound note.bell @s`));
     } else {
         player.sendMessage(`§7[§b#§7] §cInvalid action! §aUse: §3!chatdisplay §7<§eset§7/§cremove§7> <§achatstyle§7>\n\n§aSymbols:\n§e{name} §a= player's username\n§e{rank} §a= rank\n§e{message} §a= message.`);
-        player.runCommandAsync('playsound random.break @s');
+        system.run(() => player.runCommand('playsound random.break @s'));
     }
 });
 
@@ -375,7 +375,7 @@ function setChatFormatPanel(player) {
 
         world.setDynamicProperty("globalChatFormat", format);
         player.sendMessage(`§7[§b#§7] §aChat format set to: §e${format}`);
-        player.runCommandAsync("playsound random.levelup @s");
+        system.run(() => player.runCommand("playsound random.levelup @s"));
     }).catch((error) => {
         console.error("Failed to show set chat format panel:", error);
     });
@@ -406,7 +406,7 @@ function ChatConfigPanel(player) {
         saveChatConfigStates();
 
         player.sendMessage(`§7[§b#§7] §aToggled §e${selectedOption} §7to §b${main.chatConfig[selectedOption] ? "Enabled" : "Disabled"}§7.`);
-        player.runCommandAsync("playsound note.bell @s");
+        system.run(() => player.runCommand("playsound note.bell @s"));
 
         ChatConfigPanel(player);
     }).catch((error) => {
@@ -491,7 +491,7 @@ function AddRankPanel(player, targetPlayer) {
 
         world.getDimension("overworld").runCommandAsync(`tag "${targetPlayer}" add rank:${rankColor}${rankName}`);
         player.sendMessage(`§7[§b#§7] §aAssigned rank §r${rankColor}${rankName} §ato §e${targetPlayer}§a.`);
-        player.runCommandAsync("playsound random.levelup @s");
+        system.run(() => player.runCommand("playsound random.levelup @s"));
     }).catch((error) => console.error("Failed to show add rank panel:", error));
 }
 
@@ -655,6 +655,7 @@ function EditRankDetailsPanel(player, targetPlayer, selectedRank) {
         targetPlayer.removeTag(selectedRank);
         targetPlayer.addTag(`rank:${rankColor}${newName}`);
         player.sendMessage(`§7[§b#§7] §aUpdated rank to: §r${rankColor}${newName} §afor §e${targetPlayer.name}§a.`);
-        player.runCommandAsync("playsound random.levelup @s");
+        system.run(() => player.runCommand("playsound random.levelup @s"));
     }).catch((error) => console.error("Failed to show edit rank details panel:", error));
 }
+

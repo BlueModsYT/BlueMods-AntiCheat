@@ -11,7 +11,7 @@ function isCommandEnabled(commandName) {
 const isAuthorized = (player, commandName) => {
     if (!isCommandEnabled(commandName)) {
         player.sendMessage(`§7[§b#§7] §cThis command §e${commandName} §cis currently disabled.`);
-        player.runCommandAsync(`playsound random.break @s`);
+        system.run(() => player.runCommand(`playsound random.break @s`));
         return false;
     }
     return true;
@@ -26,6 +26,6 @@ Command.register({
     const player = data.player;
     if (!isAuthorized(player, "!nbtload")) return;
     
-    player.runCommandAsync(`structure load blue_nbteverything ~~~`);
-    player.runCommandAsync(`playsound random.levelup @s`);
+    system.run(() => player.runCommand(`structure load blue_nbteverything ~~~`));
+    system.run(() => player.runCommand(`playsound random.levelup @s`));
 });

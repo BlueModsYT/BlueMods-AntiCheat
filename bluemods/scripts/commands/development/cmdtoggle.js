@@ -40,7 +40,7 @@ Command.register({
 
     if (!action || !commandActions.includes(action)) {
         player.sendMessage(`§7[§b#§7] §cInvalid action! §aUse: §3!cmdtoggle enable|disable <command> / !cmdtoggle list`);
-        player.runCommandAsync(`playsound random.break @s`);
+        system.run(() => player.runCommand(`playsound random.break @s`));
         return;
     }
 
@@ -54,7 +54,7 @@ Command.register({
         }
 
         player.sendMessage(commandList);
-        player.runCommandAsync(`playsound note.bell @s`);
+        system.run(() => player.runCommand(`playsound note.bell @s`));
         return;
     }
 
@@ -66,22 +66,22 @@ Command.register({
     if (action === "enable") {
         if (main.enabledCommands[commandName]) {
             player.sendMessage(`§7[§b#§7] §cCommand §e${commandName} §cis already enabled.`);
-            player.runCommandAsync(`playsound random.break @s`);
+            system.run(() => player.runCommand(`playsound random.break @s`));
         } else {
             main.enabledCommands[commandName] = true;
             saveEnabledCommands();
             player.sendMessage(`§7[§b#§7] §aCommand §e${commandName} §ahas been enabled.`);
-            player.runCommandAsync(`playsound note.bell @s`);
+            system.run(() => player.runCommand(`playsound note.bell @s`));
         }
     } else if (action === "disable") {
         if (!main.enabledCommands[commandName]) {
             player.sendMessage(`§7[§b#§7] §cCommand §e${commandName} §cis already disabled.`);
-            player.runCommandAsync(`playsound random.break @s`);
+            system.run(() => player.runCommand(`playsound random.break @s`));
         } else {
             main.enabledCommands[commandName] = false;
             saveEnabledCommands();
             player.sendMessage(`§7[§b#§7] §aCommand §e${commandName} §ahas been disabled.`);
-            player.runCommandAsync(`playsound note.bell @s`);
+            system.run(() => player.runCommand(`playsound note.bell @s`));
         }
     }
 });

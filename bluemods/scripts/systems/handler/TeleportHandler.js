@@ -118,8 +118,8 @@ export function sendTeleportRequest(sender, target) {
 
     sender.sendMessage(`§7[§b#§7] §aRequest sent to §e${target.name}`);
     target.sendMessage(`§7[§b#§7] §e${sender.name} §ahas sent you a teleport request. type §e"§3!tpa accept§e" §ato accept the request.`);
-    sender.runCommandAsync(`playsound note.bell @s`);
-    target.runCommandAsync(`playsound random.orb @s`);
+    system.run(() => sender.runCommand(`playsound note.bell @s`));
+    system.run(() => target.runCommand(`playsound random.orb @s`));
 
     playerRequest[target.id] = { sender: sender.id, senderName: sender.name, target: target.id, targetName: target.name };
     cooldowns[sender.id] = Date.now() + REQUEST_COOLDOWN * 1000;
@@ -146,26 +146,26 @@ export function acceptTeleportRequest(player) {
         if (currentPosition.x !== startPosition.x || currentPosition.y !== startPosition.y || currentPosition.z !== startPosition.z) {
             sender.sendMessage("§7[§b#§7] §cTeleport cancelled because you moved!");
             player.sendMessae("§7[§b#§7] §cTeleport cancelled because the requester moved!");
-            sender.runCommandAsync(`playsound random.break @s`);
+            system.run(() => sender.runCommand(`playsound random.break @s`));
             teleportCancelled = true;
             return;
         }
 
         if (countdown > 0) {
             sender.sendMessage(`§7[§b#§7] §aTeleporting in §e${countdown} §aseconds...`);
-            sender.runCommandAsync(`playsound note.hat @s`);
+            system.run(() => sender.runCommand(`playsound note.hat @s`));
             countdown--;
             system.runTimeout(tick, 20);
         } else {
             if (!sender || !player) return;
             sender.teleport(player.location);
             sender.sendMessage("§7[§b#§7] §aYou have been teleported!");
-            sender.runCommandAsync(`playsound random.levelup @s`);
-            player.runCommandAsync(`playsound random.leveup @s`);
-            sender.runCommandAsync(`effect @s resistance 10 255 true`);
-            player.runCommandAsync(`effect @s resistance 10 255 true`);
-            sender.runCommandAsync(`effect @s weakness 10 255 true`);
-            player.runCommandAsync(`effect @s weakness 10 255 true`);
+            system.run(() => sender.runCommand(`playsound random.levelup @s`));
+            system.run(() => player.runCommand(`playsound random.leveup @s`));
+            system.run(() => sender.runCommand(`effect @s resistance 10 255 true`));
+            system.run(() => player.runCommand(`effect @s resistance 10 255 true`));
+            system.run(() => sender.runCommand(`effect @s weakness 10 255 true`));
+            system.run(() => player.runCommand(`effect @s weakness 10 255 true`));
             delete playerRequest[player.id];
         }
     }

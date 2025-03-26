@@ -19,7 +19,7 @@ Command.register({
 
     if (!SPAWN_LOCATION) {
         player.sendMessage('§7[§c-§7] §cSpawn location has not been set by an admin.');
-        player.runCommandAsync('playsound random.break @s');
+        system.run(() => player.runCommand('playsound random.break @s'));
         return;
     }
 
@@ -50,7 +50,7 @@ Command.register({
             currentPosition.z !== initialPosition.z
         ) {
             player.sendMessage('§7[§c-§7] §cTeleportation to spawn canceled because you moved.');
-            player.runCommandAsync('playsound random.break @s');
+            system.run(() => player.runCommand('playsound random.break @s'));
             teleportingPlayers.delete(id);
             system.clearRun(countdownInterval);
             return;
@@ -60,19 +60,19 @@ Command.register({
 
         if (playerData.countdown > 0) {
             player.sendMessage(`§7[§a/§7] §aTeleporting to spawn in §e${playerData.countdown} seconds§a...`);
-            player.runCommandAsync('playsound random.orb @s');
+            system.run(() => player.runCommand('playsound random.orb @s'));
         } else {
             system.clearRun(countdownInterval);
             teleportingPlayers.delete(id);
 
-            player.runCommandAsync(`tp @s ${SPAWN_LOCATION.x} ${SPAWN_LOCATION.y} ${SPAWN_LOCATION.z}`)
+            system.run(() => player.runCommand(`tp @s ${SPAWN_LOCATION.x} ${SPAWN_LOCATION.y} ${SPAWN_LOCATION.z}`))
                 .then(() => {
                     player.sendMessage('§7[§a/§7] §aYou have been teleported to spawn.');
-                    player.runCommandAsync('playsound random.levelup @s');
+                    system.run(() => player.runCommand('playsound random.levelup @s'));
                     // Notification for Admins
                     world.getPlayers({ tags: ["notify"] }).forEach(admin => {
                         admin.sendMessage(`§7[§e#§7] §e${player.name} §ais using §3!spawn `);
-                        admin.runCommandAsync(`playsound note.pling @s`);
+                        system.run(() => admin.runCommand(`playsound note.pling @s`));
                     });
                 })
                 .catch(error => {
@@ -100,11 +100,11 @@ Command.register({
     spawnManager.setSpawnLocation(location);
 
     player.sendMessage(`§7[§a/§7] §aSpawn location set to your current position: §e${location.x} ${location.y} ${location.z}`);
-    player.runCommandAsync(`playsound random.levelup @s`);
+    system.run(() => player.runCommand(`playsound random.levelup @s`));
     // Notification for Admins
     world.getPlayers({ tags: ["notify"] }).forEach(admin => {
         admin.sendMessage(`§7[§e#§7] §e${player.name} §ais using §3!setspawn `);
-        admin.runCommandAsync(`playsound note.pling @s`);
+        system.run(() => admin.runCommand(`playsound note.pling @s`));
     });
 });
 
@@ -119,10 +119,10 @@ Command.register({
     spawnManager.clearSpawnLocation();
 
     player.sendMessage('§7[§a/§7] §aThe spawn location has been removed.');
-    player.runCommandAsync(`playsound random.break @s`);
+    system.run(() => player.runCommand(`playsound random.break @s`));
     // Notification for Admins
     world.getPlayers({ tags: ["notify"] }).forEach(admin => {
         admin.sendMessage(`§7[§e#§7] §e${player.name} §ais using §3!rspawn`);
-        admin.runCommandAsync(`playsound note.pling @s`);
+        system.run(() => admin.runCommand(`playsound note.pling @s`));
     });
 });

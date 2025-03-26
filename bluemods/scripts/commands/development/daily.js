@@ -12,7 +12,7 @@ function isCommandEnabled(commandName) {
 const isAuthorized = (player, commandName) => {
     if (!isCommandEnabled(commandName)) {
         player.sendMessage(`§7[§b#§7] §cThis command §e${commandName} §cis currently disabled.`);
-        player.runCommandAsync(`playsound random.break @s`);
+        system.run(() => player.runCommand(`playsound random.break @s`));
         return false;
     }
     return true;
@@ -52,15 +52,15 @@ function claimDailyReward(player) {
 
     if (!selectedReward) {
         player.sendMessage("§7[§b#§7] §cNo reward could be determined. Please try again later.");
-        player.runCommandAsync("playsound random.break @s");
+        system.run(() => player.runCommand("playsound random.break @s"));
         return;
     }
 
-    player.runCommandAsync(`give @s ${selectedReward.item} ${selectedReward.count}`);
+    system.run(() => player.runCommand(`give @s ${selectedReward.item} ${selectedReward.count}`));
     player.sendMessage(
         `§7[§b#§7] §aCongratulations! You received §e${selectedReward.count} ${selectedReward.item}(s)§a as your daily reward!`
     );
-    player.runCommandAsync("playsound random.levelup @s");
+    system.run(() => player.runCommand("playsound random.levelup @s"));
 
     world.setDynamicProperty(playerKey, currentTime);
 }
@@ -88,7 +88,7 @@ Command.register({
         if (seconds > 0) message += `${seconds}s`;
 
         player.sendMessage(message.trim());
-        player.runCommandAsync("playsound random.break @s");
+        system.run(() => player.runCommand("playsound random.break @s"));
         return;
     }
 

@@ -12,7 +12,7 @@ function isCommandEnabled(commandName) {
 const isAuthorized = (player, commandName) => {
     if (!isCommandEnabled(commandName)) {
         player.sendMessage(`§7[§b#§7] §cThis command §e${commandName} §cis currently disabled.`);
-        player.runCommandAsync(`playsound random.break @s`);
+        system.run(() => player.runCommand(`playsound random.break @s`));
         return false;
     }
     return true;
@@ -39,14 +39,14 @@ Command.register({
     }
 
     if (!hasCompass) {
-        player.runCommandAsync('give @s bluemods:itemui');
+        system.run(() => player.runCommand('give @s bluemods:itemui'));
         player.sendMessage("§7[§b#§7] §aYou received a compass!");
     } else {
         player.sendMessage("§7[§b#§7] §cYou already have a compass in your inventory.");
-        player.runCommandAsync('playsound random.break @s');
+        system.run(() => player.runCommand('playsound random.break @s'));
     }
 
-    player.runCommandAsync('playsound note.pling @s');
+    system.run(() => player.runCommand('playsound note.pling @s'));
 });
 
 world.afterEvents.chatSend.subscribe((event) => {

@@ -11,7 +11,7 @@ function isCommandEnabled(commandName) {
 const isAuthorized = (player, commandName) => {
     if (!isCommandEnabled(commandName)) {
         player.sendMessage(`§7[§b#§7] §cThis command §e${commandName} §cis currently disabled.`);
-        player.runCommandAsync(`playsound random.break @s`);
+        system.run(() => player.runCommand(`playsound random.break @s`));
         return false;
     }
     return true;
@@ -24,7 +24,7 @@ function displayCategory(player, categories, page) {
 
     if (adjustedPage < 0 || adjustedPage >= totalPages) {
         player.sendMessage("§7[§c-§7] §cInvalid page number.");
-        player.runCommandAsync(`playsound random.break @s`);
+        system.run(() => player.runCommand(`playsound random.break @s`));
         return;
     }
 
@@ -49,7 +49,7 @@ Command.register({
 
     if (isNaN(page) || page < 1) {
         player.sendMessage("§7[§c-§7] §cInvalid page number. Please use a number greater than or equal to 1.");
-        player.runCommandAsync(`playsound random.break @s`);
+        system.run(() => player.runCommand(`playsound random.break @s`));
         return;
     }
 
@@ -62,6 +62,6 @@ Command.register({
     // Notify admins
     world.getPlayers({ tags: ["notify"] }).forEach(admin => {
         admin.sendMessage(`§7[§e#§7] §e${player.name} §ais using §3!help §afor ${player.hasTag("admin") ? "admins" : "members"}`);
-        admin.runCommandAsync(`playsound note.pling @s`);
+        system.run(() => admin.runCommand(`playsound note.pling @s`));
     });
 });

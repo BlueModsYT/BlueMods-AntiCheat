@@ -18,11 +18,11 @@ world.afterEvents.playerSpawn.subscribe((event) => {
     const player = event.player;
 
     if (checkForNameSpoof(player)) {
-        player.runCommandAsync('kick @s §cInvalid or spoofed name detected. Check your username for validity.');
+        system.run(() => player.runCommand('kick @s §cInvalid or spoofed name detected. Check your username for validity.'));
         
         world.getPlayers({ tags: ["notify"] }).forEach(admin => {
             admin.sendMessage(`§7[§d#§7] §e${player.name} §ahas been kicked out for using an invalid username.`);
-            admin.runCommandAsync(`playsound random.break @s`);
+            system.run(() => admin.runCommand(`playsound random.break @s`));
         });
     }
 });

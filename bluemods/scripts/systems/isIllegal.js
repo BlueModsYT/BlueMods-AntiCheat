@@ -66,13 +66,13 @@ function itemCheck(player, itemList, moduleName) {
 
     if (itemRemoved) {
         player.sendMessage("§7[§b#§7] §cYou are not allowed to use this item.");
-        player.runCommandAsync(`playsound random.break @s`);
+        system.run(() => player.runCommand(`playsound random.break @s`));
 
         world.getPlayers({ tags: ["notify"] }).forEach(admin => {
             if (removedItemType) {
                 const itemName = removedItemType.replace('minecraft:', '').replace(/_/g, ' ');
                 admin.sendMessage(`§7[§d#§7] §e${player.name} §ais trying to use illegal item: §e${itemName}`);
-                admin.runCommandAsync(`playsound random.break @s`);
+                system.run(() => admin.runCommand(`playsound random.break @s`));
             }
         });
     }
@@ -96,7 +96,7 @@ function checkItemNBT(player) {
 
             world.getPlayers({ tags: ["notify"] }).forEach(admin => {
                 admin.sendMessage(`§7[§d#§7] §e${player.name} §atried to use an illegal NBT item.`);
-                admin.runCommandAsync(`playsound random.break @s`);
+                system.run(() => admin.runCommand(`playsound random.break @s`));
             });
         }
     }
@@ -119,12 +119,12 @@ system.runInterval(() => {
                 if (item && isLored.includes(item.typeId) && hasLore(item)) {
                     inv.setItem(i, null);
 
-                    player.runCommandAsync(`playsound random.break @s`);
+                    system.run(() => player.runCommand(`playsound random.break @s`));
                     player.sendMessage(`§7[§b#§7] §cYou are not allowed to use this item, ensure you have permission.`);
 
                     world.getPlayers({ tags: ["notify"] }).forEach(admin => {
                         admin.sendMessage(`§7[§d#§7] §e${player.name} §ais trying to use a lored item: "§e${item.typeId.replace('minecraft:', '').replace(/_/g, ' ')}§a".`);
-                        admin.runCommandAsync(`playsound random.break @s`);
+                        system.run(() => admin.runCommand(`playsound random.break @s`));
                     });
                 }
             }
@@ -218,7 +218,7 @@ export function ModuleStatesPanel(player) {
         saveModuleStates();
 
         player.sendMessage(`§7[§b#§7] §aToggled §e${selectedModule} §7to §b${main.moduleStates[selectedModule] ? "Enabled" : "Disabled"}§7.`);
-        player.runCommandAsync("playsound note.bell @s");
+        system.run(() => player.runCommand("playsound note.bell @s"));
 
         if (selectedModule.includes("ItemCheck")) startItemChecks();
         if (selectedModule.includes("Mob") || selectedModule.includes("Minecart")) startEntityChecks();
