@@ -3,12 +3,7 @@
     "metadata": {
         "authors": [ "bluemods.lol", "trokkk.lol", "mp09", "8Crafter" ],
         "license": "AGPLv3",
-        "url": "https://bluemods.neocities.org",
-        "version": [
-            5,
-            8,
-            0
-        ]
+        "url": "https://bluemods.neocities.org"
     },
     "header": {
         "name": "§l§bBlueMods §aResources §gBeta-v5.8.0§r",
@@ -16,7 +11,7 @@
         "min_engine_version": [
             1,
             21,
-            60
+            70
         ],
         "uuid": "75ae9127-8b1b-4b38-a62b-a672538b4778",
         "version": [
@@ -34,6 +29,12 @@
                 0,
                 0
             ]
+        }
+    ],
+    "dependencies": [
+        {
+            "uuid": "6568a874-bfd7-4ccb-a63f-dba79cf935cb",
+            "version": [ 5, 8, 0 ]
         }
     ]
 }

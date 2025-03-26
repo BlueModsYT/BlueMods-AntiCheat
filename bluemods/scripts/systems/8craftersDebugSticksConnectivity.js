@@ -33,7 +33,7 @@ export async function checkIfCompatibleDebugSticksIsActive(init = false, maxWait
     );
     return promise1Result;
 }
-world.afterEvents.worldInitialize.subscribe(async (event) => {
+world.afterEvents.worldLoad.subscribe(async (event) => {
     try {
         const r = await checkIfCompatibleDebugSticksIsActive(true, 5);
         if (r != false) {
@@ -68,3 +68,9 @@ system.afterEvents.scriptEventReceive.subscribe((event) => {
         return;
     }
 });
+
+system.runTimeout(()=>{
+    if(debug_sticks_format_version == null){
+        world.sendMessage("§cNo compatible version of 8Crafter's Debug Sticks, Chat Ranks, Custom UI, and JavaScript Commands/Script REPL, and Server Utilities was found on the server. It is highly recommended to have this add-on, as it is extremely usefull and will also make the menus look a lot nicer.");
+    }
+}, 600);

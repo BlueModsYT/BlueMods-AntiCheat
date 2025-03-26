@@ -3,12 +3,7 @@
     "metadata": {
         "authors": [ "bluemods.lol", "trokkk.lol", "mp09", "8Crafter" ],
         "license": "AGPLv3",
-        "url": "https://bluemods.neocities.org",
-        "version": [
-            5,
-            8,
-            0
-        ]
+        "url": "https://bluemods.neocities.org"
     },
     "header": {
         "name": "§l§bBlueMods §aBehavior §gBeta-v5.8.0§r",
