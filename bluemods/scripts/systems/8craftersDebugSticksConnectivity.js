@@ -73,4 +73,4 @@ system.runTimeout(()=>{
     if(debug_sticks_format_version == null){
         world.sendMessage("§cNo compatible version of 8Crafter's Debug Sticks, Chat Ranks, Custom UI, and JavaScript Commands/Script REPL, and Server Utilities was found on the server. It is highly recommended to have this add-on, as it is extremely usefull and will also make the menus look a lot nicer.");
     }
-}, 600);
+}, 2000);
