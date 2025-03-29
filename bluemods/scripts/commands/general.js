@@ -181,15 +181,16 @@ export function teleportHome(player, homeName) {
             const dimension = home.dimension === "minecraft:overworld" ? "overworld" :
                               home.dimension === "minecraft:nether" ? "nether" : "the_end";
             
-            system.run(() => player.runCommand(`execute in ${dimension} run tp @s ${x} ${y} ${z}`))
-                .then(() => {
+            system.run(() => {
+                try{
+                    player.runCommand(`execute in ${dimension} run tp @s ${x} ${y} ${z}`);
                     player.sendMessage(`§7[§a/§7] §aTeleported to your home §e${homeName}§a.`);
-                    system.run(() => player.runCommand(`playsound random.levelup @s`));
-                })
-                .catch((error) => {
+                    player.runCommand(`playsound random.levelup @s`);
+                }catch(error){
                     player.sendMessage('§7[§c-§7] §cError: Unable to teleport to your home. Please try again.');
                     console.error(`Teleport error: ${error.message}`);
-                });
+                }
+            });
 
             teleportingPlayers.delete(player.id);
         }
@@ -250,7 +251,8 @@ Command.register({
     const { player } = data;
     const start = Date.now();
 
-    await system.run(() => player.runCommand(`testfor @s`));
+    await system.waitTicks(1);
+    player.runCommand(`testfor @s`);
 
     const responseTime = Date.now() - start;
     
@@ -264,7 +266,7 @@ Command.register({
     const worldTPS = Math.min(20, 20);
     player.sendMessage(`§7[§a#§7] §aPing§7: §e${responseTime}ms §7[${pingStatus}§7] | §aTPS: §e${worldTPS}§7/§e20`);
 
-    system.run(() => player.runCommand(`playsound random.orb @s`));
+    player.runCommand(`playsound random.orb @s`);
 });
 
 Command.register({
@@ -318,15 +320,16 @@ Command.register({
             system.clearRun(countdownInterval);
             system.run(() => player.runCommand(`/effect @s resistance 25 255 true`));
 
-            system.run(() => player.runCommand(`/spreadplayers ~ ~ 500 1000 @s`))
-                .then(() => {
+            system.run(() => {
+                try{
+                    player.runCommand(`/spreadplayers ~ ~ 500 1000 @s`);
                     player.sendMessage('§7[§a/§7] §aYou have been randomly teleported.');
-                    system.run(() => player.runCommand(`playsound random.levelup @s`));
-                })
-                .catch((error) => {
+                    player.runCommand(`playsound random.levelup @s`);
+                } catch (error) {
                     player.sendMessage('§7[§c-§7] §cError: Unable to teleport. Please try again.');
                     console.error(`Teleport error: ${error.message}`);
-                });
+                }
+            });
 
             teleportingPlayers.delete(id);
         }

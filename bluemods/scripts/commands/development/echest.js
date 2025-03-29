@@ -62,15 +62,16 @@ Command.register({
         return;
     }
 
-    system.run(() => player.runCommand("give @s ender_chest 1"))
-        .then(() => {
+    system.run(() => {
+        try{
+            player.runCommand("give @s ender_chest 1");
             player.sendMessage("§7[§a/§7] §aYou have received an Ender Chest!");
-            system.run(() => player.runCommand("playsound random.levelup @s"));
+            player.runCommand("playsound random.levelup @s");
 
             world.setDynamicProperty(playerKey, currentTime);
-        })
-        .catch((error) => {
+        } catch (error) {
             player.sendMessage("§7[§c-§7] §cFailed to give an Ender Chest. Please try again.");
             console.error(`Error giving ender chest: ${error.message}`);
-        });
+        }
+    });
 });

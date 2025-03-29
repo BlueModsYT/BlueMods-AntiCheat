@@ -65,20 +65,21 @@ Command.register({
             system.clearRun(countdownInterval);
             teleportingPlayers.delete(id);
 
-            system.run(() => player.runCommand(`tp @s ${SPAWN_LOCATION.x} ${SPAWN_LOCATION.y} ${SPAWN_LOCATION.z}`))
-                .then(() => {
+            system.run(() => {
+                try{
+                    player.runCommand(`tp @s ${SPAWN_LOCATION.x} ${SPAWN_LOCATION.y} ${SPAWN_LOCATION.z}`);
                     player.sendMessage('§7[§a/§7] §aYou have been teleported to spawn.');
-                    system.run(() => player.runCommand('playsound random.levelup @s'));
+                    player.runCommand('playsound random.levelup @s');
                     // Notification for Admins
                     world.getPlayers({ tags: ["notify"] }).forEach(admin => {
                         admin.sendMessage(`§7[§e#§7] §e${player.name} §ais using §3!spawn `);
-                        system.run(() => admin.runCommand(`playsound note.pling @s`));
+                        admin.runCommand(`playsound note.pling @s`);
                     });
-                })
-                .catch(error => {
+                } catch (error) {
                     player.sendMessage('§7[§c-§7] §cError: Teleportation failed. Please try again.');
                     console.error(`Teleport error: ${error.message}`);
-                });
+                }
+            });
         }
     }, 20);
 });

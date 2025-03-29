@@ -273,15 +273,16 @@ function handleRTP(player) {
             system.clearRun(countdownInterval);
             system.run(() => player.runCommand(`/effect @s resistance 25 255 true`));
 
-            system.run(() => player.runCommand(`/spreadplayers ~ ~ 500 1000 @s`))
-                .then(() => {
+            system.run(() => {
+                try{
+                    player.runCommand(`/spreadplayers ~ ~ 500 1000 @s`);
                     player.sendMessage('§7[§a/§7] §aYou have been randomly teleported.');
-                    system.run(() => player.runCommand('playsound random.levelup @s'));
-                })
-                .catch((error) => {
+                    player.runCommand('playsound random.levelup @s');
+                }catch(error){
                     player.sendMessage('§7[§c-§7] §cError: Unable to teleport. Please try again.');
                     console.error(`Teleport error: ${error.message}`);
-                });
+                }
+            });
 
             teleportingPlayers.delete(id);
         }
@@ -336,20 +337,21 @@ function handleSpawn(player) {
             player.sendMessage(`§7[§a/§7] §aTeleporting to spawn in §e${playerData.countdown} seconds§a...`);
             system.run(() => player.runCommand('playsound random.orb @s'));
         } else {
-            system.run(() => player.runCommand(`tp @s ${SPAWN_LOCATION.x} ${SPAWN_LOCATION.y} ${SPAWN_LOCATION.z}`))
-                .then(() => {
+            system.run(() => {
+                try{
+                    player.runCommand(`tp @s ${SPAWN_LOCATION.x} ${SPAWN_LOCATION.y} ${SPAWN_LOCATION.z}`);
                     player.sendMessage('§7[§a/§7] §aYou have been teleported to spawn.');
-                    system.run(() => player.runCommand('playsound random.levelup @s'));
+                    player.runCommand('playsound random.levelup @s');
                     // Notification for Admins
                     world.getPlayers({ tags: ["notify"] }).forEach(admin => {
                         admin.sendMessage(`§7[§e#§7] §e${player.name} §ais using §3!spawn `);
-                        system.run(() => admin.runCommand(`playsound note.pling @s`));
+                        admin.runCommand(`playsound note.pling @s`);
                     });
-                })
-                .catch(error => {
+                }catch(error){
                     player.sendMessage('§7[§c-§7] §cError: Teleportation failed. Please try again.');
                     console.error(`Teleport error: ${error.message}`);
-                });
+                }
+            });
 
             teleportingPlayers.delete(id);
             system.clearRun(countdownInterval);
