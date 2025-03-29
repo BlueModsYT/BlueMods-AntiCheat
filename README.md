@@ -38,7 +38,7 @@
 - Anti Operator Blocks
 - Anti Duplicate Message
 - Invalid Namespoof
-- Why are these patched preventions still here? [Answer is in the Link / Secure.md](https://github.com/BlueModsYT/BlueMods/blob/main/SECURE.md)
+- Why are these patched preventions still here? [Answer is in the Link / Secure.md](https://github.com/BlueModsYT/BlueMods-AntiCheat/blob/main/SECURE.md)
 
 ## **SYSTEMS**
 - Projectile Sound
@@ -150,7 +150,7 @@ These settings are essential for running commands and features that operate in b
 
 ## **DOWNLOAD HERE**
 - [BlueMods](https://bluemods.neocities.org)
-- [GitHub Releases](https://github.com/BlueModsYT/BlueMods/releases)
+- [GitHub Releases](https://github.com/BlueModsYT/BlueMods-AntiCheat/releases)
 
 Contact us by joining our official Discord server for bug fixes and suggestions.
 <p align="center">
