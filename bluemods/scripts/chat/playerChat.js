@@ -4,6 +4,7 @@ import { Command } from "../systems/handler/CommandHandler.js";
 import { ModulesPanel } from "./playerCompass.js";
 import { badWords } from "./config.js";
 import main from "../commands/config.js";
+import { customFormUICodes } from "../ui/customFormUICodes.js";
 import { replaceEmojis } from "./playerEmojis.js";
 
 // All rights reserved @bluemods.lol - discord account. | Please report any bugs or glitches in our discord server https://dsc.gg/bluemods
@@ -205,12 +206,12 @@ Command.register({
     const integerValue = args[2]?.toLowerCase();
 
     if (!action || !["enable", "disable", "list", "set"].includes(action)) {
-        player.sendMessage(`§7[§b#§7] §cInvalid action! §aUse: §3!chatconfig enable/disable <chatConfigOption> §7or §3!chatconfig list §7or §3!chatconfig set <chatConfigOption> <integerValue>`);
+        player.sendMessage(`§7[§b#§7] §cInvalid action! §aUse: §3!chatconfig §aenable§7/§cdisable §7<§gchatConfigOption§7> §7or §3!chatconfig §alist §7or §3!chatconfig §eset §7<§gchatConfigOption§7> <§gintegerValue§7>`);
         return;
     }
 
     if (action === "set" && isNaN(integerValue)) {
-        player.sendMessage(`§7[§b#§7] §c!Invalid integer value provided! §aUse: §3!chatconfig enable/disable <chatConfigOption> §7or §3!chatconfig list §7or §3!chatconfig set <chatConfigOption> <integerValue>`);
+        player.sendMessage(`§7[§b#§7] §c!Invalid integer value provided! §aUse: §3!chatconfig §aenable§7/§cdisable §7<§gchatConfigOption§7> §7or §3!chatconfig §alist §7or §3!chatconfig §eset §7<§gchatConfigOption§7> <§gintegerValue§7>`);
         return;
     }
 
@@ -262,7 +263,7 @@ Command.register({
 });
 
 system.runInterval(() => {
-    world.getDimension("overworld").runCommandAsync(`scoreboard players reset @a Sents`);
+    world.getDimension("overworld").runCommand(`scoreboard players reset @a Sents`);
 }, 6000);
 
 world.beforeEvents.chatSend.subscribe((data) => {
@@ -281,13 +282,13 @@ world.beforeEvents.chatSend.subscribe((data) => {
 
 export function ChatConfigurationPanel(player) {
     const form = new ActionFormData()
-        .title("§l§bBlueMods §7| §aConfiguration")
+        .title(customFormUICodes.action.titles.formStyles.gridMenu + "§l§bBlueMods §7| §aConfiguration")
         .body("Manage chat settings:");
 
-    form.button("Chat Ranks", "textures/ui/icon_book_writable")
-        .button("Chat Display", "textures/ui/icon_book_writable")
-        .button("Chat Config", "textures/ui/icon_book_writable")
-        .button("§cBack", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.main_only + "Chat Ranks", "textures/ui/icon_book_writable")
+        .button(customFormUICodes.action.buttons.positions.main_only + "Chat Display", "textures/ui/icon_book_writable")
+        .button(customFormUICodes.action.buttons.positions.main_only + "Chat Config", "textures/ui/icon_book_writable")
+        .button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
 
     form.show(player).then((response) => {
         if (response.canceled) return;
@@ -313,14 +314,14 @@ export function ChatConfigurationPanel(player) {
 
 function ChatDisplayPanel(player) {
     const form = new ActionFormData()
-        .title("§l§bBlueMods §7| §aChat Display")
+        .title(customFormUICodes.action.titles.formStyles.gridMenu + "§l§bBlueMods §7| §aChat Display")
         .body("Manage chat display settings:");
 
-    form.button("§aSet Chat Format", "textures/ui/icon_book_writable")
-        .button("§eDefault Chat Format", "textures/ui/minus")
-        .button("§aEnable Chat Display", "textures/ui/realms_green_check.png")
-        .button("§cDisable Chat Display", "textures/ui/redX1.png")
-        .button("§cBack", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.main_only + "§aSet Chat Format", "textures/ui/icon_book_writable")
+        .button(customFormUICodes.action.buttons.positions.main_only + "§eDefault Chat Format", "textures/ui/minus")
+        .button(customFormUICodes.action.buttons.positions.main_only + "§aEnable Chat Display", "textures/ui/realms_green_check.png")
+        .button(customFormUICodes.action.buttons.positions.main_only + "§cDisable Chat Display", "textures/ui/redX1.png")
+        .button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
 
     form.show(player).then((response) => {
         if (response.canceled) return;
@@ -383,15 +384,15 @@ function setChatFormatPanel(player) {
 
 function ChatConfigPanel(player) {
     const form = new ActionFormData()
-        .title("§l§bBlueMods §7| §aChat Config")
+        .title(customFormUICodes.action.titles.formStyles.gridMenu + "§l§bBlueMods §7| §aChat Config")
         .body("Manage chat config settings:");
 
     for (const [key, value] of Object.entries(main.chatConfig)) {
         const statusIcon = value ? "textures/ui/realms_green_check.png" : "textures/ui/redX1.png";
-        form.button(`§e${key}`, statusIcon);
+        form.button(customFormUICodes.action.buttons.positions.main_only + `§e${key}`, statusIcon);
     }
 
-    form.button("§cBack", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
 
     form.show(player).then((response) => {
         if (response.canceled) return;
@@ -416,12 +417,12 @@ function ChatConfigPanel(player) {
 
 function ChatRanksPanel(player) {
     const form = new ActionFormData()
-        .title("§l§bBlueMods §7| §aChat Ranks")
+        .title(customFormUICodes.action.titles.formStyles.gridMenu + "§l§bBlueMods §7| §aChat Ranks")
         .body("Manage chat ranks:")
-        .button("§aAdd Rank", "textures/ui/color_plus")
-        .button("§cRemove Rank", "textures/ui/minus")
-        .button("§eEdit Rank", "textures/ui/editIcon")
-        .button("§cBack", "textures/ui/arrow_left");
+        .button(customFormUICodes.action.buttons.positions.main_only + "§aAdd Rank", "textures/ui/color_plus")
+        .button(customFormUICodes.action.buttons.positions.main_only + "§cRemove Rank", "textures/ui/minus")
+        .button(customFormUICodes.action.buttons.positions.main_only + "§eEdit Rank", "textures/ui/editIcon")
+        .button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
 
     form.show(player).then((response) => {
         if (response.canceled) return;
@@ -446,14 +447,14 @@ function ChatRanksPanel(player) {
 function SelectPlayerPanel(player) {
     const onlinePlayers = Array.from(world.getPlayers());
     const form = new ActionFormData()
-        .title("§l§bBlueMods §7| §aSelect Player")
+        .title(customFormUICodes.action.titles.formStyles.gridMenu + "§l§bBlueMods §7| §aSelect Player")
         .body("Choose a player to assign a rank:");
 
     onlinePlayers.forEach((p) => {
-        form.button("§a" + p.name, "textures/ui/icon_steve");
+        form.button(customFormUICodes.action.buttons.positions.main_only + "§a" + p.name, "textures/ui/icon_steve");
     });
 
-    form.button("§cBack", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
 
     form.show(player).then((response) => {
         if (response.canceled) return;
@@ -489,7 +490,7 @@ function AddRankPanel(player, targetPlayer) {
             return;
         }
 
-        world.getDimension("overworld").runCommandAsync(`tag "${targetPlayer}" add rank:${rankColor}${rankName}`);
+        world.getDimension("overworld").runCommand(`tag "${targetPlayer}" add rank:${rankColor}${rankName}`);
         player.sendMessage(`§7[§b#§7] §aAssigned rank §r${rankColor}${rankName} §ato §e${targetPlayer}§a.`);
         system.run(() => player.runCommand("playsound random.levelup @s"));
     }).catch((error) => console.error("Failed to show add rank panel:", error));
@@ -498,14 +499,14 @@ function AddRankPanel(player, targetPlayer) {
 function RemoveRankPanel(player) {
     const onlinePlayers = Array.from(world.getPlayers());
     const form = new ActionFormData()
-        .title("§l§bBlueMods §7| §aSelect Player")
+        .title(customFormUICodes.action.titles.formStyles.gridMenu + "§l§bBlueMods §7| §aSelect Player")
         .body("Choose a player to remove their rank:");
 
     onlinePlayers.forEach((p) => {
-        form.button("§a" + p.name, "textures/ui/icon_steve");
+        form.button(customFormUICodes.action.buttons.positions.main_only + "§a" + p.name, "textures/ui/icon_steve");
     });
 
-    form.button("§cBack", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
 
     form.show(player).then((response) => {
         if (response.canceled) return;
@@ -528,15 +529,15 @@ function RemoveRankListPanel(player, targetPlayer) {
     }
 
     const form = new ActionFormData()
-        .title(`§l§bBlueMods §7| §a${targetPlayer.name}'s Ranks`)
+        .title(customFormUICodes.action.titles.formStyles.gridMenu + `§l§bBlueMods §7| §a${targetPlayer.name}'s Ranks`)
         .body("Select a rank to remove:");
 
     rankTags.forEach(rank => {
         const rankName = rank.replace("rank:", "");
-        form.button(`§c${rankName}`, "textures/items/name_tag");
+        form.button(customFormUICodes.action.buttons.positions.main_only + `§c${rankName}`, "textures/items/name_tag");
     });
 
-    form.button("§cBack", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
 
     form.show(player).then((response) => {
         if (response.canceled) return;
@@ -554,10 +555,10 @@ function ConfirmRemoveRankPanel(player, targetPlayer, selectedRank) {
     const rankName = selectedRank.replace("rank:", "");
 
     const form = new ActionFormData()
-        .title(`§l§cConfirm Removal`)
+        .title(customFormUICodes.action.titles.formStyles.gridMenu + `§l§cConfirm Removal`)
         .body(`Are you sure you want to remove the rank §r${rankName} §cfrom §e${targetPlayer.name}§c?`)
-        .button("§aConfirm", "textures/ui/realms_green_check.png")
-        .button("§cCancel", "textures/ui/redX1.png"); 
+        .button(customFormUICodes.action.buttons.positions.main_only + "§aConfirm", "textures/ui/realms_green_check.png")
+        .button(customFormUICodes.action.buttons.positions.main_only + "§cCancel", "textures/ui/redX1.png"); 
 
     form.show(player).then((response) => {
         if (response.canceled) return;
@@ -574,14 +575,14 @@ function ConfirmRemoveRankPanel(player, targetPlayer, selectedRank) {
 function EditRankPanel(player) {
     const onlinePlayers = Array.from(world.getPlayers());
     const form = new ActionFormData()
-        .title("§l§bBlueMods §7| §aEdit Player Rank")
+        .title(customFormUICodes.action.titles.formStyles.gridMenu + "§l§bBlueMods §7| §aEdit Player Rank")
         .body("Choose a player to edit their rank:");
 
     onlinePlayers.forEach((p) => {
-        form.button("§a" + p.name, "textures/ui/icon_steve");
+        form.button(customFormUICodes.action.buttons.positions.main_only + "§a" + p.name, "textures/ui/icon_steve");
     });
 
-    form.button("§cBack", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
 
     form.show(player).then((response) => {
         if (response.canceled) return;
@@ -604,15 +605,15 @@ function EditRankListPanel(player, targetPlayer) {
     }
 
     const form = new ActionFormData()
-        .title(`§l§bBlueMods §7| §a${targetPlayer.name}'s Ranks`)
+        .title(customFormUICodes.action.titles.formStyles.gridMenu + `§l§bBlueMods §7| §a${targetPlayer.name}'s Ranks`)
         .body("Select a rank to edit:");
 
     rankTags.forEach(rank => {
         const rankName = rank.replace("rank:", "");
-        form.button(`§c${rankName}`, "textures/items/name_tag");
+        form.button(customFormUICodes.action.buttons.positions.main_only + `§c${rankName}`, "textures/items/name_tag");
     });
 
-    form.button("§cBack", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
 
     form.show(player).then((response) => {
         if (response.canceled) return;
@@ -658,4 +659,3 @@ function EditRankDetailsPanel(player, targetPlayer, selectedRank) {
         system.run(() => player.runCommand("playsound random.levelup @s"));
     }).catch((error) => console.error("Failed to show edit rank details panel:", error));
 }
-
