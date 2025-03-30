@@ -12,14 +12,14 @@ export function showTeleportRequestForm(player) {
     const toggleButton = getTeleportToggleButton(player);
 
     const form = new ActionFormData()
-        .title("§l§bBlueMods §7| §aTeleport Request")
+        .title(customFormUICodes.action.titles.formStyles.gridMenu + "§l§bBlueMods §7| §aTeleport Request")
         .body("Choose an option:")
-        .button("§aRequest", "textures/items/ender_pearl")
-        .button("§eOutgoing", "textures/items/ender_pearl")
-        .button("§fIncoming", "textures/items/ender_pearl")
-        .button("§dBlock List", "textures/items/blaze_powder")
-        .button(toggleButton.text, toggleButton.icon)
-        .button("§cBack to Menu", "textures/blocks/barrier");
+        .button(customFormUICodes.action.buttons.positions.main_only + "§aRequest", "textures/items/ender_pearl")
+        .button(customFormUICodes.action.buttons.positions.main_only + "§eOutgoing", "textures/items/ender_pearl")
+        .button(customFormUICodes.action.buttons.positions.main_only + "§fIncoming", "textures/items/ender_pearl")
+        .button(customFormUICodes.action.buttons.positions.main_only + "§dBlock List", "textures/items/blaze_powder")
+        .button(customFormUICodes.action.buttons.positions.main_only + toggleButton.text, toggleButton.icon)
+        .button(customFormUICodes.action.buttons.positions.main_only + "§cBack to Menu", "textures/blocks/barrier");
 
     form.show(player).then((response) => {
         if (response.canceled) return player.sendMessage("§7[§b#§7] §cTeleport request menu closed.");
@@ -54,11 +54,11 @@ export function showPlayerSelectionForm(player) {
     if (!players.length) return player.sendMessage("§7[§b#§7] §cNo players available.");
 
     const form = new ActionFormData()
-        .title("§l§bBlueMods §7| §aSelect Player")
+        .title(customFormUICodes.action.titles.formStyles.gridMenu + "§l§bBlueMods §7| §aSelect Player")
         .body("Choose a player to send a teleport request:");
     
-    players.forEach(p => form.button("§a" + p.name, "textures/ui/icon_steve"));
-    form.button("§cBack", "textures/ui/arrow_left");
+    players.forEach(p => form.button(customFormUICodes.action.buttons.positions.main_only + "§a" + p.name, "textures/ui/icon_steve"));
+    form.button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
 
     form.show(player).then((response) => {
         if (response.canceled) return player.sendMessage("§7[§b#§7] §cPlayer selection canceled.");
@@ -75,13 +75,13 @@ export function showBlockList(player) {
     const players = world.getPlayers().filter(p => p.id !== player.id);
 
     const form = new ActionFormData()
-        .title("§l§bBlueMods §7| §aBlocked Players")
+        .title(customFormUICodes.action.titles.formStyles.gridMenu + "§l§bBlueMods §7| §aBlocked Players")
         .body("Select a player to block/unblock:")
-        .button("§aBack", "textures/ui/arrow_left");
+        .button(customFormUICodes.action.buttons.positions.main_only + "§aBack", "textures/ui/arrow_left");
 
     players.forEach(p => {
         const isBlocked = blockedPlayers.includes(p.id);
-        form.button(`${isBlocked ? "§dUnblock" : "§dBlock"}§7: §a${p.name}`, "textures/ui/icon_steve");
+        form.button(customFormUICodes.action.buttons.positions.main_only + `${isBlocked ? "§dUnblock" : "§dBlock"}§7: §a${p.name}`, "textures/ui/icon_steve");
     });
 
     form.show(player).then((response) => {
@@ -189,11 +189,11 @@ export function showOutgoingRequests(player) {
     if (!outgoing.length) return player.sendMessage("§7[§b#§7] §cNo outgoing requests.");
 
     const form = new ActionFormData()
-        .title("§l§bBlueMods §7| §eOutgoing Requests")
+        .title(customFormUICodes.action.titles.formStyles.gridMenu + "§l§bBlueMods §7| §eOutgoing Requests")
         .body("Click a request to cancel:")
-        .button("§aBack", "textures/ui/arrow_left");
+        .button(customFormUICodes.action.buttons.positions.main_only + "§aBack", "textures/ui/arrow_left");
 
-    outgoing.forEach(req => form.button(`§cCancel request to §e${req.targetName}`, "textures/ui/icon_steve"));
+    outgoing.forEach(req => form.button(customFormUICodes.action.buttons.positions.main_only + `§cCancel request to §e${req.targetName}`, "textures/ui/icon_steve"));
 
     form.show(player).then((response) => {
         if (response.canceled || response.selection === 0) return showTeleportRequestForm(player);
@@ -211,11 +211,11 @@ export function showIncomingRequests(player) {
     if (!incomingRequests.length) return player.sendMessage("§7[§b#§7] §cNo incoming requests.");
 
     const form = new ActionFormData()
-        .title("§l§bBlueMods §7| §fIncoming Requests")
+        .title(customFormUICodes.action.titles.formStyles.gridMenu + "§l§bBlueMods §7| §fIncoming Requests")
         .body("Select a request to accept or decline:")
-        .button("§aBack", "textures/ui/arrow_left");
+        .button(customFormUICodes.action.buttons.positions.main_only + "§aBack", "textures/ui/arrow_left");
 
-    incomingRequests.forEach(req => form.button(`§e${req.senderName}`, "textures/ui/icon_steve"));
+    incomingRequests.forEach(req => form.button(customFormUICodes.action.buttons.positions.main_only + `§e${req.senderName}`, "textures/ui/icon_steve"));
 
     form.show(player).then((response) => {
         if (response.canceled || response.selection === 0) return showTeleportRequestForm(player);
@@ -229,10 +229,10 @@ export function showIncomingRequests(player) {
 
 function showIncomingRequestAction(player, request) {
     const form = new ActionFormData()
-        .title("§l§bBlueMods §7| §fIncoming Request")
+        .title(customFormUICodes.action.titles.formStyles.gridMenu + "§l§bBlueMods §7| §fIncoming Request")
         .body(`§e${request.senderName} §ahas requested to teleport to you.`)
-        .button("§aAccept", "textures/ui/confirm")
-        .button("§cDecline", "textures/ui/cancel");
+        .button(customFormUICodes.action.buttons.positions.main_only + "§aAccept", "textures/ui/confirm")
+        .button(customFormUICodes.action.buttons.positions.main_only + "§cDecline", "textures/ui/cancel");
 
     form.show(player).then((response) => {
         if (response.canceled) return showIncomingRequests(player);
