@@ -428,7 +428,7 @@ export function pcCopyTextPanel(player, text) {
     const form = new ModalFormData()
         .title(customFormUICodes.action.titles.formStyles.gridMenu + "§l§bBlueMods §7| §aCopy Text")
         .label("Click on the text box below, then press Ctrl+A to select all text and Ctrl+C to copy, this will only work if you are on PC or have a keyboard connected.")
-        .textField("Text:", text);
+        .textField("Text:", text, text);
 
     form.show(player).then((response) => {
         if (response.canceled) return;
