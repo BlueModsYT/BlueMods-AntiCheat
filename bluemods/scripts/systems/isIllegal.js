@@ -194,16 +194,16 @@ function startEntityChecks() {
 
 export function ModuleStatesPanel(player) {
     const form = new ActionFormData()
-        .title("§l§bBlueMods §7| §aModule States")
+        .title(customFormUICodes.action.titles.formStyles.gridMenu + "§l§bBlueMods §7| §aModule States")
         .body("§cWarning: Disabling this module may put the server at risk!\n§fOnly turn it off if you fully understand the consequences.");
 
     Object.entries(main.moduleStates).forEach(([module, isEnabled]) => {
         const statusText = isEnabled ? "§aEnabled" : "§cDisabled";
         const statusIcon = isEnabled ? "textures/ui/realms_green_check.png" : "textures/ui/redX1.png";
-        form.button(`§e${module}\n§7[ ${statusText} §7]`, statusIcon);
+        form.button(customFormUICodes.action.buttons.positions.main_only + `§e${module}\n§7[ ${statusText} §7]`, statusIcon);
     });
 
-    form.button("§cBack", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
 
     form.show(player).then((response) => {
         if (response.canceled) return;
@@ -231,3 +231,64 @@ export function ModuleStatesPanel(player) {
 
 startItemChecks();
 startEntityChecks();
+
+//
+// Module Command
+//
+
+Command.register({
+    name: "module",
+    description: "",
+    aliases: [],
+    permission: (player) => player.hasTag(adminTag),
+}, (data, args) => {
+    const { player } = data;
+    const action = args[0]?.toLowerCase();
+    const moduleName = args[1]?.toLowerCase();
+
+    if (!action || !["enable", "disable", "list"].includes(action)) {
+        player.sendMessage(`§7[§b#§7] §cInvalid action! §aUse: §3!module enable/disable <module> §7or §3!module list`);
+        return;
+    }
+
+    if (action === "list") {
+        let moduleList = "§7[§b#§7] §aModule States:\n";
+        Object.entries(main.moduleStates).forEach(([key, state], index) => {
+            moduleList += `§7[§e${index + 1}§7] §7[${state ? "§aENABLED" : "§cDISABLED"}§7] §e${key}\n`;
+        });
+        player.sendMessage(moduleList);
+        return;
+    }
+
+    const availableModules = Object.keys(main.moduleStates);
+    const actualModuleName = availableModules.find(key => key.toLowerCase() === moduleName);
+
+    if (!actualModuleName) {
+        player.sendMessage(`§7[§b#§7] §cInvalid module name. Available modules: ${availableModules.join(", ")}`);
+        return;
+    }
+
+    if (action === "enable") {
+        if (main.moduleStates[actualModuleName]) {
+            player.sendMessage(`§7[§b#§7] §cModule §e${actualModuleName} §cis already enabled.`);
+        } else {
+            main.moduleStates[actualModuleName] = true;
+            saveModuleStates();
+            player.sendMessage(`§7[§b#§7] §aModule §e${actualModuleName} §ahas been enabled.`);
+
+            if (actualModuleName.includes("ItemCheck")) startItemChecks();
+            if (actualModuleName.includes("Mob") || actualModuleName.includes("Minecart")) startEntityChecks();
+        }
+    } else if (action === "disable") {
+        if (!main.moduleStates[actualModuleName]) {
+            player.sendMessage(`§7[§b#§7] §cModule §e${actualModuleName} §cis already disabled.`);
+        } else {
+            main.moduleStates[actualModuleName] = false;
+            saveModuleStates();
+            player.sendMessage(`§7[§b#§7] §aModule §e${actualModuleName} §ahas been disabled.`);
+
+            if (actualModuleName.includes("ItemCheck")) startItemChecks();
+            if (actualModuleName.includes("Mob") || actualModuleName.includes("Minecart")) startEntityChecks();
+        }
+    }
+});
