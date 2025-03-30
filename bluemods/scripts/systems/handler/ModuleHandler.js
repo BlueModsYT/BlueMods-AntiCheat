@@ -49,17 +49,17 @@ function saveDailyRewards() {
 
 export function ViewRewardsPanel(player) {
     const form = new ActionFormData()
-        .title("§l§bBlueMods §7| §aView Rewards")
+        .title(customFormUICodes.action.titles.formStyles.gridMenu + "§l§bBlueMods §7| §aView Rewards")
         .body("§7Current daily rewards:");
 
     dailyRewards.forEach((reward, index) => {
         const rewardText = `§e${reward.count}x ${reward.item} §7(§a${reward.chance}% Chance§7)`;
         const itemTexture = `textures/items/${reward.item}`;
 
-        form.button(rewardText, itemTexture || FALLBACK_TEXTURE);
+        form.button(customFormUICodes.action.buttons.positions.main_only + rewardText, itemTexture || FALLBACK_TEXTURE);
     });
 
-    form.button("§cBack", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
 
     form.show(player).then((response) => {
         if (response.canceled) return;
@@ -107,17 +107,17 @@ export function AddRewardPanel(player) {
 
 export function RemoveRewardPanel(player) {
     const form = new ActionFormData()
-        .title("§l§bBlueMods §7| §cRemove Reward")
+        .title(customFormUICodes.action.titles.formStyles.gridMenu + "§l§bBlueMods §7| §cRemove Reward")
         .body("§7Select a reward to remove:");
 
     dailyRewards.forEach((reward, index) => {
         const rewardText = `§e${reward.count}x ${reward.item} §7(§a${reward.chance}% Chance§7)`;
         const itemTexture = `textures/items/${reward.item}`;
 
-        form.button(rewardText, itemTexture || FALLBACK_TEXTURE);
+        form.button(customFormUICodes.action.buttons.positions.main_only + rewardText, itemTexture || FALLBACK_TEXTURE);
     });
 
-    form.button("§cBack", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
 
     form.show(player).then((response) => {
         if (response.canceled) return;
@@ -141,17 +141,17 @@ export function RemoveRewardPanel(player) {
 
 export function EditRewardPanel(player) {
     const form = new ActionFormData()
-        .title("§l§bBlueMods §7| §eEdit Reward")
+        .title(customFormUICodes.action.titles.formStyles.gridMenu + "§l§bBlueMods §7| §eEdit Reward")
         .body("§7Select a reward to edit:");
 
     dailyRewards.forEach((reward, index) => {
         const rewardText = `§e${reward.count}x ${reward.item} §7(§a${reward.chance}% Chance§7)`;
         const itemTexture = `textures/items/${reward.item}`;
 
-        form.button(rewardText, itemTexture || FALLBACK_TEXTURE);
+        form.button(customFormUICodes.action.buttons.positions.main_only + rewardText, itemTexture || FALLBACK_TEXTURE);
     });
 
-    form.button("§cBack", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
 
     form.show(player).then((response) => {
         if (response.canceled) return;
