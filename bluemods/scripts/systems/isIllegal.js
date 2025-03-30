@@ -3,6 +3,7 @@ import { Command } from "./handler/CommandHandler.js";
 import { ActionFormData } from "@minecraft/server-ui";
 import { isLored, isDanger, isOperator, isSpawnEgg, isUnknown } from "./config.js";
 import { ModulesPanel } from "../chat/playerCompass.js";
+import { customFormUICodes } from "../ui/customFormUICodes.js";
 import main from "../commands/config.js";
 
 const adminTag = "admin";
