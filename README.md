@@ -7,9 +7,9 @@
   BlueMods AntiCheat for Minecraft Bedrock is a powerful tool designed to protect your server from hackers and cheaters.
 </p>
 <p align="center">
-  <img src="https://img.shields.io/github/downloads/BlueModsYT/BlueMods/total?style=for-the-badge" alt="GitHub Downloads">
-  <img src="https://img.shields.io/github/commit-activity/m/BlueModsYT/BlueMods?style=for-the-badge" alt="Commits Per Week">
-  <img src="https://img.shields.io/github/last-commit/BlueModsYT/BlueMods?style=for-the-badge" alt="Last Commit">
+  <img src="https://img.shields.io/github/downloads/BlueModsYT/BlueMods-AntiCheat/total?style=for-the-badge" alt="GitHub Downloads">
+  <img src="https://img.shields.io/github/commit-activity/m/BlueModsYT/BlueMods-AntiCheat?style=for-the-badge" alt="Commits Per Week">
+  <img src="https://img.shields.io/github/last-commit/BlueModsYT/BlueMods-AntiCheat?style=for-the-badge" alt="Last Commit">
   <img src="https://img.shields.io/discord/913049851531522078?style=for-the-badge&label=Discord&color=0000ff&link=https%3A%2F%2Fdiscord.gg%2Fbluemods-anticheat-913049851531522078" alt="Discord">
 </p>
 
