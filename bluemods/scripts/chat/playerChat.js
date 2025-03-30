@@ -288,7 +288,8 @@ export function ChatConfigurationPanel(player) {
     form.button(customFormUICodes.action.buttons.positions.main_only + "Chat Ranks", "textures/ui/icon_book_writable")
         .button(customFormUICodes.action.buttons.positions.main_only + "Chat Display", "textures/ui/icon_book_writable")
         .button(customFormUICodes.action.buttons.positions.main_only + "Chat Config", "textures/ui/icon_book_writable")
-        .button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
+        .button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left")
+        .button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
 
     form.show(player).then((response) => {
         if (response.canceled) return;
@@ -306,6 +307,8 @@ export function ChatConfigurationPanel(player) {
             case 3:
                 ModulesPanel(player);
                 break;
+            case 4:
+                break;
         }
     }).catch((error) => {
         console.error("Failed to show chat configuration panel:", error);
@@ -321,7 +324,8 @@ function ChatDisplayPanel(player) {
         .button(customFormUICodes.action.buttons.positions.main_only + "§eDefault Chat Format", "textures/ui/minus")
         .button(customFormUICodes.action.buttons.positions.main_only + "§aEnable Chat Display", "textures/ui/realms_green_check.png")
         .button(customFormUICodes.action.buttons.positions.main_only + "§cDisable Chat Display", "textures/ui/redX1.png")
-        .button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
+        .button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left")
+        .button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
 
     form.show(player).then((response) => {
         if (response.canceled) return;
@@ -344,6 +348,8 @@ function ChatDisplayPanel(player) {
                 break;
             case 4:
                 ChatConfigurationPanel(player);
+                break;
+            case 5:
                 break;
         }
     }).catch((error) => {
@@ -392,10 +398,11 @@ function ChatConfigPanel(player) {
         form.button(customFormUICodes.action.buttons.positions.main_only + `§e${key}`, statusIcon);
     }
 
-    form.button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
 
     form.show(player).then((response) => {
-        if (response.canceled) return;
+        if (response.canceled || response.selection === Object.keys(main.chatConfig).length + 1) return;
 
         if (response.selection === Object.keys(main.chatConfig).length) {
             ChatConfigurationPanel(player);
@@ -422,7 +429,8 @@ function ChatRanksPanel(player) {
         .button(customFormUICodes.action.buttons.positions.main_only + "§aAdd Rank", "textures/ui/color_plus")
         .button(customFormUICodes.action.buttons.positions.main_only + "§cRemove Rank", "textures/ui/minus")
         .button(customFormUICodes.action.buttons.positions.main_only + "§eEdit Rank", "textures/ui/editIcon")
-        .button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
+        .button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left")
+        .button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
 
     form.show(player).then((response) => {
         if (response.canceled) return;
@@ -440,6 +448,8 @@ function ChatRanksPanel(player) {
             case 3:
                 ChatConfigurationPanel(player);
                 break;
+            case 4:
+                break;
         }
     }).catch((error) => console.error("Failed to show chat ranks panel:", error));
 }
@@ -454,10 +464,11 @@ function SelectPlayerPanel(player) {
         form.button(customFormUICodes.action.buttons.positions.main_only + "§a" + p.name, "textures/ui/icon_steve");
     });
 
-    form.button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
 
     form.show(player).then((response) => {
-        if (response.canceled) return;
+        if (response.canceled || response.selection === onlinePlayers.length + 1) return;
         if (response.selection === onlinePlayers.length) {
             ChatRanksPanel(player);
             return;
@@ -506,10 +517,11 @@ function RemoveRankPanel(player) {
         form.button(customFormUICodes.action.buttons.positions.main_only + "§a" + p.name, "textures/ui/icon_steve");
     });
 
-    form.button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
 
     form.show(player).then((response) => {
-        if (response.canceled) return;
+        if (response.canceled || response.selection === onlinePlayers.length + 1) return;
         if (response.selection === onlinePlayers.length) {
             ChatRanksPanel(player);
             return;
@@ -537,10 +549,11 @@ function RemoveRankListPanel(player, targetPlayer) {
         form.button(customFormUICodes.action.buttons.positions.main_only + `§c${rankName}`, "textures/items/name_tag");
     });
 
-    form.button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
 
     form.show(player).then((response) => {
-        if (response.canceled) return;
+        if (response.canceled || response.selection === rankTags.length + 1) return;
         if (response.selection === rankTags.length) {
             RemoveRankPanel(player);
             return;
@@ -582,10 +595,11 @@ function EditRankPanel(player) {
         form.button(customFormUICodes.action.buttons.positions.main_only + "§a" + p.name, "textures/ui/icon_steve");
     });
 
-    form.button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
 
     form.show(player).then((response) => {
-        if (response.canceled) return;
+        if (response.canceled || response.selection === onlinePlayers.length + 1) return;
         if (response.selection === onlinePlayers.length) {
             ChatRanksPanel(player);
             return;
@@ -613,10 +627,11 @@ function EditRankListPanel(player, targetPlayer) {
         form.button(customFormUICodes.action.buttons.positions.main_only + `§c${rankName}`, "textures/items/name_tag");
     });
 
-    form.button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
 
     form.show(player).then((response) => {
-        if (response.canceled) return;
+        if (response.canceled || response.selection === rankTags.length + 1) return;
         if (response.selection === rankTags.length) {
             EditRankPanel(player);
             return;

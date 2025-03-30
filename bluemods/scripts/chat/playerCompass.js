@@ -35,10 +35,11 @@ function ErrorPanel(player, errorMessage = "An error has occurred.") {
         .title(customFormUICodes.action.titles.formStyles.gridMenu + "§l§cError Panel")
         .body(`§7${errorMessage}`)
         .button(customFormUICodes.action.buttons.positions.main_only + "§cClose Panel", "textures/ui/cancel")
-        .button(customFormUICodes.action.buttons.positions.main_only + "§eBack to Menu", "textures/ui/arrow_left");
+        .button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left")
+        .button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
 
     form.show(player).then((response) => {
-        if (response.canceled) return;
+        if (response.canceled || response.selection === 2) return;
 
         if (response.selection === 1) {
             showCompassUI(player);
@@ -153,7 +154,8 @@ function ModerationPanel(player) {
         .button(customFormUICodes.action.buttons.positions.main_only + "Unban Player", "textures/items/paper")
         .button(customFormUICodes.action.buttons.positions.main_only + "Mute Player", "textures/items/paper")
         .button(customFormUICodes.action.buttons.positions.main_only + "Freeze Player", "textures/items/ice_bomb")
-        .button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
+        .button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left")
+        .button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
 
     form.show(player).then((response) => {
         if (response.canceled) return;
@@ -182,6 +184,8 @@ function ModerationPanel(player) {
             case 5:
                 showCompassUI(player);
                 break;
+            case 6:
+                break;
         }
     }).catch((error) => {
         console.error("Failed to show moderation panel:", error);
@@ -196,7 +200,8 @@ function OperatorPanel(player) {
     form.button(customFormUICodes.action.buttons.positions.main_only + "Add Operator", "textures/items/name_tag")
         .button(customFormUICodes.action.buttons.positions.main_only + "Add Notification", "textures/items/name_tag")
         .button(customFormUICodes.action.buttons.positions.main_only + "Add Trusted", "textures/items/name_tag")
-        .button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
+        .button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left")
+        .button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
         
     form.show(player).then((response) => {
         if (response.canceled) return;
@@ -216,6 +221,8 @@ function OperatorPanel(player) {
                 break;
             case 3:
                 showCompassUI(player);
+                break;
+            case 4:
                 break;
         }
     }).catch((error) => {
@@ -374,10 +381,11 @@ function AboutForm(player) {
         )
         
     form.button(customFormUICodes.action.buttons.positions.main_only + "Copy Discord Link")
-        .button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
+        .button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left")
+        .button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
 
     form.show(player).then((response) => {
-        if (response.canceled) return;
+        if (response.canceled || response.selection === 2) return;
 
         if (response.selection === 0) {
             player.sendMessage("§7[§b#§7] §aDiscord Link: §ehttps://discord.gg/ppPT3MvgCk");
@@ -585,10 +593,11 @@ function showOperatorForm(player) {
         }
     });
 
-    form.button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
 
     form.show(player).then((response) => {
-        if (response.canceled) {
+        if (response.canceled || response.selection === players.length + 1) {
             player.sendMessage("§7[§b#§7] §cOperator panel closed.");
             return;
         }
@@ -634,10 +643,11 @@ function showNotifyForm(player) {
         }
     });
 
-    form.button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
 
     form.show(player).then((response) => {
-        if (response.canceled) {
+        if (response.canceled || response.selection === players.length + 1) {
             player.sendMessage("§7[§b#§7] §cNotify panel closed.");
             return;
         }
@@ -683,10 +693,11 @@ function showTrustedForm(player) {
         }
     });
 
-    form.button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
 
     form.show(player).then((response) => {
-        if (response.canceled) {
+        if (response.canceled || response.selection === players.length + 1) {
             player.sendMessage("§7[§b#§7] §cTrusted panel closed.");
             return;
         }
@@ -737,7 +748,8 @@ function homeForm(player) {
     form.button(customFormUICodes.action.buttons.positions.main_only + "§eSet Home", "textures/items/bed_yellow")
         .button(customFormUICodes.action.buttons.positions.main_only + "§cRemove Home", "textures/items/bed_red")
         .button(customFormUICodes.action.buttons.positions.main_only + "§bList Homes", "textures/items/bed_blue")
-        .button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
+        .button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left")
+        .button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
 
     form.show(player).then((response) => {
         if (response.canceled) return;
@@ -760,6 +772,8 @@ function homeForm(player) {
                     break;
                 case 3:
                     showCompassUI(player);
+                    break;
+                case 4:
                     break;
             }
         }
@@ -836,7 +850,8 @@ export function ModulesPanel(player) {
         .button(customFormUICodes.action.buttons.positions.main_only + "Chat Configuration", "textures/ui/recipe_book_icon")
         .button(customFormUICodes.action.buttons.positions.main_only + "Module States", "textures/ui/recipe_book_icon")
         .button(customFormUICodes.action.buttons.positions.main_only + "Modules | Daily Rewards", "textures/ui/recipe_book_icon")
-        .button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
+        .button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left")
+        .button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
 
     form.show(player).then((response) => {
         if (response.canceled) return;
@@ -856,6 +871,8 @@ export function ModulesPanel(player) {
                 break;
             case 4:
                 showCompassUI(player);
+                break;
+            case 5:
                 break;
         }
     }).catch((error) => {
@@ -880,10 +897,11 @@ function CommandsPanel(player) {
     }
 
     const backButtonIndex = commandKeys.length;
-    form.button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
 
     form.show(player).then((response) => {
-        if (response.canceled) return;
+        if (response.canceled || response.selection === backButtonIndex + 1) return;
 
         if (response.selection === backButtonIndex) {
             return ModulesPanel(player);
@@ -913,7 +931,8 @@ export function DailyRewardsPanel(player) {
         .button(customFormUICodes.action.buttons.positions.main_only + "§cRemove Reward", "textures/ui/minus")
         .button(customFormUICodes.action.buttons.positions.main_only + "§eEdit Reward", "textures/ui/editIcon")
         .button(customFormUICodes.action.buttons.positions.main_only + "§aCustom Cooldown", "textures/items/clock_item")
-        .button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
+        .button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left")
+        .button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
 
     form.show(player).then((response) => {
         if (response.canceled) return;
@@ -937,6 +956,8 @@ export function DailyRewardsPanel(player) {
             case 5:
                 ModulesPanel(player);
                 break;
+            case 6:
+                break;
         }
     }).catch((error) => {
         console.error("Failed to show daily rewards panel:", error);
@@ -957,7 +978,8 @@ function MiscellaneousPanel(player) {
         .button(customFormUICodes.action.buttons.positions.main_only + "§eRepair Item", "textures/ui/strength_effect")
         .button(customFormUICodes.action.buttons.positions.main_only + "§aDupe Item", "textures/ui/copy")
         .button(customFormUICodes.action.buttons.positions.main_only + "§aEnchant Item", "textures/items/book_enchanted")
-        .button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
+        .button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left")
+        .button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
 
     form.show(player).then((response) => {
         if (response.canceled) return;
@@ -978,6 +1000,8 @@ function MiscellaneousPanel(player) {
             case 4:
                 showCompassUI(player);
                 break;
+            case 5:
+                break;
         }
     }).catch((error) => {
         console.error("Failed to show modules panel:", error);
@@ -992,7 +1016,8 @@ function FloatingPanel(player) {
     form.button(customFormUICodes.action.buttons.positions.main_only + "§aCreate Floating Text", "textures/items/egg_mask")
         .button(customFormUICodes.action.buttons.positions.main_only + "§eMove Text", "textures/ui/book_shiftright_default")
         .button(customFormUICodes.action.buttons.positions.main_only + "§cRemove Text", "textures/ui/book_trash_default")
-        .button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
+        .button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left")
+        .button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
 
     form.show(player).then((response) => {
         if (response.canceled) return;
@@ -1009,6 +1034,8 @@ function FloatingPanel(player) {
                 break;
             case 3:
                 MiscellaneousPanel(player);
+                break;
+            case 4:
                 break;
         }
     }).catch((error) => {
@@ -1162,9 +1189,11 @@ function DupeItemPanel(player) {
         form.button(customFormUICodes.action.buttons.positions.main_only + `§e${entry.item.typeId} (§b${entry.item.amount}§e)`, `textures/items/${entry.item.typeId.split(":")[1]}` || `textures/ui/${entry.item.typeId.split(":")[1]}` || `textures/blocks/${entry.item.typeId.split(":")[1]}`);
     });
 
-    form.button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
 
     form.show(player).then((response) => {
+        if(response.selection === items.length + 1) return;
         if (response.canceled || response.selection === items.length) return MiscellaneousPanel(player);
 
         const selectedItem = items[response.selection];
@@ -1211,9 +1240,11 @@ function EnchantItemPanel(player) {
         form.button(customFormUICodes.action.buttons.positions.main_only + `§e${entry.item.typeId} (§b${entry.item.amount}§e)`, `textures/items/${entry.item.typeId.split(":")[1]}` || `textures/ui/${entry.item.typeId.split(":")[1]}` || `textures/blocks/${entry.item.typeId.split(":")[1]}`);
     });
 
-    form.button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
 
     form.show(player).then((response) => {
+        if(response.selection === items.length + 1) return;
         if (response.canceled || response.selection === items.length) return MiscellaneousPanel(player);
 
         const selectedItem = items[response.selection];
@@ -1234,9 +1265,11 @@ function SelectEnchantmentPanel(player, item) {
         form.button(customFormUICodes.action.buttons.positions.main_only + `§b${enchant.id} §7(Max: ${enchant.maxLevel})`);
     });
 
-    form.button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
 
     form.show(player).then((response) => {
+        if(response.selection === enchantmentTypes.length + 1) return;
         if (response.canceled || response.selection === enchantmentTypes.length) return EnchantItemPanel(player);
 
         const selectedEnchantment = enchantmentTypes[response.selection];
@@ -1372,10 +1405,11 @@ function ReportManagePanel(player) {
         form.button(customFormUICodes.action.buttons.positions.main_only + `§eReport #${index + 1}\n§7- Type: §e${report.type}\n§7- Reporter: §e${report.reporter}\n§7- Reported Player: §e${report.reportedPlayerName}`);
     });
 
-    form.button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
 
     form.show(player).then((response) => {
-        if (response.canceled) return;
+        if (response.canceled || response.selection === reports.length + 1) return;
 
         if (response.selection === reports.length) {
             showCompassUI(player);
@@ -1396,7 +1430,8 @@ function manageReportDetails(player, report) {
         .body(`§7- Type: §e${report.type}\n§7- Reporter: §e${report.reporter}\n§7- Reported Player: §e${report.reportedPlayerName}\n§7- Details: §e${report.details}`)
         .button(customFormUICodes.action.buttons.positions.main_only + "Resolve Report", "textures/ui/realms_green_check.png")
         .button(customFormUICodes.action.buttons.positions.main_only + "Delete Report", "textures/ui/redX1.png")
-        .button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
+        .button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left")
+        .button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
 
     form.show(player).then((response) => {
         if (response.canceled) return;
@@ -1412,6 +1447,8 @@ function manageReportDetails(player, report) {
                 break;
             case 2:
                 ReportManagePanel(player);
+                break;
+            case 3:
                 break;
         }
     }).catch((error) => {

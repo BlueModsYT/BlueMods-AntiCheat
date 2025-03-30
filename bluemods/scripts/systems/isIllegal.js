@@ -204,10 +204,11 @@ export function ModuleStatesPanel(player) {
         form.button(customFormUICodes.action.buttons.positions.main_only + `§e${module}\n§7[ ${statusText} §7]`, statusIcon);
     });
 
-    form.button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
 
     form.show(player).then((response) => {
-        if (response.canceled) return;
+        if (response.canceled || response.selection === Object.keys(main.moduleStates).length + 1) return;
 
         if (response.selection === Object.keys(main.moduleStates).length) {
             ModulesPanel(player);

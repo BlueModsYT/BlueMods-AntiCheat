@@ -59,10 +59,11 @@ export function ViewRewardsPanel(player) {
         form.button(customFormUICodes.action.buttons.positions.main_only + rewardText, itemTexture || FALLBACK_TEXTURE);
     });
 
-    form.button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
 
     form.show(player).then((response) => {
-        if (response.canceled) return;
+        if (response.canceled || response.selection === dailyRewards.length + 1) return;
 
         if (response.selection === dailyRewards.length) {
             DailyRewardsPanel(player);
@@ -117,10 +118,11 @@ export function RemoveRewardPanel(player) {
         form.button(customFormUICodes.action.buttons.positions.main_only + rewardText, itemTexture || FALLBACK_TEXTURE);
     });
 
-    form.button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
 
     form.show(player).then((response) => {
-        if (response.canceled) return;
+        if (response.canceled || response.selection === dailyRewards.length + 1) return;
 
         if (response.selection === dailyRewards.length) {
             DailyRewardsPanel(player);
@@ -151,10 +153,11 @@ export function EditRewardPanel(player) {
         form.button(customFormUICodes.action.buttons.positions.main_only + rewardText, itemTexture || FALLBACK_TEXTURE);
     });
 
-    form.button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
 
     form.show(player).then((response) => {
-        if (response.canceled) return;
+        if (response.canceled || response.selection === dailyRewards.length + 1) return;
 
         if (response.selection === dailyRewards.length) {
             DailyRewardsPanel(player);
