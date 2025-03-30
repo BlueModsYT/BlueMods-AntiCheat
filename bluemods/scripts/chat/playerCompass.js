@@ -1,4 +1,4 @@
-import { world, system, EnchantmentTypes } from "@minecraft/server";
+import { world, system, EnchantmentTypes, Player, PlatformType, InputMode } from "@minecraft/server";
 import { ActionFormData, ModalFormData } from "@minecraft/server-ui";
 import { banPlayer, unbanPlayer, mutePlayer, unmutePlayer, freezePlayer, unfreezePlayer, operatorPlayer, unoperatorPlayer, notifyPlayer, unnotifyPlayer, trustedPlayer, untrustedPlayer } from "../systems/handler/ModHandler.js";
 import { setHome, teleportHome, removeHome, listHomes } from "../commands/general.js"; 
@@ -380,7 +380,7 @@ function AboutForm(player) {
             `§eClick the button below to copy the Discord link!`
         )
         
-    form.button(customFormUICodes.action.buttons.positions.main_only + "Copy Discord Link")
+    form.button(customFormUICodes.action.buttons.positions.main_only + "Copy Discord Link", "textures/ui/discord-icon-512x")
         .button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left")
         .button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
 
@@ -388,13 +388,52 @@ function AboutForm(player) {
         if (response.canceled || response.selection === 2) return;
 
         if (response.selection === 0) {
-            player.sendMessage("§7[§b#§7] §aDiscord Link: §ehttps://discord.gg/ppPT3MvgCk");
-            player.sendMessage("§7[§b#§7] §aPlease manually copy the link from the chat.");
+            if(!testIfPlayerCanUsePCCopyTextPanel(player)){
+                player.sendMessage("§7[§b#§7] §aDiscord Link: §ehttps://discord.gg/ppPT3MvgCk");
+                player.sendMessage("§7[§b#§7] §aPlease manually copy the link from the chat.");
+            }else{
+                pcCopyTextPanel(player, "https://discord.gg/ppPT3MvgCk");
+            }
         } else if (response.selection === 1) {
             showCompassUI(player);
         }
     }).catch((error) => {
         console.error("Failed to show About form:", error);
+    });
+}
+
+/**
+ * Tests if the player can use the PC copy text panel.
+ * @param {Player} player The player to test.
+ * @return {boolean} True if the player can use the panel, false otherwise.
+ * @author 8Crafter
+ */
+export function testIfPlayerCanUsePCCopyTextPanel(player) {
+    if (player.clientSystemInfo.platformType === PlatformType.Desktop) {
+        return true;
+    }
+    if (player.inputInfo.lastInputModeUsed === InputMode.KeyboardAndMouse) {
+        return true;
+    }
+    return false;
+}
+
+/**
+ * Form for copying text, only works for PC users, or users with a keyboard.
+ * @param {Player} player The player to show the form to.
+ * @param {string} text The text to copy.
+ * @author 8Crafter
+ */
+export function pcCopyTextPanel(player, text) {
+    const form = new ModalFormData()
+        .title(customFormUICodes.action.titles.formStyles.gridMenu + "§l§bBlueMods §7| §aCopy Text")
+        .label("Click on the text box below, then press Ctrl+A to select all text and Ctrl+C to copy, this will only work if you are on PC or have a keyboard connected.")
+        .textField("Text:", text);
+
+    form.show(player).then((response) => {
+        if (response.canceled) return;
+    }).catch((error) => {
+        console.error("Failed to show Copy Text form:", error);
     });
 }
 
