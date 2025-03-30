@@ -153,7 +153,7 @@ function ModerationPanel(player) {
         .button(customFormUICodes.action.buttons.positions.main_only + "Unban Player", "textures/items/paper")
         .button(customFormUICodes.action.buttons.positions.main_only + "Mute Player", "textures/items/paper")
         .button(customFormUICodes.action.buttons.positions.main_only + "Freeze Player", "textures/items/ice_bomb")
-        .button(customFormUICodes.action.buttons.positions.main_only + "§cBack to Menu", "textures/blocks/barrier");
+        .button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
 
     form.show(player).then((response) => {
         if (response.canceled) return;
@@ -196,7 +196,7 @@ function OperatorPanel(player) {
     form.button(customFormUICodes.action.buttons.positions.main_only + "Add Operator", "textures/items/name_tag")
         .button(customFormUICodes.action.buttons.positions.main_only + "Add Notification", "textures/items/name_tag")
         .button(customFormUICodes.action.buttons.positions.main_only + "Add Trusted", "textures/items/name_tag")
-        .button(customFormUICodes.action.buttons.positions.main_only + "§cBack to Menu", "textures/blocks/barrier");
+        .button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
         
     form.show(player).then((response) => {
         if (response.canceled) return;
@@ -374,7 +374,7 @@ function AboutForm(player) {
         )
         
     form.button(customFormUICodes.action.buttons.positions.main_only + "Copy Discord Link")
-        .button(customFormUICodes.action.buttons.positions.main_only + "§cBack to Menu", "textures/blocks/barrier");
+        .button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
 
     form.show(player).then((response) => {
         if (response.canceled) return;
@@ -737,7 +737,7 @@ function homeForm(player) {
     form.button(customFormUICodes.action.buttons.positions.main_only + "§eSet Home", "textures/items/bed_yellow")
         .button(customFormUICodes.action.buttons.positions.main_only + "§cRemove Home", "textures/items/bed_red")
         .button(customFormUICodes.action.buttons.positions.main_only + "§bList Homes", "textures/items/bed_blue")
-        .button(customFormUICodes.action.buttons.positions.main_only + "§cBack to Menu", "textures/blocks/barrier");
+        .button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
 
     form.show(player).then((response) => {
         if (response.canceled) return;
@@ -836,7 +836,7 @@ export function ModulesPanel(player) {
         .button(customFormUICodes.action.buttons.positions.main_only + "Chat Configuration", "textures/ui/recipe_book_icon")
         .button(customFormUICodes.action.buttons.positions.main_only + "Module States", "textures/ui/recipe_book_icon")
         .button(customFormUICodes.action.buttons.positions.main_only + "Modules | Daily Rewards", "textures/ui/recipe_book_icon")
-        .button(customFormUICodes.action.buttons.positions.main_only + "§cBack to Menu", "textures/blocks/barrier");
+        .button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
 
     form.show(player).then((response) => {
         if (response.canceled) return;
@@ -957,7 +957,7 @@ function MiscellaneousPanel(player) {
         .button(customFormUICodes.action.buttons.positions.main_only + "§eRepair Item", "textures/ui/strength_effect")
         .button(customFormUICodes.action.buttons.positions.main_only + "§aDupe Item", "textures/ui/copy")
         .button(customFormUICodes.action.buttons.positions.main_only + "§aEnchant Item", "textures/items/book_enchanted")
-        .button(customFormUICodes.action.buttons.positions.main_only + "§cBack to Menu", "textures/blocks/barrier");
+        .button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
 
     form.show(player).then((response) => {
         if (response.canceled) return;
