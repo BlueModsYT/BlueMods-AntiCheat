@@ -248,7 +248,7 @@ Command.register({
     const moduleName = args[1]?.toLowerCase();
 
     if (!action || !["enable", "disable", "list"].includes(action)) {
-        player.sendMessage(`§7[§b#§7] §cInvalid action! §aUse: §3!module enable/disable <module> §7or §3!module list`);
+        player.sendMessage(`§7[§b#§7] §cInvalid action! §aUse: §3!module §aenable§7/§cdisable §7<§gmodule§7> §7or §3!module §alist`);
         return;
     }
 
