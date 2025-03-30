@@ -28,6 +28,63 @@ const tpablocks = {};
 const COOLDOWN_TIME = 10000;
 const TELEPORT_COUNTDOWN = 5;
 
+//
+// Help Command
+//
+
+function displayCategory(player, categories, page) {
+    const totalPages = categories.length;
+
+    const adjustedPage = page - 1;
+
+    if (adjustedPage < 0 || adjustedPage >= totalPages) {
+        player.sendMessage("§7[§c-§7] §cInvalid page number.");
+        system.run(() => player.runCommand(`playsound random.break @s`));
+        return;
+    }
+
+    const category = categories[adjustedPage];
+    player.sendMessage(`§l§b${category.name}§r`);
+    category.commands.forEach(line => player.sendMessage(line));
+
+    if (totalPages > 1) {
+        player.sendMessage(`\n§7You're in Page: §a${page}§7/§a${totalPages} §7| Use §a!help <page> §7to view other categories.\n`);
+    }
+}
+
+Command.register({
+    name: "help",
+    description: "",
+    aliases: ["?"]
+}, (data, args) => {
+    const player = data.player;
+    if (!isAuthorized(player, "!help")) return;
+
+    const page = args[0] ? parseInt(args[0]) : 1;
+
+    if (isNaN(page) || page < 1) {
+        player.sendMessage("§7[§c-§7] §cInvalid page number. Please use a number greater than or equal to 1.");
+        system.run(() => player.runCommand(`playsound random.break @s`));
+        return;
+    }
+
+    if (player.hasTag("admin")) {
+        displayCategory(player, main.adminCategories, page);
+    } else {
+        displayCategory(player, main.memberCategories, page);
+    }
+
+    // Notify admins
+    world.getPlayers({ tags: ["notify"] }).forEach(admin => {
+        admin.sendMessage(`§7[§e#§7] §e${player.name} §ais using §3!help §afor ${player.hasTag("admin") ? "admins" : "members"}`);
+        system.run(() => admin.runCommand(`playsound note.pling @s`));
+    });
+});
+
+//
+// About Command
+//
+
 Command.register({
     name: "about",
     description: "",
@@ -55,6 +112,10 @@ ${main.developer}
         system.run(() => admin.runCommand(`playsound note.pling @s`));
     });
 });
+
+//
+// Home Command
+//
 
 Command.register({
     name: "home",
@@ -181,16 +242,15 @@ export function teleportHome(player, homeName) {
             const dimension = home.dimension === "minecraft:overworld" ? "overworld" :
                               home.dimension === "minecraft:nether" ? "nether" : "the_end";
             
-            system.run(() => {
-                try{
-                    player.runCommand(`execute in ${dimension} run tp @s ${x} ${y} ${z}`);
+            system.run(() => player.runCommand(`execute in ${dimension} run tp @s ${x} ${y} ${z}`))
+                .then(() => {
                     player.sendMessage(`§7[§a/§7] §aTeleported to your home §e${homeName}§a.`);
-                    player.runCommand(`playsound random.levelup @s`);
-                }catch(error){
+                    system.run(() => player.runCommand(`playsound random.levelup @s`));
+                })
+                .catch((error) => {
                     player.sendMessage('§7[§c-§7] §cError: Unable to teleport to your home. Please try again.');
                     console.error(`Teleport error: ${error.message}`);
-                }
-            });
+                });
 
             teleportingPlayers.delete(player.id);
         }
@@ -243,6 +303,10 @@ export function listHomes(player) {
     system.run(() => player.runCommand(`playsound random.levelup @s`));
 }
 
+//
+// Ping Command
+//
+
 Command.register({
     name: "ping",
     description: "",
@@ -251,8 +315,7 @@ Command.register({
     const { player } = data;
     const start = Date.now();
 
-    await system.waitTicks(1);
-    player.runCommand(`testfor @s`);
+    await system.run(() => player.runCommand(`testfor @s`));
 
     const responseTime = Date.now() - start;
     
@@ -266,8 +329,12 @@ Command.register({
     const worldTPS = Math.min(20, 20);
     player.sendMessage(`§7[§a#§7] §aPing§7: §e${responseTime}ms §7[${pingStatus}§7] | §aTPS: §e${worldTPS}§7/§e20`);
 
-    player.runCommand(`playsound random.orb @s`);
+    system.run(() => player.runCommand(`playsound random.orb @s`));
 });
+
+//
+// RTP Command
+//
 
 Command.register({
     name: "rtp",
@@ -320,21 +387,24 @@ Command.register({
             system.clearRun(countdownInterval);
             system.run(() => player.runCommand(`/effect @s resistance 25 255 true`));
 
-            system.run(() => {
-                try{
-                    player.runCommand(`/spreadplayers ~ ~ 500 1000 @s`);
+            system.run(() => player.runCommand(`/spreadplayers ~ ~ 500 1000 @s`))
+                .then(() => {
                     player.sendMessage('§7[§a/§7] §aYou have been randomly teleported.');
-                    player.runCommand(`playsound random.levelup @s`);
-                } catch (error) {
+                    system.run(() => player.runCommand(`playsound random.levelup @s`));
+                })
+                .catch((error) => {
                     player.sendMessage('§7[§c-§7] §cError: Unable to teleport. Please try again.');
                     console.error(`Teleport error: ${error.message}`);
-                }
-            });
+                });
 
             teleportingPlayers.delete(id);
         }
     }, 20);
 });
+
+//
+// TPA Command
+//
 
 Command.register({
     name: "tpa",
@@ -376,4 +446,371 @@ Command.register({
             player.sendMessage("§7[§b#§7] §cInvalid usage! Use §3!tpa send <player> / !tpa accept / !tpa decline / !tpa block <player> / !tpa unblock <player>.");
             system.run(() => player.runCommand(`playsound random.break @s`));
     }
+});
+
+//
+// Ender Chest Command
+//
+
+const echest_cooldown = 2 * 60 * 60 * 1000;
+const PLAYER_COOLDOWN_KEY = "echestCooldown";
+
+Command.register({
+    name: "echest",
+    description: "Gives an Ender Chest with a cooldown.",
+    aliases: [],
+}, (data) => {
+    const { player } = data;
+    if (!isAuthorized(player, "!echest")) return;
+    const playerKey = `${player.id}:${PLAYER_COOLDOWN_KEY}`;
+
+    const lastClaimTime = world.getDynamicProperty(playerKey) || 0;
+    const currentTime = Date.now();
+
+    if (lastClaimTime && currentTime - lastClaimTime < echest_cooldown) {
+        const remainingTime = Math.ceil((echest_cooldown - (currentTime - lastClaimTime)) / 60000);
+        const hours = Math.floor(remainingTime / 60);
+        const minutes = remainingTime % 60;
+
+        player.sendMessage(
+            `§7[§b#§7] §cYou must wait §e${hours}h ${minutes}m §cto use the Ender Chest again.`
+        );
+        system.run(() => player.runCommand("playsound random.break @s"));
+        return;
+    }
+
+    const inventory = player.getComponent("inventory")?.container;
+    if (!inventory) return;
+
+    let hasEChest = false;
+    for (let i = 0; i < inventory.size; i++) {
+        const item = inventory.getItem(i);
+        if (item && item.typeId === "minecraft:ender_chest") {
+            hasEChest = true;
+            break;
+        }
+    }
+
+    if (hasEChest) {
+        player.sendMessage("§7[§b#§7] §cYou already have an Ender Chest.");
+        system.run(() => player.runCommand("playsound random.break @s"));
+        return;
+    }
+
+    system.run(() => player.runCommand("give @s ender_chest 1"))
+        .then(() => {
+            player.sendMessage("§7[§a/§7] §aYou have received an Ender Chest!");
+            system.run(() => player.runCommand("playsound random.levelup @s"));
+
+            world.setDynamicProperty(playerKey, currentTime);
+        })
+        .catch((error) => {
+            player.sendMessage("§7[§c-§7] §cFailed to give an Ender Chest. Please try again.");
+            console.error(`Error giving ender chest: ${error.message}`);
+        });
+});
+
+//
+// Daily Command
+//
+
+import { getRemainingCooldownTime } from "../systems/handler/ModuleHandler.js";
+
+const DAILY_REWARDS_KEY = "dailyRewards";
+const DAILY_COOLDOWN_KEY = "dailyCooldown";
+let dailyRewards = [];
+
+system.run(() => {
+    const storedDailyRewards = world.getDynamicProperty(DAILY_REWARDS_KEY);
+    if (!storedDailyRewards) {
+        dailyRewards = main.daily;
+        world.setDynamicProperty(DAILY_REWARDS_KEY, JSON.stringify(dailyRewards));
+    } else {
+        dailyRewards = JSON.parse(storedDailyRewards);
+    }
+});
+
+function claimDailyReward(player) {
+    const playerKey = `${player.id}:${DAILY_COOLDOWN_KEY}`;
+    const currentTime = Date.now();
+
+    const totalChance = dailyRewards.reduce((sum, reward) => sum + reward.chance, 0);
+    const randomValue = Math.random() * totalChance;
+
+    let accumulatedChance = 0;
+    let selectedReward;
+
+    for (const reward of dailyRewards) {
+        accumulatedChance += reward.chance;
+        if (randomValue <= accumulatedChance) {
+            selectedReward = reward;
+            break;
+        }
+    }
+
+    if (!selectedReward) {
+        player.sendMessage("§7[§b#§7] §cNo reward could be determined. Please try again later.");
+        system.run(() => player.runCommand("playsound random.break @s"));
+        return;
+    }
+
+    system.run(() => player.runCommand(`give @s ${selectedReward.item} ${selectedReward.count}`));
+    player.sendMessage(
+        `§7[§b#§7] §aCongratulations! You received §e${selectedReward.count} ${selectedReward.item}(s)§a as your daily reward!`
+    );
+    system.run(() => player.runCommand("playsound random.levelup @s"));
+
+    world.setDynamicProperty(playerKey, currentTime);
+}
+
+Command.register({
+    name: "daily",
+    description: "",
+    aliases: [],
+}, (data) => {
+    const { player } = data;
+    if (!isAuthorized(player, "!daily")) return;
+
+    const remainingTime = getRemainingCooldownTime(player);
+    if (remainingTime > 0) {
+        const days = Math.floor(remainingTime / (24 * 60 * 60 * 1000));
+        const hours = Math.floor((remainingTime % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
+        const minutes = Math.floor((remainingTime % (60 * 60 * 1000)) / (60 * 1000));
+        const seconds = Math.floor((remainingTime % (60 * 1000)) / 1000);
+
+        let message = "§7[§b#§7] §cYou already claimed your daily reward! Try again in ";
+
+        if (days > 0) message += `${days}d `;
+        if (hours > 0) message += `${hours}h `;
+        if (minutes > 0) message += `${minutes}m `;
+        if (seconds > 0) message += `${seconds}s`;
+
+        player.sendMessage(message.trim());
+        system.run(() => player.runCommand("playsound random.break @s"));
+        return;
+    }
+
+    claimDailyReward(player);
+});
+
+//
+// Spawn Command
+//
+
+import spawnManager from "../systems/handler/SpawnHandler.js";
+
+Command.register({
+    name: "spawn",
+    description: "Teleport to the spawn location.",
+    aliases: [],
+}, (data) => {
+    const { player } = data;
+    const { id } = player;
+    const SPAWN_LOCATION = spawnManager.getSpawnLocation();
+
+    if (!SPAWN_LOCATION) {
+        player.sendMessage('§7[§c-§7] §cSpawn location has not been set by an admin.');
+        system.run(() => player.runCommand('playsound random.break @s'));
+        return;
+    }
+
+    if (teleportingPlayers.has(id)) {
+        player.sendMessage('§7[§c-§7] §cYou are already teleporting to spawn. Please wait.');
+        return;
+    }
+
+    const initialPosition = { x: player.location.x, y: player.location.y, z: player.location.z };
+    player.sendMessage('§7[§a/§7] §aTeleporting to spawn in §e5 seconds§a. Do not move!');
+
+    teleportingPlayers.set(id, { initialPosition, countdown: TELEPORT_COUNTDOWN });
+
+    const countdownInterval = system.runInterval(() => {
+        const playerData = teleportingPlayers.get(id);
+        if (!playerData || !player) {
+            system.clearRun(countdownInterval);
+            teleportingPlayers.delete(id);
+            return;
+        }
+
+        const { countdown, initialPosition } = playerData;
+        const currentPosition = { x: player.location.x, y: player.location.y, z: player.location.z };
+
+        if (
+            currentPosition.x !== initialPosition.x ||
+            currentPosition.y !== initialPosition.y ||
+            currentPosition.z !== initialPosition.z
+        ) {
+            player.sendMessage('§7[§c-§7] §cTeleportation to spawn canceled because you moved.');
+            system.run(() => player.runCommand('playsound random.break @s'));
+            teleportingPlayers.delete(id);
+            system.clearRun(countdownInterval);
+            return;
+        }
+
+        playerData.countdown -= 1;
+
+        if (playerData.countdown > 0) {
+            player.sendMessage(`§7[§a/§7] §aTeleporting to spawn in §e${playerData.countdown} seconds§a...`);
+            system.run(() => player.runCommand('playsound random.orb @s'));
+        } else {
+            system.clearRun(countdownInterval);
+            teleportingPlayers.delete(id);
+
+            system.run(() => player.runCommand(`tp @s ${SPAWN_LOCATION.x} ${SPAWN_LOCATION.y} ${SPAWN_LOCATION.z}`))
+                .then(() => {
+                    player.sendMessage('§7[§a/§7] §aYou have been teleported to spawn.');
+                    system.run(() => player.runCommand('playsound random.levelup @s'));
+                    // Notification for Admins
+                    world.getPlayers({ tags: ["notify"] }).forEach(admin => {
+                        admin.sendMessage(`§7[§e#§7] §e${player.name} §ais using §3!spawn `);
+                        system.run(() => admin.runCommand(`playsound note.pling @s`));
+                    });
+                })
+                .catch(error => {
+                    player.sendMessage('§7[§c-§7] §cError: Teleportation failed. Please try again.');
+                    console.error(`Teleport error: ${error.message}`);
+                });
+        }
+    }, 20);
+});
+
+Command.register({
+    name: "setspawn",
+    description: "Set the spawn location.",
+    aliases: [],
+    permission: (player) => player.hasTag(main.adminTag),
+}, (data) => {
+    const { player } = data;
+
+    const location = {
+        x: player.location.x,
+        y: player.location.y,
+        z: player.location.z
+    };
+
+    spawnManager.setSpawnLocation(location);
+
+    player.sendMessage(`§7[§a/§7] §aSpawn location set to your current position: §e${location.x} ${location.y} ${location.z}`);
+    system.run(() => player.runCommand(`playsound random.levelup @s`));
+    // Notification for Admins
+    world.getPlayers({ tags: ["notify"] }).forEach(admin => {
+        admin.sendMessage(`§7[§e#§7] §e${player.name} §ais using §3!setspawn `);
+        system.run(() => admin.runCommand(`playsound note.pling @s`));
+    });
+});
+
+Command.register({
+    name: "rspawn",
+    description: "Remove the spawn location.",
+    aliases: [],
+    permission: (player) => player.hasTag(main.adminTag),
+}, (data) => {
+    const { player } = data;
+
+    spawnManager.clearSpawnLocation();
+
+    player.sendMessage('§7[§a/§7] §aThe spawn location has been removed.');
+    system.run(() => player.runCommand(`playsound random.break @s`));
+    // Notification for Admins
+    world.getPlayers({ tags: ["notify"] }).forEach(admin => {
+        admin.sendMessage(`§7[§e#§7] §e${player.name} §ais using §3!rspawn`);
+        system.run(() => admin.runCommand(`playsound note.pling @s`));
+    });
+});
+
+//
+// Compass Command 
+//
+
+import { showCompassUI } from "../chat/playerCompass.js";
+
+Command.register({
+    name: "compass",
+    description: "",
+    aliases: [],
+}, (data) => {
+    const player = data.player;
+    if (!isAuthorized(player, "!compass")) return;
+
+    const inventory = player.getComponent("inventory")?.container;
+    if (!inventory) return;
+
+    let hasCompass = false;
+    for (let i = 0; i < inventory.size; i++) {
+        const item = inventory.getItem(i);
+        if (item && item.typeId === "bluemods:itemui") {
+            hasCompass = true;
+            break;
+        }
+    }
+
+    if (!hasCompass) {
+        system.run(() => player.runCommand('give @s bluemods:itemui'));
+        player.sendMessage("§7[§b#§7] §aYou received a compass!");
+    } else {
+        player.sendMessage("§7[§b#§7] §cYou already have a compass in your inventory.");
+        system.run(() => player.runCommand('playsound random.break @s'));
+    }
+
+    system.run(() => player.runCommand('playsound note.pling @s'));
+});
+
+world.afterEvents.chatSend.subscribe((event) => {
+    const player = event.sender;
+    const message = event.message.trim();
+
+    if (message === "") {
+        showCompassUI(player);
+    }
+});
+
+//
+// Back Command
+//
+
+const deathLocations = new Map();
+
+world.afterEvents.entityDie.subscribe((event) => {
+    const { deadEntity } = event;
+
+    if (deadEntity && deadEntity.typeId === "minecraft:player") {
+        const playerName = deadEntity.name;
+        const { x, y, z } = deadEntity.location;
+        const dimensionId = deadEntity.dimension.id.replace("minecraft:", "");
+
+        deathLocations.set(playerName, { x, y, z, dimensionId });
+    }
+});
+
+Command.register({
+    name: "back",
+    description: "Teleports you to your last death location.",
+    aliases: [],
+}, (data) => {
+    const { player } = data;
+    if (!isAuthorized(player, "!back")) return;
+
+    const playerName = player.name;
+
+    if (!deathLocations.has(playerName)) {
+        player.sendMessage("§7[§b#§7] §cYou haven't died recently or your death location is unavailable.");
+        return;
+    }
+
+    const { x, y, z, dimensionId } = deathLocations.get(playerName);
+    const currentDimension = player.dimension.id.replace("minecraft:", "");
+
+    if (x === player.location.x && y === player.location.y && z === player.location.z && dimensionId === currentDimension) {
+        player.sendMessage("§7[§b#§7] §cYou are already at your death location.");
+        return;
+    }
+
+    let executeCommand = `execute in ${dimensionId} run tp @s ${x} ${y} ${z}`;
+
+    system.run(() => player.runCommand(executeCommand)).then(() => {
+        player.sendMessage("§7[§b#§7] §aYou have been teleported back to your death location.");
+        deathLocations.delete(playerName);
+    }).catch(() => {
+        player.sendMessage("§7[§b#§7] §cTeleportation failed. Invalid dimension.");
+    });
 });
