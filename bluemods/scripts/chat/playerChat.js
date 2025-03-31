@@ -318,7 +318,11 @@ export function ChatConfigurationPanel(player) {
 function ChatDisplayPanel(player) {
     const form = new ActionFormData()
         .title(customFormUICodes.action.titles.formStyles.gridMenu + "§l§bBlueMods §7| §aChat Display")
-        .body("Manage chat display settings:");
+        .body("Manage chat display settings:" + (debug_sticks_format_version !== null ? "\n§l§eWARNING!§r\n§eThese settings will have no effect as this system has been overriden, to change the settings for the active chat ranks system, click on the Debug Sticks Ranks Settings button below.§r" : ""));
+    
+    if (debug_sticks_format_version !== null) {
+        form.button(customFormUICodes.action.buttons.positions.main_only + "Debug Sticks\nRanks Settings", "textures/ui/more_dots");
+    }
 
     form.button(customFormUICodes.action.buttons.positions.main_only + "§aSet Chat Format", "textures/ui/icon_book_writable")
         .button(customFormUICodes.action.buttons.positions.main_only + "§eDefault Chat Format", "textures/ui/minus")
@@ -330,26 +334,29 @@ function ChatDisplayPanel(player) {
     form.show(player).then((response) => {
         if (response.canceled) return;
 
-        switch (response.selection) {
+        switch (response.selection + (debug_sticks_format_version !== null ? 0 : 1)) {
             case 0:
-                setChatFormatPanel(player);
+                player.runCommand(`/scriptevent s:e import("modules/ui/functions/chatRanksSettings").then(m=>m.chatRanksSettings(sourceEntity).then(r=>{if(r === 1){sourceEntity.runCommand("/scriptevent bluemods:openChatDisplayPanel")}}))`);
                 break;
             case 1:
+                setChatFormatPanel(player);
+                break;
+            case 2:
                 removeChatFormat();
                 player.sendMessage("§7[§b#§7] §aChat format has been reset to default.");
                 break;
-            case 2:
+            case 3:
                 world.setDynamicProperty("chatDisplayEnabled", true);
                 player.sendMessage("§7[§b#§7] §aChat display has been enabled.");
                 break;
-            case 3:
+            case 4:
                 world.setDynamicProperty("chatDisplayEnabled", false);
                 player.sendMessage("§7[§b#§7] §aChat display has been disabled.");
                 break;
-            case 4:
+            case 5:
                 ChatConfigurationPanel(player);
                 break;
-            case 5:
+            case 6:
                 break;
         }
     }).catch((error) => {
@@ -391,7 +398,11 @@ function setChatFormatPanel(player) {
 function ChatConfigPanel(player) {
     const form = new ActionFormData()
         .title(customFormUICodes.action.titles.formStyles.gridMenu + "§l§bBlueMods §7| §aChat Config")
-        .body("Manage chat config settings:");
+        .body("Manage chat config settings:" + (debug_sticks_format_version !== null ? "\n§l§eWARNING!§r\n§eThese settings will have no effect as this system has been overriden, to change the settings for the active chat system, click on the Debug Sticks Anti-Spam Settings button below.§r" : ""));
+    
+    if (debug_sticks_format_version !== null) {
+        form.button(customFormUICodes.action.buttons.positions.main_only + "Debug Sticks\nAnti-Spam Settings", "textures/ui/more_dots");
+    }
 
     for (const [key, value] of Object.entries(main.chatConfig)) {
         const statusIcon = value ? "textures/ui/realms_green_check.png" : "textures/ui/redX1.png";
@@ -402,14 +413,19 @@ function ChatConfigPanel(player) {
     form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
 
     form.show(player).then((response) => {
-        if (response.canceled || response.selection === Object.keys(main.chatConfig).length + 1) return;
+        if (response.canceled || response.selection - (debug_sticks_format_version !== null ? 1 : 0) === Object.keys(main.chatConfig).length + 1) return;
 
-        if (response.selection === Object.keys(main.chatConfig).length) {
+        if (response.selection - (debug_sticks_format_version !== null ? 1 : 0) === Object.keys(main.chatConfig).length) {
             ChatConfigurationPanel(player);
             return;
         }
 
-        const selectedOption = Object.keys(main.chatConfig)[response.selection];
+        if (debug_sticks_format_version !== null && response.selection === 0) {
+            player.runCommand(`/scriptevent s:e import("modules/ui/functions/antispamSettings").then(m=>m.antispamSettings(sourceEntity).then(r=>{if(r === 1){sourceEntity.runCommand("/scriptevent bluemods:openChatConfigPanel")}}))`);
+            return;
+        }
+
+        const selectedOption = Object.keys(main.chatConfig)[response.selection - (debug_sticks_format_version !== null ? 1 : 0)];
         main.chatConfig[selectedOption] = !main.chatConfig[selectedOption];
         saveChatConfigStates();
 
@@ -421,6 +437,18 @@ function ChatConfigPanel(player) {
         console.error("Failed to show chat config panel:", error);
     });
 }
+
+system.afterEvents.scriptEventReceive.subscribe((event) => {
+    if (event.sourceEntity && event.id === "bluemods:openChatDisplayPanel") {
+        ChatDisplayPanel(event.sourceEntity);
+        return;
+    }
+
+    if (event.sourceEntity && event.id === "bluemods:openChatConfigPanel") {
+        ChatConfigPanel(event.sourceEntity);
+        return;
+    }
+})
 
 function ChatRanksPanel(player) {
     const form = new ActionFormData()
@@ -437,7 +465,7 @@ function ChatRanksPanel(player) {
 
         switch (response.selection) {
             case 0:
-                SelectPlayerPanel(player);
+                AddRankPanel_SelectPlayerPanel(player);
                 break;
             case 1:
                 RemoveRankPanel(player);
@@ -454,7 +482,7 @@ function ChatRanksPanel(player) {
     }).catch((error) => console.error("Failed to show chat ranks panel:", error));
 }
 
-function SelectPlayerPanel(player) {
+function AddRankPanel_SelectPlayerPanel(player) {
     const onlinePlayers = Array.from(world.getPlayers());
     const form = new ActionFormData()
         .title(customFormUICodes.action.titles.formStyles.gridMenu + "§l§bBlueMods §7| §aSelect Player")
@@ -489,7 +517,7 @@ function AddRankPanel(player, targetPlayer) {
     form.show(player).then((response) => {
         if (response.canceled) return;
         if (response.formValues[2]) {
-            SelectPlayerPanel(player);
+            AddRankPanel_SelectPlayerPanel(player);
             return;
         }
 
@@ -535,11 +563,6 @@ function RemoveRankPanel(player) {
 function RemoveRankListPanel(player, targetPlayer) {
     const rankTags = targetPlayer.getTags().filter(tag => tag.startsWith("rank:"));
 
-    if (rankTags.length === 0) {
-        player.sendMessage(`§7[§b#§7] §c${targetPlayer.name} has no assigned ranks!`);
-        return;
-    }
-
     const form = new ActionFormData()
         .title(customFormUICodes.action.titles.formStyles.gridMenu + `§l§bBlueMods §7| §a${targetPlayer.name}'s Ranks`)
         .body("Select a rank to remove:");
@@ -548,6 +571,10 @@ function RemoveRankListPanel(player, targetPlayer) {
         const rankName = rank.replace("rank:", "");
         form.button(customFormUICodes.action.buttons.positions.main_only + `§c${rankName}`, "textures/items/name_tag");
     });
+
+    if(rankTags.length === 0) {
+        form.body(`${targetPlayer.name} has no assigned ranks.`);
+    }
 
     form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left");
     form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
@@ -613,11 +640,6 @@ function EditRankPanel(player) {
 function EditRankListPanel(player, targetPlayer) {
     const rankTags = targetPlayer.getTags().filter(tag => tag.startsWith("rank:"));
 
-    if (rankTags.length === 0) {
-        player.sendMessage(`§7[§b#§7] §c${targetPlayer.name} has no assigned ranks!`);
-        return;
-    }
-
     const form = new ActionFormData()
         .title(customFormUICodes.action.titles.formStyles.gridMenu + `§l§bBlueMods §7| §a${targetPlayer.name}'s Ranks`)
         .body("Select a rank to edit:");
@@ -626,6 +648,10 @@ function EditRankListPanel(player, targetPlayer) {
         const rankName = rank.replace("rank:", "");
         form.button(customFormUICodes.action.buttons.positions.main_only + `§c${rankName}`, "textures/items/name_tag");
     });
+
+    if(rankTags.length === 0) {
+        form.body(`${targetPlayer.name} has no assigned ranks.`);
+    }
 
     form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left");
     form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
