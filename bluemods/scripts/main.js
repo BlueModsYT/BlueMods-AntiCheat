@@ -2,7 +2,6 @@
 import "./systems/8craftersDebugSticksConnectivity.js";
 import "./systems/nuker/isNuker.js";
 import "./systems/isCrasher.js";
-import "./systems/isNameSpoof.js";
 import "./systems/isIllegal.js";
 import "./systems/isEnchantment.js";
 // bluemods: chatFilter
