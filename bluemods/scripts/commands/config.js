@@ -103,6 +103,7 @@ export const main = {
         "operatorItemCheck": true,
         "eggItemCheck": true,
         "unknownItemCheck": true,
+        "nameSpoofCheck": true,
         "nbtItemCheck": true,
         "isAgentMob": true,
         "isCommandBlockMinecart": true,
