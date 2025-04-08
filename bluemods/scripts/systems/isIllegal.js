@@ -18,6 +18,7 @@ const defaultModuleStates = {
     operatorItemCheck: true,
     eggItemCheck: true,
     unknownItemCheck: true,
+    nameSpoofCheck: true,
     nbtItemCheck: true,
     isAgentMob: true,
     isCommandBlockMinecart: true,
@@ -47,9 +48,13 @@ function isModuleEnabled(module) {
     return main.moduleStates[module];
 }
 
+function hasLore(item) {
+    return Boolean(item?.getLore()?.length);
+}
+
 function itemCheck(player, itemList, moduleName) {
     if (!isModuleEnabled(moduleName)) return;
-
+    
     const inventory = player.getComponent("inventory").container;
     if (!inventory || inventory.size === inventory.emptySlotsCount) return;
 
@@ -58,7 +63,7 @@ function itemCheck(player, itemList, moduleName) {
 
     for (let i = 0; i < inventory.size; i++) {
         const item = inventory.getItem(i);
-        if (item && itemList.includes(item.typeId)) {
+        if (item && itemList.includes(item.typeId) && hasLore(item)) {
             removedItemType = item.typeId;
             inventory.setItem(i, null);
             itemRemoved = true;
@@ -66,7 +71,7 @@ function itemCheck(player, itemList, moduleName) {
     }
 
     if (itemRemoved) {
-        player.sendMessage("§7[§b#§7] §cYou are not allowed to use this item.");
+        player.sendMessage("§7[§b#§7] §cYou are not allowed to use this item, Make sure you have permission to use it.");
         system.run(() => player.runCommand(`playsound random.break @s`));
 
         world.getPlayers({ tags: ["notify"] }).forEach(admin => {
@@ -103,37 +108,31 @@ function checkItemNBT(player) {
     }
 }
 
-function hasLore(item) {
-    return Boolean(item?.getLore()?.length);
-}
+//
+// NameSpoof Checks
+//
 
-system.runInterval(() => {
-    try {
-        if (!main.moduleStates.loredItemCheck) return;
+const validNameRegex = /^[a-zA-Z0-9_]{3,16}$/;
 
-        for (const player of world.getPlayers()) {
-            if (player.hasTag(main.adminTag)) continue;
+const checkForNameSpoof = (player) => {
+    if (!isModuleEnabled("nameSpoofCheck")) return;
+    
+    const playerName = player.name.trim();
+    return !validNameRegex.test(playerName);
+};
 
-            const inv = player.getComponent("inventory").container;
-            for (let i = 0; i < inv.size; i++) {
-                const item = inv.getItem(i);
-                if (item && isLored.includes(item.typeId) && hasLore(item)) {
-                    inv.setItem(i, null);
+world.afterEvents.playerSpawn.subscribe((event) => {
+    const player = event.player;
 
-                    system.run(() => player.runCommand(`playsound random.break @s`));
-                    player.sendMessage(`§7[§b#§7] §cYou are not allowed to use this item, ensure you have permission.`);
+    if (checkForNameSpoof(player)) {
+        system.run(() => player.runCommand('kick @s §cInvalid or spoofed name detected. Check your username for validity.'));
 
-                    world.getPlayers({ tags: ["notify"] }).forEach(admin => {
-                        admin.sendMessage(`§7[§d#§7] §e${player.name} §ais trying to use a lored item: "§e${item.typeId.replace('minecraft:', '').replace(/_/g, ' ')}§a".`);
-                        system.run(() => admin.runCommand(`playsound random.break @s`));
-                    });
-                }
-            }
-        }
-    } catch (error) {
-        console.error("Error in loreCheck:", error);
+        world.getPlayers({ tags: ["notify"] }).forEach(admin => {
+            admin.sendMessage(`§7[§d#§7] §e${player.name} §ahas been kicked out for using an invalid username.`);
+            system.run(() => admin.runCommand(`playsound random.break @s`));
+        });
     }
-}, 1);
+});
 
 let itemCheckInterval;
 let entityCheckInterval;
@@ -204,11 +203,10 @@ export function ModuleStatesPanel(player) {
         form.button(customFormUICodes.action.buttons.positions.main_only + `§e${module}\n§7[ ${statusText} §7]`, statusIcon);
     });
 
-    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left");
-    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/crossout");
+    form.button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
 
     form.show(player).then((response) => {
-        if (response.canceled || response.selection === Object.keys(main.moduleStates).length + 1) return;
+        if (response.canceled) return;
 
         if (response.selection === Object.keys(main.moduleStates).length) {
             ModulesPanel(player);
