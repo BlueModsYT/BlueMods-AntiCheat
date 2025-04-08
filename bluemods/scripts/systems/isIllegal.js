@@ -54,6 +54,7 @@ function hasLore(item) {
 
 function itemCheck(player, itemList, moduleName) {
     if (!isModuleEnabled(moduleName)) return;
+    if (player.hasTag(adminTag)) return;
     
     const inventory = player.getComponent("inventory").container;
     if (!inventory || inventory.size === inventory.emptySlotsCount) return;
@@ -63,10 +64,27 @@ function itemCheck(player, itemList, moduleName) {
 
     for (let i = 0; i < inventory.size; i++) {
         const item = inventory.getItem(i);
-        if (item && itemList.includes(item.typeId) && hasLore(item)) {
+        if (item && itemList.includes(item.typeId)) {
             removedItemType = item.typeId;
             inventory.setItem(i, null);
             itemRemoved = true;
+        }
+    }
+    
+    const inv = player.getComponent("inventory").container;
+    for (let i = 0; i < inv.size; i++) {
+        const item = inv.getItem(i);
+        if (item && isLored.includes(item.typeId) && hasLore(item)) {
+        if (!isModuleEnabled("loredItemCheck")) return;
+            inv.setItem(i, null);
+            
+            system.run(() => player.runCommand(`playsound random.break @s`));
+            player.sendMessage(`§7[§b#§7] §cYou are not allowed to use this item, ensure you have permission.`);
+
+            world.getPlayers({ tags: ["notify"] }).forEach(admin => {
+                admin.sendMessage(`§7[§d#§7] §e${player.name} §ais trying to use a lored item: "§e${item.typeId.replace('minecraft:', '').replace(/_/g, ' ')}§a".`);
+                system.run(() => admin.runCommand(`playsound random.break @s`));
+            });
         }
     }
 
@@ -203,7 +221,7 @@ export function ModuleStatesPanel(player) {
         form.button(customFormUICodes.action.buttons.positions.main_only + `§e${module}\n§7[ ${statusText} §7]`, statusIcon);
     });
 
-    form.button(customFormUICodes.action.buttons.positions.main_only + "§cBack", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "§cBack", "textures/ui/arrow_left");
 
     form.show(player).then((response) => {
         if (response.canceled) return;
