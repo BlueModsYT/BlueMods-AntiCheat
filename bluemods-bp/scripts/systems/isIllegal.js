@@ -130,7 +130,7 @@ function checkItemNBT(player) {
 // NameSpoof Checks
 //
 
-const validNameRegex = /^[a-zA-Z0-9_]{3,16}$/;
+const validNameRegex = /^[\x21-\x26\x28-\x2F\x3A-\x40\x5B-\x60\x7B-\x7E\xA0-\xBF\x20\x27\x30-\x39\x41-\x5A\x61-\x7A\xC0-\xF6\xF8-\xFF\u0100-\u017F\u1100-\u1112\u1161-\u1175\u11A8-\u11C2\uAC00-\uD7A3\u3041-\u3096\u30A1-\u30FA\u4E00-\u9FFF\u0400-\u045F\u0985-\u09B9\u0E01-\u0E3A\u0E40-\u0E4E\u0E01-\u0E30\u0E32-\u0E33\u0E31\u0E34-\u0E3A\u0E47-\u0E4E\u0390-\u03CE\u0900-\u094F\u0966-\u096F\u0671-\u06D3\u06F0-\u06F9\u0904-\u0939\u0900-\u0903\u093A-\u094F\u0620-\u064A\u0660-\u0669\u05D0-\u05EA]{1,20}$/u;
 
 const checkForNameSpoof = (player) => {
     if (!isModuleEnabled("nameSpoofCheck")) return;
