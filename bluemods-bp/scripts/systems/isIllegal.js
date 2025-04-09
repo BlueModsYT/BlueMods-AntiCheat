@@ -1,3 +1,8 @@
+/**
+ * Type imports.
+ *
+ * @import { ItemStack, Player } from "@minecraft/server"
+ */
 import { world, system } from "@minecraft/server";
 import { Command } from "./handler/CommandHandler.js";
 import { ActionFormData } from "@minecraft/server-ui";
@@ -48,10 +53,23 @@ function isModuleEnabled(module) {
     return main.moduleStates[module];
 }
 
+/**
+ * Tests if an item has lore.
+ *
+ * @param {ItemStack} item The item to test.
+ * @returns {boolean} Whether or not the item has lore.
+ */
 function hasLore(item) {
     return Boolean(item?.getLore()?.length);
 }
 
+/**
+ * Checks a player for illegal items.
+ *
+ * @param {Player} player The player to check for having illegal items.
+ * @param {string[]} itemList The list of banned item ids.
+ * @param {string} moduleName The module name.
+ */
 function itemCheck(player, itemList, moduleName) {
     if (!isModuleEnabled(moduleName)) return;
     if (player.hasTag(adminTag)) return;

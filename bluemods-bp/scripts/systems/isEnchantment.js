@@ -1,3 +1,8 @@
+/**
+ * Type imports.
+ *
+ * @import { Enchantment } from "@minecraft/server"
+ */
 import { world, system } from "@minecraft/server";
 import main from "../commands/config.js";
 
@@ -17,12 +22,15 @@ function enchantCheck() {
                 const item = inventory.getItem(i);
                 if (!item || !item.typeId) continue;
 
-                const enchantmentComponent = item.getComponent("enchantments");
+                const enchantmentComponent = item.getComponent("enchantable");
                 if (!enchantmentComponent) continue;
 
-                const enchantments = enchantmentComponent.enchantments;
+                const enchantments = enchantmentComponent.getEnchantments();
                 let modified = false;
 
+                /**
+                 * @type {Enchantment[]}
+                 */
                 const newEnchantments = [];
                 for (const enchant of enchantments) {
                     if (enchant.level > enchant.type.maxLevel) {
@@ -33,9 +41,9 @@ function enchantCheck() {
                 }
 
                 if (modified) {
-                    enchantmentComponent.enchantments.clear();
+                    enchantmentComponent.removeAllEnchantments();
                     for (const enchant of newEnchantments) {
-                        enchantmentComponent.enchantments.addEnchantment(enchant);
+                        enchantmentComponent.addEnchantment(enchant);
                     }
                     inventory.setItem(i, item);
 
@@ -43,7 +51,7 @@ function enchantCheck() {
 
                     world.getPlayers({ tags: ["notify"] }).forEach(admin => {
                         admin.sendMessage(`§7[§d#§7] §e${player.name} §ais trying to get illegal enchantments§7: §e${item.typeId.replace("minecraft:", "")}`);
-                        system.run(() => admin.runCommand(`playsound random.break @s`));
+                        admin.runCommand(`playsound random.break @s`);
                     });
                 }
             }

@@ -1,0 +1,23 @@
+{
+  "name": "bluemods-anticheat-bp",
+  "version": "5.8.6",
+  "description": "BlueMods Anticheat.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BlueModsYT/BlueMods-AntiCheat.git"
+  },
+  "author": "BlueShadow",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BlueModsYT/BlueMods-AntiCheat/issues"
+  },
+  "homepage": "https://github.com/BlueModsYT/BlueMods-AntiCheat#readme",
+  "dependencies": {
+    "@minecraft/server": "^2.0.0-beta.1.21.70-stable",
+    "@minecraft/server-ui": "^2.0.0-beta.1.21.70-stable"
+  }
+}

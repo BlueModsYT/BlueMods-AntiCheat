@@ -1,3 +1,8 @@
+/**
+ * Type imports.
+ *
+ * @import { Player } from "@minecraft/server"
+ */
 import { world, system } from "@minecraft/server";
 import main from "../commands/config.js";
 import spawnManager from "./handler/SpawnHandler.js";
@@ -8,6 +13,11 @@ const adminTag = main.adminTag;
 const MAX_COORD = 30_000_000;
 const CHECK_INTERVAL = 1;
 
+/**
+ * Checks a player for an illegal position.
+ *
+ * @param {Player} player
+ */
 function checkIllegalPosition(player) {
     if (player.hasTag(adminTag)) return;
 
@@ -26,9 +36,9 @@ function checkIllegalPosition(player) {
             console.warn(`Failed to teleport player ${player.name}: ${error}`);
         }
 
-        player.runCommandAsync(
+        system.run(()=>player.runCommand(
             `kick "${player.name}" \n§bBlueMods §7>> §aYou have been kicked out from the server.\n§eReason§7: §cIllegal Position Detected.`
-        );
+        ));
 
         world.getPlayers({ tags: ["notify"] }).forEach(admin => {
             admin.sendMessage(`§7[§d#§7] §e${player.name} §ahas been kicked for illegal position (${Math.round(x)}, ${Math.round(y)}, ${Math.round(z)})`);
