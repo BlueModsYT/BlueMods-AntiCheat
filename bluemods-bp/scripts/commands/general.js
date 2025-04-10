@@ -119,7 +119,7 @@ ${main.developer}
 
 Command.register({
     name: "home",
-    description: "Manages player homes",
+    description: "",
     aliases: [],
 }, (data, args) => {
     const { player } = data;
@@ -463,7 +463,7 @@ const PLAYER_COOLDOWN_KEY = "echestCooldown";
 
 Command.register({
     name: "echest",
-    description: "Gives an Ender Chest with a cooldown.",
+    description: "",
     aliases: [],
 }, (data) => {
     const { player } = data;
@@ -607,7 +607,7 @@ import spawnManager from "../systems/handler/SpawnHandler.js";
 
 Command.register({
     name: "spawn",
-    description: "Teleport to the spawn location.",
+    description: "",
     aliases: [],
 }, (data) => {
     const { player } = data;
@@ -682,7 +682,7 @@ Command.register({
 
 Command.register({
     name: "setspawn",
-    description: "Set the spawn location.",
+    description: "",
     aliases: [],
     permission: (player) => player.hasTag(main.adminTag),
 }, (data) => {
@@ -707,7 +707,7 @@ Command.register({
 
 Command.register({
     name: "rspawn",
-    description: "Remove the spawn location.",
+    description: "",
     aliases: [],
     permission: (player) => player.hasTag(main.adminTag),
 }, (data) => {
@@ -790,7 +790,7 @@ world.afterEvents.entityDie.subscribe((event) => {
 
 Command.register({
     name: "back",
-    description: "Teleports you to your last death location.",
+    description: "",
     aliases: [],
 }, (data) => {
     const { player } = data;

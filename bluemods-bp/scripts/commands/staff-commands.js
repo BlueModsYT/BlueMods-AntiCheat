@@ -632,7 +632,7 @@ function listMutes(player) {
 
 Command.register({
     name: "mute",
-    description: "Manage player mutes",
+    description: "",
     permission: (player) => player.hasTag(main.adminTag),
 }, (data, args) => {
     const { player } = data;
@@ -1225,7 +1225,7 @@ Command.register({
     const player = data.player;
     if (!isAuthorized(player, "!nbtload")) return;
     
-    system.run(() => player.runCommand(`structure load blue_nbteverything ~~~`));
+    system.run(() => player.runCommand(`structure load blue_nbteverything ~~1~`));
     system.run(() => player.runCommand(`playsound random.levelup @s`));
 });
 
