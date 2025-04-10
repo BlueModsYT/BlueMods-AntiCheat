@@ -190,8 +190,10 @@ function checkGameMode(player) {
                 if (prevMode && prevMode !== "creative") {
                     player.sendMessage("§cYou are not allowed to use Creative Mode. Reverting back.");
                     player.runCommand(`gamemode ${prevMode}`);
+                    system.run(() => player.runCommand(`playsound random.break @s`));
                 } else {
                     player.runCommand("gamemode survival");
+                    system.run(() => player.runCommand(`playsound random.break @s`));
                 }
             } else {
                 lastValidGamemodes.set(player.name, currentMode);
