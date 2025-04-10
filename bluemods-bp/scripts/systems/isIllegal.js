@@ -182,7 +182,7 @@ function checkGameMode(player) {
         try {
             const currentMode = player.getGameMode();
             const tags = player.getTags();
-            const isAdmin = tags.includes("admin") || tags.includes("trusted");
+            const isAdmin = tags.includes(main.adminTag) || tags.includes(main.trustedTag);
     
             const prevMode = lastValidGamemodes.get(player.name);
     
