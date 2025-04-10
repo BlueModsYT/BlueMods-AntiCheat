@@ -25,7 +25,7 @@ const TELEPORT_COOLDOWN = 5000; // (5 seconds)
 const playerRequest = {};
 const cooldowns = {};
 const tpablocks = {};
-const COOLDOWN_TIME = 10000;
+const COOLDOWN_TIME = 10000; // (10 seconds)
 const TELEPORT_COUNTDOWN = 5;
 
 //

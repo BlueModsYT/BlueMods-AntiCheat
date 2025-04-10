@@ -27,7 +27,8 @@ const defaultModuleStates = {
     nbtItemCheck: true,
     isAgentMob: true,
     isCommandBlockMinecart: true,
-    isNPCMob: false
+    isNPCMob: false,
+    isCreativeMode: false
 };
 
 system.run(() => {
@@ -97,7 +98,7 @@ function itemCheck(player, itemList, moduleName) {
             inv.setItem(i, null);
             
             system.run(() => player.runCommand(`playsound random.break @s`));
-            player.sendMessage(`§7[§b#§7] §cYou are not allowed to use this item, ensure you have permission.`);
+            player.sendMessage(`§7[§b#§7] §cYou are not allowed to use this item, Make sure you have permission to use it.`);
 
             world.getPlayers({ tags: ["notify"] }).forEach(admin => {
                 admin.sendMessage(`§7[§d#§7] §e${player.name} §ais trying to use a lored item: "§e${item.typeId.replace('minecraft:', '').replace(/_/g, ' ')}§a".`);
@@ -169,6 +170,36 @@ world.afterEvents.playerSpawn.subscribe((event) => {
         });
     }
 });
+
+//
+// GameMode Checks
+//
+
+const lastValidGamemodes = new Map();
+
+function checkGameMode(player) {
+    if (!isModuleEnabled("isCreativeMode")) return;
+    try {
+      const currentMode = player.getGameMode();
+      const tags = player.getTags();
+      const isAdmin = tags.includes("admin") || tags.includes("trusted");
+    
+      const prevMode = lastValidGamemodes.get(player.name);
+    
+      if (currentMode === "creative" && !isAdmin) {
+        if (prevMode && prevMode !== "creative") {
+          player.sendMessage("§cYou are not allowed to use Creative Mode. Reverting back.");
+          player.runCommand(`gamemode ${prevMode}`);
+        } else {
+          player.runCommand("gamemode survival");
+        }
+      } else {
+        lastValidGamemodes.set(player.name, currentMode);
+      }
+    } catch (err) {
+    console.warn(`[GameModeChecker] Error checking ${player.name}:`, err);
+  }
+}
 
 let itemCheckInterval;
 let entityCheckInterval;

@@ -107,7 +107,8 @@ export const main = {
         "nbtItemCheck": true,
         "isAgentMob": true,
         "isCommandBlockMinecart": true,
-        "isNPCMob": false   
+        "isNPCMob": false,
+        "isCreativeMode": false
     },
     chatConfig: {
         "SPAM_COOLDOWN_TIME": 5000,
