@@ -7,7 +7,7 @@ export const main = {
     notifyTag: "notify",
     developer: "§b@bluemods.lol §7| §3https://dsc.gg/bluemods",
     bmversion: "§gBeta-v5.8.6",
-    mcversion: "§g1.21.70 §7- §g1.21.71",
+    mcversion: "§g1.21.70 §7- §g1.21.72",
     bmdescription: "§3BlueMods AntiCheat for Minecraft Bedrock is a powerful tool designed to protect your server from hackers & cheaters.",
     player: "§7<§eplayer§7>",
     reason: "§7[§areason§7]",
