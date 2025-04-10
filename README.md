@@ -19,7 +19,6 @@
 - **GITHUB**: [GITHUB](https://github.com/BlueModsYT/BlueMods-AntiCheat/releases)  
 - **MCPEDL**: [MCPEDL](https://mcpedl.com/bluemods)  
 - **YOUTUBE**: [YOUTUBE](https://youtube.com/@BlueModsYT)
-- **LOOTLABS**: [LOOTLABS](https://loot-link.com/s?c7f23bb4)
 - **DISCORD**: [DISCORD](https://discord.gg/ppPT3MvgCk)
 - **GUILDED**: [GUILDED](https://guilded.gg/u/ShadowBladeYT123)
 - **FACEBOOK**: [FACEBOOK](https://facebook.com/profile.php?id=61566407283474)
