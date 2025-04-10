@@ -179,26 +179,26 @@ const lastValidGamemodes = new Map();
 
 function checkGameMode(player) {
     if (!isModuleEnabled("isCreativeMode")) return;
-    try {
-      const currentMode = player.getGameMode();
-      const tags = player.getTags();
-      const isAdmin = tags.includes("admin") || tags.includes("trusted");
+        try {
+            const currentMode = player.getGameMode();
+            const tags = player.getTags();
+            const isAdmin = tags.includes("admin") || tags.includes("trusted");
     
-      const prevMode = lastValidGamemodes.get(player.name);
+            const prevMode = lastValidGamemodes.get(player.name);
     
-      if (currentMode === "creative" && !isAdmin) {
-        if (prevMode && prevMode !== "creative") {
-          player.sendMessage("§cYou are not allowed to use Creative Mode. Reverting back.");
-          player.runCommand(`gamemode ${prevMode}`);
-        } else {
-          player.runCommand("gamemode survival");
-        }
-      } else {
-        lastValidGamemodes.set(player.name, currentMode);
-      }
-    } catch (err) {
-    console.warn(`[GameModeChecker] Error checking ${player.name}:`, err);
-  }
+            if (currentMode === "creative" && !isAdmin) {
+                if (prevMode && prevMode !== "creative") {
+                    player.sendMessage("§cYou are not allowed to use Creative Mode. Reverting back.");
+                    player.runCommand(`gamemode ${prevMode}`);
+                } else {
+                    player.runCommand("gamemode survival");
+                }
+            } else {
+                lastValidGamemodes.set(player.name, currentMode);
+            }
+        } catch (err) {
+        console.warn(`[GameModeChecker] Error checking ${player.name}:`, err);
+    }
 }
 
 let itemCheckInterval;
@@ -226,6 +226,7 @@ function startItemChecks() {
             if (isModuleEnabled("eggItemCheck")) itemCheck(player, isSpawnEgg, "eggItemCheck");
             if (isModuleEnabled("unknownItemCheck")) itemCheck(player, isUnknown, "unknownItemCheck");
             if (isModuleEnabled("nbtItemCheck")) checkItemNBT(player);
+            if (isModuleEnabled("isCreativeMode")) checkGameMode(player);
         });
     }, 1);
 }
