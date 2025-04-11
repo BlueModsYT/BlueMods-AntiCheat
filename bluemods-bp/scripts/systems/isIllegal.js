@@ -15,7 +15,6 @@ const adminTag = "admin";
 const trustedTag = "trusted";
 const MODULE_STATES_KEY = "moduleStates";
 const MAX_ITEM_NBT_SIZE = 1024;
-const playerClicks = new Map();
 
 const defaultModuleStates = {
     loredItemCheck: true,
@@ -182,7 +181,7 @@ function checkGameMode(player) {
         try {
             const currentMode = player.getGameMode();
             const tags = player.getTags();
-            const isAdmin = tags.includes(main.adminTag) || tags.includes(main.trustedTag);
+            const isAdmin = tags.includes("admin") || tags.includes("trusted");
     
             const prevMode = lastValidGamemodes.get(player.name);
     
@@ -190,10 +189,8 @@ function checkGameMode(player) {
                 if (prevMode && prevMode !== "creative") {
                     player.sendMessage("§cYou are not allowed to use Creative Mode. Reverting back.");
                     player.runCommand(`gamemode ${prevMode}`);
-                    system.run(() => player.runCommand(`playsound random.break @s`));
                 } else {
                     player.runCommand("gamemode survival");
-                    system.run(() => player.runCommand(`playsound random.break @s`));
                 }
             } else {
                 lastValidGamemodes.set(player.name, currentMode);
