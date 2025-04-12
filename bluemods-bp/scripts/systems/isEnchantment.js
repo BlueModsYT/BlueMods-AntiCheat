@@ -1,8 +1,3 @@
-/**
- * Type imports.
- *
- * @import { Enchantment } from "@minecraft/server"
- */
 import { world, system } from "@minecraft/server";
 import main from "../commands/config.js";
 

@@ -15,5 +15,6 @@ import "./commands/general.js";
 import "./commands/gamemodes.js";
 import "./commands/staff-commands.js";
 // bluemods: Developments
+import "./commands/development/text.js";
 
 import "./translations.js";

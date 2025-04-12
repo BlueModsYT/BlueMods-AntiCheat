@@ -1083,89 +1083,94 @@ function FloatingPanel(player) {
 }
 
 function CreateFloatText(player) {
-    const defaultCoords = `${Math.floor(player.location.x)} ${Math.floor(player.location.y + 1)} ${Math.floor(player.location.z)}`;
+  const defaultCoords = `${Math.floor(player.location.x)} ${Math.floor(player.location.y + 1)} ${Math.floor(player.location.z)}`;
 
-    const form = new ModalFormData()
-        .title("§l§bBlueMods §7| §bFloating Text")
-        .textField("Enter Text:", "Example: Welcome to Spawn!")
-        .textField("Input your Coordinates: (e.g. 10 23 12 or ~ ~1 ~-1)", defaultCoords);
+  const form = new ModalFormData()
+    .title("§l§bBlueMods §7| §bFloating Text")
+    .textField("Enter Text (use \\n for new lines):", "Example: Welcome\\nTo Spawn!")
+    .textField("Enter Coordinates:", defaultCoords);
 
-    form.show(player).then((response) => {
-        if (response.canceled) return;
+  form.show(player).then((response) => {
+    if (response.canceled) return;
 
-        const text = response.formValues[0] || "§eDefault Text";
-        const coords = parseCoordinates(player, response.formValues[1]);
+    const rawText = response.formValues[0] || "§eDefault Text";
+    const safeText = rawText.replace(/"/g, `'`).replace(/\\n/g, '\n');
 
-        const [x, y, z] = coords;
-        system.run(() => player.runCommand(`summon bluemods:floating_text ${x} ${y} ${z} ~~ minecraft:become_neutral "${text}"`));
-        player.sendMessage(`§aFloating text created: §e"${text}"§a at (§b${x}, ${y}, ${z}§a)`);
-    }).catch((error) => {
-        console.error("Error in FloatingPanel:", error);
+    let coords;
+    try {
+      coords = parseCoordinates(player, response.formValues[1]);
+    } catch {
+      coords = parseCoordinates(player, "~ ~ ~");
+    }
+
+    const [x, y, z] = coords;
+
+    system.run(() => {
+      player.runCommand(`summon bluemods:floating_text ${x} ${y} ${z} ~~ minecraft:become_neutral "${safeText}"`);
     });
+
+    player.sendMessage(`§aFloating text created: §e"${rawText}"§a at (§b${x}, ${y}, ${z}§a)`);
+  }).catch((err) => {
+    console.error("Error in CreateFloatText:", err);
+  });
 }
 
 function MoveFloatText(player) {
-    const floatingTexts = world.getDimension("overworld").getEntities({ type: "bluemods:floating_text" });
+  const floatingTexts = world.getDimension("overworld").getEntities({ type: "bluemods:floating_text" });
 
-    if (floatingTexts.length === 0) {
-        player.sendMessage("§cNo floating text entities found.");
-        return;
+  if (floatingTexts.length === 0) {
+    player.sendMessage("§cNo floating text entities found.");
+    return;
+  }
+
+  const entityNames = floatingTexts.map(e => e.nameTag || "Unnamed Text");
+
+  const form = new ModalFormData()
+    .title("§l§bBlueMods §7| §eMove Floating Text")
+    .dropdown("Select Floating Text to Move:", entityNames)
+    .textField("Enter New Coordinates:", "e.g. ~ ~1 ~", "~ ~ ~");
+
+  form.show(player).then((response) => {
+    if (response.canceled) return;
+
+    const selectedIndex = response.formValues[0];
+    const coordsInput = response.formValues[1] || "~ ~ ~";
+
+    let coords;
+    try {
+      coords = parseCoordinates(player, coordsInput);
+    } catch {
+      coords = parseCoordinates(player, "~ ~ ~");
     }
 
-    const entityNames = floatingTexts.map(entity => entity.nameTag || "Unnamed Floating Text");
+    const [x, y, z] = coords;
+    const entity = floatingTexts[selectedIndex];
 
-    const form = new ModalFormData()
-        .title("§l§bBlueMods §7| §eMove Floating Text")
-        .dropdown("Select Floating Text to Move:", entityNames)
-        .textField("Enter New Coordinates:", "e.g. 10 23 12, ~ ~1 ~, or ~ ~-1 ~", "~ ~ ~");
+    entity.teleport({ x, y, z }, { dimension: world.getDimension("overworld"), rotation: { x: 0, y: 0 } });
 
-    form.show(player).then((response) => {
-        if (response.canceled) return;
-
-        const selectedIndex = response.formValues[0];
-        const selectedEntity = floatingTexts[selectedIndex];
-
-        const coordsInput = response.formValues[1].trim() || "~ ~ ~";
-        const [x, y, z] = parseCoordinates(player, coordsInput);
-
-        selectedEntity.teleport({ x, y, z }, { dimension: world.getDimension("overworld"), rotation: { x: 0, y: 0 } });
-
-        player.sendMessage(`§eFloating text "${selectedEntity.nameTag}" moved to (§b${x}, ${y}, ${z}§e)`);
-    }).catch((error) => {
-        console.error("Error in MoveFloatText form:", error);
-        player.sendMessage("§cFailed to process your request. Please try again.");
-    });
-}
-
-function parseCoordinates(player, input) {
-    const coordsInput = input.trim().split(" ");
-    if (coordsInput.length !== 3) {
-        throw new Error("Invalid coordinate format. Use 'x y z' or '~ ~ ~'.");
-    }
-
-    return coordsInput.map((coord, i) => {
-        if (coord === "~") {
-            return Math.floor([player.location.x, player.location.y, player.location.z][i]);
-        } else if (coord.startsWith("~")) {
-            const offset = coord.length > 1 ? Number(coord.substring(1)) : 0;
-            return Math.floor([player.location.x, player.location.y, player.location.z][i]) + offset;
-        } else {
-            return isNaN(Number(coord)) ? Math.floor([player.location.x, player.location.y + 1, player.location.z][i]) : Number(coord);
-        }
-    });
-}
-
-function extractFloatingTexts(statusMessage) {
-    if (!statusMessage) return [];
-    
-    return statusMessage
-        .split("\n")
-        .map(line => line.match(/name=(.+?),/)?.[1])
-        .filter(Boolean);
+    player.sendMessage(`§aMoved §e"${entity.nameTag}"§a to (§b${x}, ${y}, ${z}§a)`);
+  }).catch((err) => {
+    console.error("Error in MoveFloatText:", err);
+  });
 }
 
 function RemoveFloatText(player) {
-    player.sendMessage("§cUse a §lBarrier Block§r§c and interact with the floating text to remove it.");
+  player.sendMessage("§cUse a §lBarrier Block§r§c and interact with the floating text to remove it.");
+}
+
+function parseCoordinates(player, input = "~ ~ ~") {
+  const coordsInput = input.trim().split(/\s+/);
+  const base = [player.location.x, player.location.y, player.location.z];
+
+  return [0, 1, 2].map(i => {
+    const part = coordsInput[i] ?? "~";
+    if (part === "~") return Math.floor(base[i]);
+    if (part.startsWith("~")) {
+      const offset = Number(part.slice(1)) || 0;
+      return Math.floor(base[i] + offset);
+    }
+    return isNaN(Number(part)) ? Math.floor(base[i]) : Number(part);
+  });
 }
 
 function RepairItemPanel(player) {
