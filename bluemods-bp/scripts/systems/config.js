@@ -227,7 +227,7 @@ export const isSpawnEgg = [
 export const isLored = [
     "minecraft:lit_furnace",
     "minecraft:lit_blast_furnace",
-    "minecrart:lit_smoker",
+    "minecraft:lit_smoker",
     "minecraft:brewing_stand",
     "minecraft:chest",
     "minecraft:trapped_chest",
@@ -242,11 +242,11 @@ export const isLored = [
     "minecraft:ender_chest",
     "minecraft:colored_shulker_box",
     "minecraft:crafter",
-    "minecrart:command_block",
-    "minecrart:repeating_command_block",
-    "minecrart:chain_command_block",
-    "minecrart:structure_block",
-    "minecrart:jigsaw",
+    "minecraft:command_block",
+    "minecraft:repeating_command_block",
+    "minecraft:chain_command_block",
+    "minecraft:structure_block",
+    "minecraft:jigsaw",
     "minecraft:crafter"
 ];
 
