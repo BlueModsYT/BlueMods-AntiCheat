@@ -27,7 +27,7 @@ function isPlayerBanned(playerName) {
     return !!bannedPlayer;
 }
 
-function parseCustomDuration(durationStr) {
+export function parseCustomDuration(durationStr) {
     const timeUnits = {
         "m": 60000,           // minutes to milliseconds
         "h": 3600000,         // hours to milliseconds
