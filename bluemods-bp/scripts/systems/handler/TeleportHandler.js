@@ -1,6 +1,7 @@
 import { world, system } from "@minecraft/server";
 import { ActionFormData } from "@minecraft/server-ui";
 import { showCompassUI } from "../../chat/playerCompass.js";
+import { customFormUICodes } from "../../ui/customFormUICodes.js";
 
 const playerRequest = {};
 const cooldowns = {};
