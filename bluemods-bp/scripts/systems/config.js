@@ -246,8 +246,7 @@ export const isLored = [
     "minecraft:repeating_command_block",
     "minecraft:chain_command_block",
     "minecraft:structure_block",
-    "minecraft:jigsaw",
-    "minecraft:crafter"
+    "minecraft:jigsaw"
 ];
 
 // all rights reserved @bluemods.lol - discord account. | Please report any bugs or glitches in our discord server https://dsc.gg/bluemods
