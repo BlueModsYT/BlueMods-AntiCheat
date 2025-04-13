@@ -1,8 +1,3 @@
-/**
- * Type imports.
- *
- * @import { ItemStack, Player } from "@minecraft/server"
- */
 import { world, system } from "@minecraft/server";
 import { Command } from "./handler/CommandHandler.js";
 import { ActionFormData } from "@minecraft/server-ui";
@@ -15,6 +10,7 @@ const adminTag = "admin";
 const trustedTag = "trusted";
 const MODULE_STATES_KEY = "moduleStates";
 const MAX_ITEM_NBT_SIZE = 1024;
+const playerClicks = new Map();
 
 const defaultModuleStates = {
     loredItemCheck: true,
@@ -53,23 +49,10 @@ function isModuleEnabled(module) {
     return main.moduleStates[module];
 }
 
-/**
- * Tests if an item has lore.
- *
- * @param {ItemStack} item The item to test.
- * @returns {boolean} Whether or not the item has lore.
- */
 function hasLore(item) {
     return Boolean(item?.getLore()?.length);
 }
 
-/**
- * Checks a player for illegal items.
- *
- * @param {Player} player The player to check for having illegal items.
- * @param {string[]} itemList The list of banned item ids.
- * @param {string} moduleName The module name.
- */
 function itemCheck(player, itemList, moduleName) {
     if (!isModuleEnabled(moduleName)) return;
     if (player.hasTag(adminTag)) return;
@@ -83,9 +66,11 @@ function itemCheck(player, itemList, moduleName) {
     for (let i = 0; i < inventory.size; i++) {
         const item = inventory.getItem(i);
         if (item && itemList.includes(item.typeId)) {
-            removedItemType = item.typeId;
-            inventory.setItem(i, null);
-            itemRemoved = true;
+            if (!isLored.includes(item.typeId) || hasLore(item)) {
+                removedItemType = item.typeId;
+                inventory.setItem(i, null);
+                itemRemoved = true;
+            }
         }
     }
     
@@ -93,14 +78,14 @@ function itemCheck(player, itemList, moduleName) {
     for (let i = 0; i < inv.size; i++) {
         const item = inv.getItem(i);
         if (item && isLored.includes(item.typeId) && hasLore(item)) {
-        if (!isModuleEnabled("loredItemCheck")) return;
-            inv.setItem(i, null);
+            if (!isModuleEnabled("loredItemCheck")) continue;
             
+            inv.setItem(i, null);
             system.run(() => player.runCommand(`playsound random.break @s`));
-            player.sendMessage(`§7[§b#§7] §cYou are not allowed to use this item, Make sure you have permission to use it.`);
+            player.sendMessage(`§7[§b#§7] §cYou are not allowed to use lored container items, Make sure you have permission to use it.`);
 
             world.getPlayers({ tags: ["notify"] }).forEach(admin => {
-                admin.sendMessage(`§7[§d#§7] §e${player.name} §ais trying to use a lored item: "§e${item.typeId.replace('minecraft:', '').replace(/_/g, ' ')}§a".`);
+                admin.sendMessage(`§7[§d#§7] §e${player.name} §ais trying to use a lored container: "§e${item.typeId.replace('minecraft:', '').replace(/_/g, ' ')}§a".`);
                 system.run(() => admin.runCommand(`playsound random.break @s`));
             });
         }
