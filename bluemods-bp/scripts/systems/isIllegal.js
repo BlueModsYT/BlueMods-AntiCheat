@@ -13,6 +13,7 @@ const MAX_ITEM_NBT_SIZE = 1024;
 const playerClicks = new Map();
 
 const defaultModuleStates = {
+    rankDisplaySystem: false,
     loredItemCheck: true,
     dangerItemCheck: true,
     operatorItemCheck: true,
@@ -255,25 +256,36 @@ export function ModuleStatesPanel(player) {
         form.button(customFormUICodes.action.buttons.positions.main_only + `§e${module}\n§7[ ${statusText} §7]`, statusIcon);
     });
 
-    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "§cBack", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.main_only + "§eRefresh Rank Displays", "textures/ui/refresh")
+       .button(customFormUICodes.action.buttons.positions.title_bar_only + "§cBack", "textures/ui/arrow_left");
 
     form.show(player).then((response) => {
         if (response.canceled) return;
 
-        if (response.selection === Object.keys(main.moduleStates).length) {
+        if (response.selection < Object.keys(main.moduleStates).length) {
+            const selectedModule = Object.keys(main.moduleStates)[response.selection];
+            main.moduleStates[selectedModule] = !main.moduleStates[selectedModule];
+            saveModuleStates();
+
+            player.sendMessage(`§7[§b#§7] §aToggled §e${selectedModule} §7to §b${main.moduleStates[selectedModule] ? "Enabled" : "Disabled"}§7.`);
+            system.run(() => player.runCommand("playsound note.bell @s"));
+
+            if (selectedModule === RANK_DISPLAY_MODULE) {
+                updateAllRankDisplays();
+            }
+
+            if (selectedModule.includes("ItemCheck")) startItemChecks();
+            if (selectedModule.includes("Mob") || selectedModule.includes("Minecart")) startEntityChecks();
+        } 
+        else if (response.selection === Object.keys(main.moduleStates).length) {
+            updateAllRankDisplays();
+            player.sendMessage("§7[§b#§7] §aRefreshed all rank displays");
+            system.run(() => player.runCommand("playsound note.bell @s"));
+        }
+        else {
             ModulesPanel(player);
             return;
         }
-
-        const selectedModule = Object.keys(main.moduleStates)[response.selection];
-        main.moduleStates[selectedModule] = !main.moduleStates[selectedModule];
-        saveModuleStates();
-
-        player.sendMessage(`§7[§b#§7] §aToggled §e${selectedModule} §7to §b${main.moduleStates[selectedModule] ? "Enabled" : "Disabled"}§7.`);
-        system.run(() => player.runCommand("playsound note.bell @s"));
-
-        if (selectedModule.includes("ItemCheck")) startItemChecks();
-        if (selectedModule.includes("Mob") || selectedModule.includes("Minecart")) startEntityChecks();
 
         ModuleStatesPanel(player);
     }).catch((error) => {
@@ -344,3 +356,87 @@ Command.register({
         }
     }
 });
+
+
+//
+// Rank Display Systems
+//
+
+const RANK_DISPLAY_SCOREBOARD = "RANK_DISPLAY";
+const RANK_DISPLAY_MODULE = "rankDisplaySystem";
+
+function initRankScoreboard() {
+    try {
+        world.scoreboard.addObjective(RANK_DISPLAY_SCOREBOARD, "dummy");
+    } catch (e) {
+        // Scoreboard already exists
+    }
+}
+
+function formatNameWithRank(player) {
+    const tags = player.getTags();
+    const rankTags = tags.filter(tag => tag.startsWith('rank:'));
+    
+    if (rankTags.length === 0) {
+        return player.name; // No rank, return just name
+    }
+
+    const ranks = rankTags.map(tag => tag.replace('rank:', '')).join(' §7| ');
+    return `${player.name}\n§7${ranks}`;
+}
+
+function updatePlayerRankDisplay(player) {
+    if (!isModuleEnabled(RANK_DISPLAY_MODULE)) {
+        if (player.nameTag.includes('\n')) {
+            player.nameTag = player.name;
+        }
+        return;
+    }
+
+    const scoreboard = world.scoreboard.getObjective(RANK_DISPLAY_SCOREBOARD);
+    if (!scoreboard) return;
+
+    const formattedName = formatNameWithRank(player);
+    
+    if (player.nameTag !== formattedName) {
+        player.nameTag = formattedName;
+        scoreboard.setScore(player.scoreboardIdentity, 1);
+    }
+}
+
+function updateAllRankDisplays() {
+    const players = world.getPlayers();
+    for (const player of players) {
+        updatePlayerRankDisplay(player);
+    }
+}
+
+function setupRankEventHandlers() {
+    world.afterEvents.playerSpawn.subscribe(({ player }) => {
+        updatePlayerRankDisplay(player);
+    });
+
+    world.afterEvents.entityHitEntity.subscribe(({ hitEntity }) => {
+        if (hitEntity.typeId === "minecraft:player") {
+            updatePlayerRankDisplay(hitEntity);
+        }
+    });
+
+    world.afterEvents.playerJoin.subscribe(({ player }) => {
+        system.runTimeout(() => {
+            updatePlayerRankDisplay(player);
+        }, 20);
+    });
+}
+
+function startRankSystem() {
+    initRankScoreboard();
+    setupRankEventHandlers();
+    updateAllRankDisplays();
+    
+    system.runInterval(updateAllRankDisplays, 20 * 30);
+}
+
+system.runTimeout(() => {
+    startRankSystem();
+}, 20);
