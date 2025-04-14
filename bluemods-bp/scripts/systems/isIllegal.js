@@ -256,8 +256,7 @@ export function ModuleStatesPanel(player) {
         form.button(customFormUICodes.action.buttons.positions.main_only + `§e${module}\n§7[ ${statusText} §7]`, statusIcon);
     });
 
-    form.button(customFormUICodes.action.buttons.positions.main_only + "§eRefresh Rank Displays", "textures/ui/refresh")
-       .button(customFormUICodes.action.buttons.positions.title_bar_only + "§cBack", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "§cBack", "textures/ui/arrow_left");
 
     form.show(player).then((response) => {
         if (response.canceled) return;
@@ -270,17 +269,8 @@ export function ModuleStatesPanel(player) {
             player.sendMessage(`§7[§b#§7] §aToggled §e${selectedModule} §7to §b${main.moduleStates[selectedModule] ? "Enabled" : "Disabled"}§7.`);
             system.run(() => player.runCommand("playsound note.bell @s"));
 
-            if (selectedModule === RANK_DISPLAY_MODULE) {
-                updateAllRankDisplays();
-            }
-
             if (selectedModule.includes("ItemCheck")) startItemChecks();
             if (selectedModule.includes("Mob") || selectedModule.includes("Minecart")) startEntityChecks();
-        } 
-        else if (response.selection === Object.keys(main.moduleStates).length) {
-            updateAllRankDisplays();
-            player.sendMessage("§7[§b#§7] §aRefreshed all rank displays");
-            system.run(() => player.runCommand("playsound note.bell @s"));
         }
         else {
             ModulesPanel(player);
@@ -359,84 +349,63 @@ Command.register({
 
 
 //
-// Rank Display Systems
+// Name Rank Display Systems
 //
 
-const RANK_DISPLAY_SCOREBOARD = "RANK_DISPLAY";
-const RANK_DISPLAY_MODULE = "rankDisplaySystem";
+const COOLDOWN = 10; // seconds between updates
 
-function initRankScoreboard() {
-    try {
-        world.scoreboard.addObjective(RANK_DISPLAY_SCOREBOARD, "dummy");
-    } catch (e) {
-        // Scoreboard already exists
-    }
-}
-
-function formatNameWithRank(player) {
-    const tags = player.getTags();
-    const rankTags = tags.filter(tag => tag.startsWith('rank:'));
+function formatRanks(player) {
+    const ranks = player.getTags()
+        .filter(tag => tag.startsWith('rank:'))
+        .map(tag => tag.replace('rank:', ''));
     
-    if (rankTags.length === 0) {
-        return player.name; // No rank, return just name
-    }
-
-    const ranks = rankTags.map(tag => tag.replace('rank:', '')).join(' §7| ');
-    return `${player.name}\n§7${ranks}`;
+    if (ranks.length === 0) return player.name;
+    
+    return `${player.name}\n§7${ranks.join(" | ")}`;
 }
 
-function updatePlayerRankDisplay(player) {
-    if (!isModuleEnabled(RANK_DISPLAY_MODULE)) {
-        if (player.nameTag.includes('\n')) {
-            player.nameTag = player.name;
+function updateAllRanks() {
+    if (!isModuleEnabled("rankDisplaySystem")) return;
+    
+    world.getPlayers().forEach(player => {
+        if (player.hasTag(adminTag)) return;
+        
+        const formatted = formatRanks(player);
+        if (player.nameTag !== formatted) {
+            player.nameTag = formatted;
         }
-        return;
-    }
-
-    const scoreboard = world.scoreboard.getObjective(RANK_DISPLAY_SCOREBOARD);
-    if (!scoreboard) return;
-
-    const formattedName = formatNameWithRank(player);
-    
-    if (player.nameTag !== formattedName) {
-        player.nameTag = formattedName;
-        scoreboard.setScore(player.scoreboardIdentity, 1);
-    }
-}
-
-function updateAllRankDisplays() {
-    const players = world.getPlayers();
-    for (const player of players) {
-        updatePlayerRankDisplay(player);
-    }
-}
-
-function setupRankEventHandlers() {
-    world.afterEvents.playerSpawn.subscribe(({ player }) => {
-        updatePlayerRankDisplay(player);
     });
+}
 
+function handlePlayerJoin({ player }) {
+    system.runTimeout(() => {
+        const formatted = formatRanks(player);
+        if (player.nameTag !== formatted) {
+            player.nameTag = formatted;
+        }
+    }, 40);
+}
+
+function initRankSystem() {
+    world.afterEvents.playerJoin.subscribe(handlePlayerJoin);
+    world.afterEvents.playerSpawn.subscribe(({ player }) => {
+        const formatted = formatRanks(player);
+        if (player.nameTag !== formatted) {
+            player.nameTag = formatted;
+        }
+    });
+    
     world.afterEvents.entityHitEntity.subscribe(({ hitEntity }) => {
         if (hitEntity.typeId === "minecraft:player") {
-            updatePlayerRankDisplay(hitEntity);
+            const formatted = formatRanks(hitEntity);
+            if (hitEntity.nameTag !== formatted) {
+                hitEntity.nameTag = formatted;
+            }
         }
     });
-
-    world.afterEvents.playerJoin.subscribe(({ player }) => {
-        system.runTimeout(() => {
-            updatePlayerRankDisplay(player);
-        }, 20);
-    });
-}
-
-function startRankSystem() {
-    initRankScoreboard();
-    setupRankEventHandlers();
-    updateAllRankDisplays();
     
-    system.runInterval(updateAllRankDisplays, 20 * 30);
+    system.runInterval(updateAllRanks, COOLDOWN * 20);
+    updateAllRanks();
 }
 
-system.runTimeout(() => {
-    startRankSystem();
-}, 20);
+system.runTimeout(initRankSystem, 20);
