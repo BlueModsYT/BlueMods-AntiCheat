@@ -1,6 +1,6 @@
 import { world, system } from "@minecraft/server";
 import { Command } from "../systems/handler/CommandHandler.js";
-import { banPlayer, unbanPlayer, mutePlayer, unmutePlayer, freezePlayer, unfreezePlayer } from "../systems/handler/ModHandler.js";
+import { parseCustomDuration, banPlayer, unbanPlayer, mutePlayer, unmutePlayer, freezePlayer, unfreezePlayer } from "../systems/handler/ModHandler.js";
 import main from "./config.js";
 
 // all rights reserved @bluemods.lol - discord account. || Please report any bugs or glitches in our discord server https://dsc.gg/bluemods.
