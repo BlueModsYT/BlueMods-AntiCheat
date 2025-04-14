@@ -6,7 +6,7 @@ export const main = {
     trustTag: "trusted",
     notifyTag: "notify",
     developer: "§b@bluemods.lol §7| §3https://dsc.gg/bluemods",
-    bmversion: "§gBeta-v5.8.6",
+    bmversion: "§gBeta-v5.8.7",
     mcversion: "§g1.21.70 §7- §g1.21.72",
     bmdescription: "§3BlueMods AntiCheat for Minecraft Bedrock is a powerful tool designed to protect your server from hackers & cheaters.",
     player: "§7<§eplayer§7>",
@@ -98,6 +98,7 @@ export const main = {
         { item: "netherite_ingot", count: 3, chance: 5 }
     ],
     moduleStates: {
+        "rankDisplaySystem": false,
         "loredItemCheck": true,
         "dangerItemCheck": true,
         "operatorItemCheck": true,
