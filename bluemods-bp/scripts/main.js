@@ -4,6 +4,7 @@ import "./systems/nuker/isNuker.js";
 import "./systems/isCrasher.js";
 import "./systems/isIllegal.js";
 import "./systems/isEnchantment.js";
+import "./systems/isCombatLog.js";
 // bluemods: chatFilter
 import "./chat/playerChat.js";
 import "./chat/projectTile.js";
