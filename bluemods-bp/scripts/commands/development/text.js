@@ -1,4 +1,4 @@
-import { world } from "@minecraft/server";
+import { world, system } from "@minecraft/server";
 import { Command } from "../../systems/handler/CommandHandler.js";
 import main from "../config.js";
 
@@ -25,69 +25,47 @@ Command.register({
 }, (data, args) => {
     const player = data.player;
     if (!isAuthorized(player, "!floatingtext")) return;
-
+    
     const fullArgs = data.message.split(" ");
     if (fullArgs.length < 2) {
-        player.sendMessage("§cUsage: !floatingtext \"<Text>\" [x y z]");
-        player.sendMessage("§eExample: !floatingtext \"Welcome to spawn\" ~ ~1 ~");
+        player.sendMessage("§7[§b#§7] §cInvalid action! §aUse this method§7: §3!floatingtext §7<§atext§7> §7[§gx, y, z§7]");
         return;
     }
-
-    // Check if the message starts with quotes
+    
     if (!data.message.includes("\"")) {
         player.sendMessage("§7[§a-§7] §cError: Text must be enclosed in quotation marks (\")");
-        player.sendMessage("§eExample: !floatingtext \"Your text here\"");
+        player.sendMessage("§7[§a-§7] §eExample: !floatingtext \"Your text here\"");
         return;
     }
-
-    // Extract text between quotes
+    
     const textMatch = data.message.match(/"([^"]*)"/);
     if (!textMatch) {
         player.sendMessage("§7[§a-§7] §cError: Could not parse text. Make sure to use proper quotation marks");
         return;
     }
-
-    const text = textMatch[1];
+    
+    let text = textMatch[1];
+    text = text.replace(/\\n/g, '\n');
+    
     const remainingArgs = data.message.slice(textMatch.index + textMatch[0].length).trim().split(" ").filter(arg => arg);
-
-    let location = {
-        x: player.location.x,
-        y: player.location.y + 1,  // ~1 (1 block above player)
-        z: player.location.z
-    };
-
-    // Process coordinates if provided (3 arguments after the quoted text)
+    
+    let x = "~";
+    let y = "~1";
+    let z = "~";
+    
     if (remainingArgs.length >= 3) {
-        const processCoord = (coord, playerCoord) => {
-            if (coord.includes('~')) {
-                const offset = coord.replace('~', '');
-                return playerCoord + (offset ? parseFloat(offset) : 0);
-            }
-            return parseFloat(coord);
-        };
-
-        try {
-            location = {
-                x: processCoord(remainingArgs[0], player.location.x),
-                y: processCoord(remainingArgs[1], player.location.y),
-                z: processCoord(remainingArgs[2], player.location.z)
-            };
-        } catch (e) {
-            player.sendMessage("§7[§a-§7] §cInvalid coordinates. Use numbers or ~ notation");
-            player.sendMessage("§eExample: !floatingtext \"Text\" 100 64 100");
-            player.sendMessage("§eExample: !floatingtext \"Text\" ~ ~1 ~");
-            return;
-        }
+        x = remainingArgs[0];
+        y = remainingArgs[1];
+        z = remainingArgs[2];
     }
-
-    // Create floating text entity
-    dimension.spawnEntity("bluemods:floating_text", location);
-    const entities = dimension.getEntitiesAtBlockLocation(location);
-    entities.forEach(entity => {
-        if (entity.typeId === "bluemods:floating_text") {
-            entity.nameTag = text;
-        }
-    });
-
-    player.sendMessage(`§7[§a-§7] §aAdded floating text "${text}" at ${location.x.toFixed(1)} ${location.y.toFixed(1)} ${location.z.toFixed(1)}`);
+    
+    try {
+        system.run(() => {
+            player.runCommand(`summon bluemods:floating_text ${x} ${y} ${z} ~~ minecraft:become_neutral "${text}"`);
+        });
+        player.sendMessage(`§7[§a-§7] §aAdded floating text at ${x} ${y} ${z}`);
+    } catch (e) {
+        player.sendMessage("§7[§a-§7] §cFailed to create floating text. Please check your coordinates.");
+        console.warn(`Floating text summon failed: ${e}`);
+    }
 });
