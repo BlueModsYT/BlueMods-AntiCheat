@@ -23,7 +23,7 @@ export const BLOCK_CONTAINERS = [
     "minecrart:structure_block",
     "minecrart:jigsaw"
 ],
-
+    
 VAILD_BLOCK_TAGS = [
     "snow",
     "lush_plants_replaceable",
@@ -33,19 +33,38 @@ VAILD_BLOCK_TAGS = [
 ],
 
 IMPOSSIBLE_BREAKS = [
+    "minecraft:bedrock",
     "minecraft:invisiblebedrock",
     "minecraft:water",
     "minecraft:flowing_water",
     "minecraft:lava",
     "minecraft:flowing_lava",
-    "minecraft:bedrock",
-    "minecraft:deny",
-    "minecraft:allow",
-    "minecraft:border_block",
     "minecraft:command_block",
-    "minecraft:barrier",
-    "minecraft:border_block",
+    "minecraft:chain_command_block",
+    "minecraft:repeating_command_block",
+    "minecraft:command_block_minecart",
     "minecraft:structure_block",
     "minecraft:structure_void",
-    "minecraft:jigsaw"
+    "minecraft:barrier",
+    "minecraft:border_block",
+    "minecraft:jigsaw",
+    "minecraft:allow",
+    "minecraft:deny",
+    "minecraft:light_block",
+    "minecraft:light_block_0",
+    "minecraft:light_block_1",
+    "minecraft:light_block_2",
+    "minecraft:light_block_3",
+    "minecraft:light_block_4",
+    "minecraft:light_block_5",
+    "minecraft:light_block_6",
+    "minecraft:light_block_7",
+    "minecraft:light_block_8",
+    "minecraft:light_block_9",
+    "minecraft:light_block_10",
+    "minecraft:light_block_11",
+    "minecraft:light_block_12",
+    "minecraft:light_block_13",
+    "minecraft:light_block_14",
+    "minecraft:light_block_15"
 ];

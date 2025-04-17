@@ -10,38 +10,38 @@ const log = new PlayerLog();
 const IMPOSSIBLE_BREAK_TIME = 70;
 
 world.afterEvents.playerBreakBlock.subscribe(({ block, brokenBlockPermutation, dimension, player }) => {
-  if (player.hasTag(adminTag)) return;
+    if (player.hasTag(adminTag)) return;
 
-  if (block.getTags().some(tag => VAILD_BLOCK_TAGS.includes(tag))) return;
+    if (block.getTags().some(tag => VAILD_BLOCK_TAGS.includes(tag))) return;
 
-  const old = log.get(player);
-  log.set(player, Date.now());
+    const old = log.get(player);
+    log.set(player, Date.now());
 
-  if (!old) return;
-  if (IMPOSSIBLE_BREAKS.includes(block.id)) return;
-  if (Date.now() - old > IMPOSSIBLE_BREAK_TIME) return;
+    if (!old) return;
+    if (IMPOSSIBLE_BREAKS.includes(block.id)) return;
+    if (Date.now() - old > IMPOSSIBLE_BREAK_TIME) return;
 
-  block.setPermutation(brokenBlockPermutation);
+    block.setPermutation(brokenBlockPermutation);
 
-  if (BLOCK_CONTAINERS.includes(brokenBlockPermutation.type.id)) {
-    system.run(() => {
-      const nearbyItems = [
-        ...dimension.getEntities({
-          maxDistance: 2,
-          type: "minecraft:item",
-          location: block.location
-        })
-      ];
+    if (BLOCK_CONTAINERS.includes(brokenBlockPermutation.type.id)) {
+        system.run(() => {
+            const nearbyItems = [
+            ...dimension.getEntities({
+                maxDistance: 2,
+                type: "minecraft:item",
+                location: block.location
+            })
+        ];
 
-      nearbyItems.forEach(entity => {
-        const inventoryComponent = block.getComponent('inventory');
-        const itemComponent = entity.getComponent('item');
+            nearbyItems.forEach(entity => {
+                const inventoryComponent = block.getComponent('inventory');
+                const itemComponent = entity.getComponent('item');
 
-        if (inventoryComponent && itemComponent) {
-          inventoryComponent.container.addItem(itemComponent.itemStack);
-          entity.kill();
-        }
-      });
-    });
-  }
+                if (inventoryComponent && itemComponent) {
+                    inventoryComponent.container.addItem(itemComponent.itemStack);
+                    entity.kill();
+                }
+            });
+        });
+    }
 });
