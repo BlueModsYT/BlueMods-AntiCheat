@@ -34,8 +34,6 @@ export const translations = {
         "command.cmdsf.description": "Toggle command block logs.",
         "command.mute.description": "Mute a player.",
         "command.mutelist.description": "List of muted player.",
-        "command.freeze.description": "Freeze a player.",
-        "command.freezelist.description": "List of freezed player.",
         "command.lagclear.description": "Clear lagging entities.",
         "command.give.description": "Give yourself an item.",
         "command.troll.description": "Troll another player.",
@@ -60,7 +58,8 @@ export const translations = {
         "command.notify.description": "Notify when a player is flagged.",
         "command.notifylist.description": "List of notified player.",
         "command.trusted.description": "Add or remove trusted status to a player.",
-        "command.trustedlist.description": "List of trusted player."
+        "command.trustedlist.description": "List of trusted player.",
+        "command.floatingtext.description": "Make a floating text at the specific location"
     },
     ja_JP: {
         "command.rtp.description": "ランダムな場所にテレポートします。",
@@ -93,8 +92,6 @@ export const translations = {
         "command.cmdsf.description": "コマンドブロックのログを切り替えます。",
         "command.mute.description": "プレイヤーをミュートします。",
         "command.mutelist.description": "ミュートされたプレイヤーの一覧を表示します。",
-        "command.freeze.description": "プレイヤーを凍結します。",
-        "command.freezelist.description": "凍結されたプレイヤーの一覧を表示します。",
         "command.lagclear.description": "ラグの原因となるエンティティを削除します。",
         "command.give.description": "自分自身にアイテムを与えます。",
         "command.troll.description": "他のプレイヤーをトロールします。",
@@ -119,7 +116,8 @@ export const translations = {
         "command.notify.description": "プレイヤーがフラグされたときに通知します。",
         "command.notifylist.description": "通知されたプレイヤーの一覧を表示します。",
         "command.trusted.description": "プレイヤーに信頼済みステータスを追加または削除します。",
-        "command.trustedlist.description": "信頼済みプレイヤーの一覧を表示します。"
+        "command.trustedlist.description": "信頼済みプレイヤーの一覧を表示します。",
+        "command.floatingtext.description": "Make a floating text at the specific location"
     },
     pt_BR: {
         "command.rtp.description": "Teleportar para um local aleatório.",
@@ -152,8 +150,6 @@ export const translations = {
         "command.cmdsf.description": "Alternar logs de blocos de comando.",
         "command.mute.description": "Silenciar um jogador.",
         "command.mutelist.description": "Lista de jogadores silenciados.",
-        "command.freeze.description": "Congelar um jogador.",
-        "command.freezelist.description": "Lista de jogadores congelados.",
         "command.lagclear.description": "Limpar entidades que causam lag.",
         "command.give.description": "Dar um item a si mesmo.",
         "command.troll.description": "Trollar outro jogador.",
@@ -178,7 +174,8 @@ export const translations = {
         "command.notify.description": "Notificar quando um jogador for sinalizado.",
         "command.notifylist.description": "Lista de jogadores notificados.",
         "command.trusted.description": "Adicionar ou remover o status de confiança de um jogador.",
-        "command.trustedlist.description": "Lista de jogadores confiáveis."
+        "command.trustedlist.description": "Lista de jogadores confiáveis.",
+        "command.floatingtext.description": "Make a floating text at the specific location"
     },
     pt_PT: {
         "command.rtp.description": "Teleportar para um local aleatório.",
@@ -211,8 +208,6 @@ export const translations = {
         "command.cmdsf.description": "Alternar logs de blocos de comando.",
         "command.mute.description": "Silenciar um jogador.",
         "command.mutelist.description": "Lista de jogadores silenciados.",
-        "command.freeze.description": "Congelar um jogador.",
-        "command.freezelist.description": "Lista de jogadores congelados.",
         "command.lagclear.description": "Limpar entidades que causam lag.",
         "command.give.description": "Dar um item a ti mesmo.",
         "command.troll.description": "Trollar outro jogador.",
@@ -237,7 +232,8 @@ export const translations = {
         "command.notify.description": "Notificar quando um jogador for sinalizado.",
         "command.notifylist.description": "Lista de jogadores notificados.",
         "command.trusted.description": "Adicionar ou remover o status de confiança de um jogador.",
-        "command.trustedlist.description": "Lista de jogadores confiáveis."
+        "command.trustedlist.description": "Lista de jogadores confiáveis.",
+        "command.floatingtext.description": "Make a floating text at the specific location"
     }
 };
 
