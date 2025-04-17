@@ -11,15 +11,6 @@
         "component_groups": {
             "remove": {
                 "minecraft:instant_despawn": {}
-                },
-            "off": {
-                "minecraft:scale": {
-                    "value": 0
-                },
-                "minecraft:collision_box": {
-                    "width": 0.2,
-                    "height": 0.2
-                }
             }
         },
         "components": {
@@ -41,13 +32,14 @@
                 "width": 0.1,
                 "height": 0.1
             },
+            "minecraft:physics": {
+                "has_collision": false,
+                "has_gravity": false,
+                "push_towards_closest_space": false
+            },
             "minecraft:pushable": {
                 "is_pushable": false,
                 "is_pushable_by_piston": false
-            },
-            "minecraft:physics": {
-                "has_collision": false,
-                "has_gravity": false
             },
             "minecraft:water_movement": {
                 "drag_factor": 0
@@ -59,8 +51,8 @@
                 }
             },
             "minecraft:nameable": {
-                "allow_name_tag_renaming": true,
-                "always_show": true
+                "always_show": true,
+                "allow_name_tag_renaming": true
             },
             "minecraft:interact": {
                 "interactions": [
@@ -115,7 +107,7 @@
                             },
                             "event": "deny_rename"
                         },
-                        "play_sounds": "random.break",
+                        "play_sounds": "entity.enderman.hurt",
                         "interact_text": "§cYou are not allowed to rename this!",
                         "particle_on_start": {
                             "particle_type": "crit",
