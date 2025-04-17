@@ -6,7 +6,7 @@ export const main = {
     trustTag: "trusted",
     notifyTag: "notify",
     developer: "§b@bluemods.lol §7| §3https://dsc.gg/bluemods",
-    bmversion: "§gBeta-v5.8.7",
+    bmversion: "§gBeta-v5.8.10",
     mcversion: "§g1.21.70 §7- §g1.21.72",
     bmdescription: "§3BlueMods AntiCheat for Minecraft Bedrock is a powerful tool designed to protect your server from hackers & cheaters.",
     player: "§7<§eplayer§7>",
@@ -76,13 +76,14 @@ export const main = {
         "!notify": true,
         "!op": true,
         "!trusted": true,
-        // Development or Beta Testing
         "!nbtload": false,
         "!daily": false,
         "!echest": false,
         "!back": false,
         "!language": false,
-        "!compass": false
+        "!compass": false,
+        // Development or Beta Testing
+        "!floatingtext": true
     },
     daily: [
         { item: "book", count: 2, chance: 50 },
@@ -221,7 +222,8 @@ export const main = {
                 `§7> §a!rank §7<§aadd§7/§cremove§7> §7<§arank§7> §7[§gcolor§7] §7<§eplayer§7> §7- §3${translate("command.rank.description")}`,
                 `§7> §a!chatconfig §7<§aenable§7/§cdisable§7> §7<§6module§7> §7- §3${translate("command.chatconfig.description")}`,
                 `§7> §a!chatconfig §7<§eset§7> §7<§6module§7> §7<§6integerValue§7> §7- §3${translate("command.chatconfigset.description")}`,
-                `§7> §a!chatconfig list §7- §3${translate("command.chatconfiglist.description")}`
+                `§7> §a!chatconfig list §7- §3${translate("command.chatconfiglist.description")}`,
+                `§7> §a!floatingtext §7<§atext§7> §7[§gx, y, z§7] - §3${translate("command.floatingtext.description")}`
             ]
         },
         {
