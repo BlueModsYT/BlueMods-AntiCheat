@@ -1,4 +1,4 @@
-import { world, system } from "@minecraft/server";
+import { world, system, EntityAttributeComponent, EntityHealthComponent, EntityScaleComponent } from "@minecraft/server";
 import { Command } from "./handler/CommandHandler.js";
 import { ActionFormData } from "@minecraft/server-ui";
 import { isLored, isDanger, isOperator, isSpawnEgg, isUnknown } from "./config.js";
@@ -56,8 +56,7 @@ function hasLore(item) {
 
 function itemCheck(player, itemList, moduleName) {
     if (!isModuleEnabled(moduleName)) return;
-    if (player.hasTag(adminTag)) return;
-    
+
     const inventory = player.getComponent("inventory").container;
     if (!inventory || inventory.size === inventory.emptySlotsCount) return;
 
@@ -352,60 +351,23 @@ Command.register({
 // Name Rank Display Systems
 //
 
-const COOLDOWN = 10; // seconds between updates
+const Default_Prefix = "rank:";
+const Default_Rank = "§6Member";
 
-function formatRanks(player) {
-    const ranks = player.getTags()
-        .filter(tag => tag.startsWith('rank:'))
-        .map(tag => tag.replace('rank:', ''));
-    
-    if (ranks.length === 0) return player.name;
-    
-    return `${player.name}\n§7${ranks.join(" | ")}`;
+function getRanks(player) {
+    const ranks = player.getTags().map((v) => {
+        if (!v.startsWith(Default_Prefix))
+            return null;
+        return v.substring(Default_Prefix.length);
+    })
+        .filter((x) => x);
+    return ranks.length == 0 ? [Default_Rank] : ranks;
 }
 
-function updateAllRanks() {
+system.runInterval(() => {
     if (!isModuleEnabled("rankDisplaySystem")) return;
-    
-    world.getPlayers().forEach(player => {
-        if (player.hasTag(adminTag)) return;
-        
-        const formatted = formatRanks(player);
-        if (player.nameTag !== formatted) {
-            player.nameTag = formatted;
-        }
-    });
-}
-
-function handlePlayerJoin({ player }) {
-    system.runTimeout(() => {
-        const formatted = formatRanks(player);
-        if (player.nameTag !== formatted) {
-            player.nameTag = formatted;
-        }
-    }, 40);
-}
-
-function initRankSystem() {
-    world.afterEvents.playerJoin.subscribe(handlePlayerJoin);
-    world.afterEvents.playerSpawn.subscribe(({ player }) => {
-        const formatted = formatRanks(player);
-        if (player.nameTag !== formatted) {
-            player.nameTag = formatted;
-        }
-    });
-    
-    world.afterEvents.entityHitEntity.subscribe(({ hitEntity }) => {
-        if (hitEntity.typeId === "minecraft:player") {
-            const formatted = formatRanks(hitEntity);
-            if (hitEntity.nameTag !== formatted) {
-                hitEntity.nameTag = formatted;
-            }
-        }
-    });
-    
-    system.runInterval(updateAllRanks, COOLDOWN * 20);
-    updateAllRanks();
-}
-
-system.runTimeout(initRankSystem, 20);
+    for (const player of world.getPlayers()) {
+        const ranks = getRanks(player).join(" §7|§r ");
+        player.nameTag = `${player.name}\n${ranks}`;
+    }
+});
