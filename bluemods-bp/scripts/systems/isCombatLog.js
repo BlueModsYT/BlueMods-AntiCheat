@@ -1,4 +1,7 @@
 import { world, system } from "@minecraft/server";
+import main from "../commands/config.js";
+
+// All rights reserved @bluemods.lol - discord account. || Please report any bugs or glitches in our discord server https://dsc.gg/bluemods.
 
 const COMBAT_COOLDOWN = 10;
 const combatPlayers = new Map();
@@ -29,11 +32,10 @@ function updateCombatStatus(player) {
 }
 
 world.beforeEvents.playerLeave.subscribe(({ playerId }) => {
-    const player = world.getPlayers().find(p => p.id === playerId);
-    if (!player || !combatPlayers.has(playerId)) return;
+    if (!combatPlayers.has(playerId)) return;
     
-    const gamemode = player.getGameMode();
-    if (gamemode === "survival" || gamemode === "adventure") {
+    const player = world.getPlayers().find(p => p.id === playerId);
+    if (player && (player.getGameMode() === "survival" || player.getGameMode() === "adventure")) {
         try {
             player.runCommand("kill @s");
             world.sendMessage(`§c${player.name} logged out during combat and was killed!`);
@@ -46,12 +48,9 @@ world.beforeEvents.playerLeave.subscribe(({ playerId }) => {
 });
 
 system.runInterval(() => {
-    const players = world.getPlayers();
-    const onlineIds = players.map(p => p.id);
-    
     for (const [id] of combatPlayers) {
-        if (!onlineIds.includes(id)) {
+        if (!world.getPlayers().some(p => p.id === id)) {
             combatPlayers.delete(id);
         }
     }
-}, 100); // Every 5 seconds
+}, 20);
