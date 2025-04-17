@@ -212,7 +212,7 @@ function startItemChecks() {
             if (isModuleEnabled("nbtItemCheck")) checkItemNBT(player);
             if (isModuleEnabled("isCreativeMode")) checkGameMode(player);
         });
-    }, 1);
+    }, 5);
 }
 
 function startEntityChecks() {

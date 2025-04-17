@@ -1,6 +1,6 @@
 import { world, system } from "@minecraft/server";
 import { Command } from "../systems/handler/CommandHandler.js";
-import { parseCustomDuration, banPlayer, unbanPlayer, mutePlayer, unmutePlayer, freezePlayer, unfreezePlayer } from "../systems/handler/ModHandler.js";
+import { parseCustomDuration, banPlayer, unbanPlayer, mutePlayer, unmutePlayer } from "../systems/handler/ModHandler.js";
 import main from "./config.js";
 
 // all rights reserved @bluemods.lol - discord account. || Please report any bugs or glitches in our discord server https://dsc.gg/bluemods.
@@ -309,87 +309,6 @@ Command.register({
         });
     } catch (error) {
         player.sendMessage(`§7[§b#§7] §aError adding notify tag: ${error.message}`);
-    }
-});
-
-//
-// Freeze Command
-//
-
-Command.register({
-    name: "freeze",
-    description: "",
-    aliases: [],
-    permission: (player) => player.hasTag(main.adminTag)
-}, async (data, args) => {
-    const player = data.player;
-    if (!isAuthorized(player, "!freeze")) return;
-    
-    const action = args[0]?.toLowerCase();
-    const targetName = args[1] || player.name;
-    const [targetPlayer] = world.getPlayers({ name: targetName });
-    
-    if (action === "list") {
-        const freezedPlayers = world.getPlayers().filter(p => p.hasTag('freezed')).map(p => p.name).join('§7,§r ');
-        player.sendMessage(`§7[§b#§7] §aFreezed: §e${freezedPlayers || 'No freezed player found'}`);
-        return;
-    }
-
-    if (!["add", "remove"].includes(action)) {
-        player.sendMessage(`§7[§b#§7] §cInvalid action! §aUse this Method§7: §3!freeze §aadd ${main.player} §7/ §3!freeze §cremove ${main.player} §7/ §3!freeze §alist`);
-        system.run(() => player.runCommand('playsound random.break @s'));
-        return;
-    }
-
-    if (!targetPlayer) {
-        player.sendMessage('§7[§b#§7] §aPlayer not found! Please specify a valid player name.');
-        system.run(() => player.runCommand('playsound random.break @s'));
-        return;
-    }
-
-    try {
-        if (action === "add") {
-            if (targetPlayer.hasTag(main.adminTag) || targetPlayer.name === player.name) {
-                player.sendMessage(`§7[§b#§7] §cYou cannot freeze yourself or admin.`);
-                return;
-            }
-            
-            if (!targetPlayer.hasTag("freezed")) {
-                await system.run(() => targetPlayer.addTag("freezed"));
-                system.run(() => player.runCommand(`playsound note.bell @s`));
-                system.run(() => player.runCommand(`inputpermission set "${targetPlayer.name}" camera disabled`));
-                system.run(() => player.runCommand(`inputpermission set "${targetPlayer.name}" movement disabled`));
-                player.sendMessage(`§7[§b#§7] §aSuccessfully §3added §amute status to §e${targetPlayer.name}`);
-                
-                // Notification for Admins
-                world.getPlayers({ tags: ["notify"] }).forEach(admin => {
-                    admin.sendMessage(`§7[§e#§7] §e${player.name} §ais using §3!freeze add §ato §e${targetPlayer.name}`);
-                    system.run(() => admin.runCommand(`playsound note.pling @s`));
-                });
-            } else {
-                system.run(() => player.runCommand('playsound random.break @s'));
-                player.sendMessage(`§7[§b#§7] §c${targetPlayer.name} this player is already freezed`);
-            }
-        } else if (action === "remove") {
-            if (targetPlayer.hasTag("freezed")) {
-                await system.run(() => targetPlayer.removeTag("freezed"));
-                system.run(() => player.runCommand(`playsound note.bell @s`));
-                system.run(() => player.runCommand(`inputpermission set "${targetPlayer.name}" camera disabled`));
-                system.run(() => player.runCommand(`inputpermission set "${targetPlayer.name}" movement disabled`));
-                player.sendMessage(`§7[§b#§7] §aSuccessfully §cremoved §amute status from §e${targetPlayer.name}`);
-                
-                // Notification for Admins
-                world.getPlayers({ tags: ["notify"] }).forEach(admin => {
-                    admin.sendMessage(`§7[§e#§7] §e${player.name} §ais using §3!freeze remove §ato §e${targetPlayer.name}`);
-                    system.run(() => admin.runCommand(`playsound note.pling @s`));
-                });
-            } else {
-                system.run(() => player.runCommand('playsound random.break @s'));
-                player.sendMessage(`§7[§b#§7] §c${targetPlayer.name} this player is not freezed.`);
-            }
-        }
-    } catch (error) {
-        player.sendMessage(`§7[§b#§7] §cError modifying player tags: ${error.message}`);
     }
 });
 

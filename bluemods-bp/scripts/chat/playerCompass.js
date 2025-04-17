@@ -1,6 +1,6 @@
 import { world, system, EnchantmentTypes, Player, PlatformType, InputMode } from "@minecraft/server";
 import { ActionFormData, ModalFormData } from "@minecraft/server-ui";
-import { banPlayer, unbanPlayer, mutePlayer, unmutePlayer, freezePlayer, unfreezePlayer, operatorPlayer, unoperatorPlayer, notifyPlayer, unnotifyPlayer, trustedPlayer, untrustedPlayer } from "../systems/handler/ModHandler.js";
+import { banPlayer, unbanPlayer, mutePlayer, unmutePlayer, operatorPlayer, unoperatorPlayer, notifyPlayer, unnotifyPlayer, trustedPlayer, untrustedPlayer } from "../systems/handler/ModHandler.js";
 import { setHome, teleportHome, removeHome, listHomes } from "../commands/general.js"; 
 import { saveEnabledCommands } from "../commands/staff-commands.js";
 import { showTeleportRequestForm, showPlayerSelectionForm, showOutgoingRequests, showIncomingRequests } from "../systems/handler/TeleportHandler.js";
@@ -152,7 +152,6 @@ function ModerationPanel(player) {
         .button(customFormUICodes.action.buttons.positions.main_only + "Ban Player", "textures/items/paper")
         .button(customFormUICodes.action.buttons.positions.main_only + "Unban Player", "textures/items/paper")
         .button(customFormUICodes.action.buttons.positions.main_only + "Mute Player", "textures/items/paper")
-        .button(customFormUICodes.action.buttons.positions.main_only + "Freeze Player", "textures/items/ice_bomb")
         .button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left")
         .button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/cancel");
 
@@ -177,13 +176,9 @@ function ModerationPanel(player) {
                     showMutePlayerForm(player);
                 break;
             case 4:
-                if (!isAuthorized(player, "!freeze")) return;
-                    showFreezePlayerForm(player);
-                break;
-            case 5:
                 showCompassUI(player);
                 break;
-            case 6:
+            case 5:
                 break;
         }
     }).catch((error) => {
@@ -571,44 +566,6 @@ function showMutePlayerForm(player) {
         }
     }).catch((error) => {
         console.error("Failed to show mute/unmute player form:", error);
-    });
-}
-
-function showFreezePlayerForm(player) {
-    const players = world.getPlayers();
-    const playerNames = players.map(p => p.name);
-
-    const form = new ModalFormData()
-        .title(customFormUICodes.action.titles.formStyles.gridMenu + "§l§bBlueMods §7| §aFreeze Player")
-        .dropdown("Select Player:", playerNames)
-        .toggle("Freeze Player", true);
-
-    form.show(player).then((response) => {
-        if (response.canceled) return;
-
-        const [selectedPlayerIndex, freezeToggle] = response.formValues;
-        const targetPlayer = players[selectedPlayerIndex];
-        
-        if (!targetPlayer) {
-            player.sendMessage("§7[§b#§7] §cNo player selected.");
-            return;
-        }
-
-        if (targetPlayer.id === player.id) {
-            player.sendMessage("§7[§b#§7] §cYou cannot freeze yourself.");
-            system.run(() => player.runCommand('playsound random.break @s'));
-            return;
-        }
-
-        if (targetPlayer) {
-            if (freezeToggle) {
-                freezePlayer(targetPlayer.name, player);
-            } else {
-                unfreezePlayer(targetPlayer.name, player);
-            }
-        }
-    }).catch((error) => {
-        console.error("Failed to show freeze/unfreeze player form:", error);
     });
 }
 
