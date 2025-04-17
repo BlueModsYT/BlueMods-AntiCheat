@@ -1,6 +1,3 @@
-
-// all rights reserved @bluemods.lol - discord account. | Please report any bugs or glitches in our discord server https://dsc.gg/bluemods
-
 export const isDanger = [
     "minecraft:missingtile",
     "minecraft:missing_tile",
@@ -15,8 +12,6 @@ export const isDanger = [
     "minecraft:glowingobsidian",
     "minecraft:portal"
 ];
-
-// all rights reserved @bluemods.lol - discord account. | Please report any bugs or glitches in our discord server https://dsc.gg/bluemods
 
 export const isOperator = [
     "minecraft:command_block",
@@ -46,23 +41,17 @@ export const isOperator = [
     "minecraft:light_block_12",
     "minecraft:light_block_13",
     "minecraft:light_block_14",
-    "minecraft:light_block_15",
-    // prevent survival users from holding this block
-    "minecraft:mob_spawner",
-    "minecraft:trial_spawner",
-    "minecraft:vault",
+    "minecraft:light_block_15"
 ];
 
-// all rights reserved @bluemods.lol - discord account. | Please report any bugs or glitches in our discord server https://dsc.gg/bluemods
-
 export const isUnknown = [
-    "minecraft:arrow:1", // Start Arrow Crasher
+    "minecraft:arrow:1",
     "minecraft:arrow:2",
     "minecraft:arrow:3",
     "minecraft:arrow:4",
     "minecraft:arrow:5",
     "minecraft:arrow:69",
-    "minecraft:arrow:68", // End Arrow Crasher
+    "minecraft:arrow:68",
     "minecraft:camera_block",
     "minecraft:flowing_water",
     "minecraft:flowing_lava",
@@ -133,8 +122,6 @@ export const isUnknown = [
     "minecraft:purpur_block:1",
     "minecraft:stonecutter"
 ];
-
-// all rights reserved @bluemods.lol - discord account. | Please report any bugs or glitches in our discord server https://dsc.gg/bluemods
 
 export const isSpawnEgg = [
     "minecraft:spawn_egg",
@@ -222,8 +209,6 @@ export const isSpawnEgg = [
     "minecraft:trader_llama_spawn_egg"
 ];
 
-// all rights reserved @bluemods.lol - discord account. | Please report any bugs or glitches in our discord server https://dsc.gg/bluemods
-
 export const isLored = [
     "minecraft:lit_furnace",
     "minecraft:lit_blast_furnace",
@@ -248,8 +233,6 @@ export const isLored = [
     "minecraft:structure_block",
     "minecraft:jigsaw"
 ];
-
-// all rights reserved @bluemods.lol - discord account. | Please report any bugs or glitches in our discord server https://dsc.gg/bluemods
 
 export const isEnchant = [
     "minecraft:wooden_sword",
@@ -318,5 +301,3 @@ export const isEnchant = [
     "minecraft:book",
     "minecraft:trident"
 ];
-
-// all rights reserved @bluemods.lol - discord account. | Please report any bugs or glitches in our discord server https://dsc.gg/bluemods
