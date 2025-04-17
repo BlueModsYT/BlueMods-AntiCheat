@@ -346,7 +346,6 @@ Command.register({
     }
 });
 
-
 //
 // Name Rank Display Systems
 //
@@ -368,6 +367,10 @@ system.runInterval(() => {
     if (!isModuleEnabled("rankDisplaySystem")) return;
     for (const player of world.getPlayers()) {
         const ranks = getRanks(player).join(" §7|§r ");
-        player.nameTag = `${player.name}\n${ranks}`;
+        player.nameTag = `${player.name}\n§7[ §r${ranks} §7]`;
     }
 });
+
+//
+// Give us credit for using this scripts
+//
