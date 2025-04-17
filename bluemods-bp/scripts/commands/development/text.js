@@ -20,7 +20,7 @@ const isAuthorized = (player, commandName) => {
 Command.register({
     name: "floatingtext",
     description: "",
-    aliases: [],
+    aliases: ["ft"],
     permission: (player) => player.hasTag(main.adminTag),
 }, (data, args) => {
     const player = data.player;
