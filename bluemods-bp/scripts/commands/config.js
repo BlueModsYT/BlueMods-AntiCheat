@@ -76,13 +76,13 @@ export const main = {
         "!notify": true,
         "!op": true,
         "!trusted": true,
+        // Development or Beta Testing
         "!nbtload": false,
         "!daily": false,
         "!echest": false,
         "!back": false,
         "!language": false,
         "!compass": false,
-        // Development or Beta Testing
         "!floatingtext": true
     },
     daily: [
@@ -202,8 +202,6 @@ export const main = {
                 `§7> §a!cmdsf §7<§aenable§7/§cdisable§7> §7- §3${translate("command.cmdsf.description")}`,
                 `§7> §a!mute §7<§aadd§7/§cremove§7> §7<§eplayer§7> §7- §3${translate("command.mute.description")}`,
                 `§7> §a!mute list §7- §3${translate("command.mutelist.description")}`,
-                `§7> §a!freeze §7<§aadd§7/§cremove§7> §7<§eplayer§7> §7- §3${translate("command.freeze.description")}`,
-                `§7> §a!freeze list §7- §3${translate("command.freezelist.description")}`,
                 `§7> §a!lagclear §7<§adefault§7/§amobs§7/§aall§7> §7- §3${translate("command.lagclear.description")}`,
                 `§7> §a!give §7<§aitem§7> §7<§evalue§7> [§edata§7] §7- §3${translate("command.give.description")}`,
                 `§7> §a!troll §7<§dtroll§7> §7<§eplayer§7> §7- §3${translate("command.troll.description")}`,
