@@ -16,6 +16,7 @@
 ---
 
 ## **FEATURES**
+- Panel for Everyone
 - Anti Crasher
 - Anti Badwords
 - Anti Spamming
@@ -26,22 +27,22 @@
 - Anti Lore Containers
 - Anti Operator Blocks
 - Anti Duplicate Message
-- Invalid Namespoof
-- Why are these patched preventions still here? [Answer is in the Link / Secure.md](https://github.com/BlueModsYT/BlueMods-AntiCheat/blob/main/SECURE.md)
-
-## **SYSTEMS**
+- Anti Invalid Namespoof
+- Anti Agent Mob & NPC Systems
 - Projectile Sound
 - Chat Ranks (Automated)
 - Previous Banned (Hackers)
 - Custom Welcome System
 - Custom Chat Rank Displays
+- Rank Display Name
 - Modules for Commands
 - Enable/Disable Chat Display
 - Chat Configuration
 
+- Why are these patched preventions still here? [Answer is in the Link / Secure.md](./docs/secure.md)
+
 --- 
 
-## **GUIDES**
 ### **Download the Addon**
 1. Go to the official BlueMods website or GitHub page.
 2. Download the BlueMods Addon file.
