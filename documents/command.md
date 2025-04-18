@@ -7,13 +7,19 @@
 - `!daily` - Receive a random item.
 - `!compass` - Show the Compass UI.
 
+---
+
 - `!spawn` - Teleport back to the spawn point.
 - `!rspawn` - Remove the current spawn point.
 - `!setspawn` - Set a new spawn point.
 
+---
+
 - `!home tp <home_name>` - Teleport to a saved home.
 - `!home <set/remove> <home_name>` - Create or delete a home.
 - `!home list` - List all your saved homes.
+
+---
 
 - `!tpa send <player>` - Send a teleport request to a player.
 - `!tpa accept` - Accept a teleport request.
@@ -22,11 +28,15 @@
 - `!tpa block <player>` - Block a player from sending requests.
 - `!tpa unblock <player>` - Unblock a player.
 
+---
+
 - `!gma <player>` - Change to Adventure mode.
 - `!gmc <player>` - Change to Creative mode.
 - `!gms <player>` - Change to Survival mode.
 - `!gmsp <player>` - Change to Spectator mode.
 - `!vanish <player>` - Toggle invisibility.
+
+---
 
 - `!kick <player> <reason>` - Kick a player.
 - `!ban add [duration] <player> <reason>` - Ban a player.
@@ -53,6 +63,8 @@
 - `!chatconfig <set> <module> <integerValue>` - enable or disable a boolean chat configuration option.
 - `!chatconfig list` - see the list of available chat configuration options.
 - `!floatingtext <text> [x, y, z]` - Make a floating text at the specific location.
+
+---
 
 - `!op <add/remove> <player>` - Grant or revoke operator status.
 - `!op list` - List operators.
