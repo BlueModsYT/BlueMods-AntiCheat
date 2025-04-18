@@ -63,6 +63,8 @@
 4. **Using Commands:** Always use the player’s exact username (including uppercase and lowercase letters) when running commands.
 5. **Important Tip:** Never give the **"op"** or **"trusted"** tags to players you don’t know or trust. This keeps your server safe.
 
+---
+
 ## **REQUIREMENTS**
 - **Education Edition**: Must be enabled for `!mute` and `!unmute` commands to function.
 - **Beta APIs**: Required to enable command functionality.
@@ -70,6 +72,11 @@
 
 **Why enable these?**  
 These settings are essential for running commands and features that operate in beta mode. By enabling them, you ensure that your server is secure from cheaters and the addon functions as intended.
+
+---
+
+## **RECOMMENDATIONS**
+- [`8Crafter's Debug Sticks, Chat Ranks, Custom UI, and JavaScript Commands/Script REPL, and Server Utilities`](https://modbay.org/mods/1240-8crafters-debug-sticks.html) add-on - It is highly recommended that you enable this because it will allow for the UIs of this add-on to look a lot nicer, the add-on itself is also extremely useful. For more help with this add-on check out this discord server: [8Crafter Studios](https://discord.gg/jrCTeHGuhx).
 
 ---
 
