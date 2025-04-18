@@ -13,6 +13,8 @@
   <img src="https://img.shields.io/discord/913049851531522078?style=for-the-badge&label=Discord&color=0000ff&link=https%3A%2F%2Fdiscord.gg%2Fbluemods-anticheat-913049851531522078" alt="Discord">
 </p>
 
+---
+
 ## **FEATURES**
 - Anti Crasher
 - Anti Badwords
@@ -36,6 +38,8 @@
 - Modules for Commands
 - Enable/Disable Chat Display
 - Chat Configuration
+
+--- 
 
 ## **GUIDES**
 ### **Download the Addon**
@@ -70,7 +74,7 @@ These settings are essential for running commands and features that operate in b
 
 ## **DOWNLOAD HERE**
 - [BlueMods](https://bluemods.neocities.org)
-- [GitHub Releases](https://github.com/BlueModsYT/BlueMods-AntiCheat/releases)
+- [GitHub Releases](../../releases)
 
 Contact us by joining our official Discord server for bug fixes and suggestions.
 <p align="center">
