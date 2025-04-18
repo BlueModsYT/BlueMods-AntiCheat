@@ -43,20 +43,15 @@
 
 --- 
 
-### **Download the Addon**
+## **GUIDES**
 1. Go to the official BlueMods website or GitHub page.
 2. Download the BlueMods Addon file.
+3. Open your Minecraft world settings.
+4. Import the downloaded BlueMods Addon into your world.
+5. Enable **Beta APIs** and **Education Edition** in your world settings.
+6. After importing, type `!ping` in the chat.
+7. If the addon is working, you’ll get a response. If not, double-check the addon’s requirements.
 
-### **Import the Addon**
-1. Open your Minecraft world settings.
-2. Import the downloaded BlueMods Addon into your world.
-3. Enable **Beta APIs** and **Education Edition** in your world settings.
-
-### **Check if the Addon Works**
-1. After importing, type `!ping` in the chat.
-2. If the addon is working, you’ll get a response. If not, double-check the addon’s requirements.
-
-### **Set Up Admin Permissions**
 1. Before using commands like `!?` or `!help`, you need to give a player admin rights.
 2. Type: `!op add <player>` (replace `<player>` with the exact username, including capitalization).
 3. If `!op` doesn’t work, use this command instead: `/tag @s add admin`.
@@ -82,6 +77,7 @@ These settings are essential for running commands and features that operate in b
 
 ## **DOWNLOAD HERE**
 - [BlueMods](https://bluemods.neocities.org)
+- [Github Latest](../..//releases/latest)
 - [GitHub Releases](../../releases)
 
 Contact us by joining our official Discord server for bug fixes and suggestions.
