@@ -1,5 +1,3 @@
-export const availableLanguages = ["en_US", "ja_JP", "pt_BR", "pt_PT"];
-
 // all rights reserved @bluemods.lol - discord account. || Please report any bugs or glitches in our Discord server: https://dsc.gg/bluemods
 
 export const translations = {
