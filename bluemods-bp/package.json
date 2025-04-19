@@ -1,6 +1,6 @@
 {
   "name": "bluemods-anticheat-bp",
-  "version": "5.8.6",
+  "version": "5.8.10",
   "description": "BlueMods Anticheat.",
   "main": "index.js",
   "scripts": {
