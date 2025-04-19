@@ -136,9 +136,6 @@
                         }
                     }
                 ]
-            },
-            "minecraft:effect_immunity": {
-                "effects": ["all"]
             }
         },
         "events": {
@@ -154,12 +151,7 @@
             },
             "deny_rename": {
                 "queue_command": {
-                    "command": ["playsound random.break @s"]
-                }
-            },
-            "clear_effects": {
-                "queue_command": {
-                    "command": ["effect @s clear"]
+                    "command": ["playsound random.break @p"]
                 }
             }
         }
