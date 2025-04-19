@@ -185,6 +185,37 @@ function checkGameMode(player) {
     }
 }
 
+//
+// Name Rank Display Systems
+//
+
+const Default_Prefix = "rank:";
+const Default_Rank = "§6Member";
+
+function getRanks(player) {
+    const ranks = player.getTags()
+        .filter(tag => tag.startsWith(Default_Prefix))
+        .map(tag => tag.replace(Default_Prefix, ""))
+        .slice(0, 3);
+    return ranks.length === 0 ? [Default_Rank] : ranks;
+}
+
+function checkRankDisplay(player) {
+    if (isModuleEnabled("rankDisplaySystem")) {
+        const ranks = getRanks(player).join(" §7|§r ");
+        
+        player.nameTag = `${player.name}\n§7[ §r${ranks} §7]`;
+    } else {
+        player.nameTag = player.name;
+    }
+}
+
+system.runInterval(() => {
+    for (const player of world.getPlayers()) {
+        checkRankDisplay(player);
+    }
+}, 0);
+
 let itemCheckInterval;
 let entityCheckInterval;
 
@@ -211,6 +242,7 @@ function startItemChecks() {
             if (isModuleEnabled("unknownItemCheck")) itemCheck(player, isUnknown, "unknownItemCheck");
             if (isModuleEnabled("nbtItemCheck")) checkItemNBT(player);
             if (isModuleEnabled("isCreativeMode")) checkGameMode(player);
+            if (isModuleEnabled("rankDisplaySystem")) checkRankDisplay(player);
         });
     }, 5);
 }
@@ -345,32 +377,3 @@ Command.register({
         }
     }
 });
-
-//
-// Name Rank Display Systems
-//
-
-const Default_Prefix = "rank:";
-const Default_Rank = "§6Member";
-
-function getRanks(player) {
-    const ranks = player.getTags().map((v) => {
-        if (!v.startsWith(Default_Prefix))
-            return null;
-        return v.substring(Default_Prefix.length);
-    })
-        .filter((x) => x);
-    return ranks.length == 0 ? [Default_Rank] : ranks;
-}
-
-system.runInterval(() => {
-    if (!isModuleEnabled("rankDisplaySystem")) return;
-    for (const player of world.getPlayers()) {
-        const ranks = getRanks(player).join(" §7|§r ");
-        player.nameTag = `${player.name}\n§7[ §r${ranks} §7]`;
-    }
-});
-
-//
-// Give us credit for using this scripts
-//
