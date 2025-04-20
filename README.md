@@ -18,7 +18,7 @@
 ## **TAGS / PAGES**
 - [Social Pages](.docs/socials.md)
 - [Frequently Asked Questions](./docs/faq.md)
-- [Why Patches Still Here?](./docs/patches.md)
+- [Why Patches Still Here?](./docs/patched.md)
 
 
 ---
