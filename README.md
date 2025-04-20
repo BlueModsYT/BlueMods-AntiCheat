@@ -15,6 +15,14 @@
 
 ---
 
+## **TAGS / PAGES**
+- [Social Pages](.docs/socials.md)
+- [Frequently Asked Questions](./docs/faq.md)
+- [Why Patches Still Here?](./docs/patches.md)
+
+
+---
+
 ## **FEATURES**
 - Panel for Everyone
 - Anti Crasher
@@ -39,7 +47,7 @@
 - Enable/Disable Chat Display
 - Chat Configuration
 
-- Why are these patched preventions still here? [Answer is in the Link / Secure.md](./docs/secure.md)
+Why are these patched preventions still here? [Answer is in the Link](./docs/patches.md)
 
 --- 
 
@@ -76,7 +84,7 @@ These settings are essential for running commands and features that operate in b
 ---
 
 ## **DOWNLOAD HERE**
-- [BlueMods](https://bluemods.neocities.org)
+- [BlueMods (Recommended)](https://bluemods.neocities.org)
 - [Github Latest](../..//releases/latest)
 - [GitHub Releases](../../releases)
 
