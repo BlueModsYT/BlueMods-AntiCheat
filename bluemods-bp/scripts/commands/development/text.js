@@ -61,7 +61,7 @@ Command.register({
     
     try {
         system.run(() => {
-            player.runCommand(`summon bluemods:floating_text ${x} ${y} ${z} ~~ minecraft:become_neutral "${text}"`);
+            player.runCommand(`summon bluemods:floating_text ${x}${y}${z} ~~ minecraft:become_neutral "${text}"`);
         });
         player.sendMessage(`§7[§a-§7] §aAdded floating text at ${x} ${y} ${z}`);
     } catch (e) {
