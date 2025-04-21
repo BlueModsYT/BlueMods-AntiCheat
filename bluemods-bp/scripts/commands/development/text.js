@@ -33,8 +33,8 @@ Command.register({
     }
     
     if (!data.message.includes("\"")) {
-        player.sendMessage("§7[§a-§7] §cError: Text must be enclosed in quotation marks (\")");
-        player.sendMessage("§7[§a-§7] §eExample: !floatingtext \"Your text here\"");
+        player.sendMessage("§7[§b#§7] §cError: Text must be enclosed in quotation marks (\")");
+        player.sendMessage("§7[§b#§7] §cInvalid action! §aUse this Method§7: §3!floatingtext \"Your text here\" §7[§gx, y, z§7]");
         return;
     }
     

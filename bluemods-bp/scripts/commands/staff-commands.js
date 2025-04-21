@@ -21,6 +21,21 @@ const isAuthorized = (player, commandName) => {
 //
 // Ban Command
 //
+const BANNED_PLAYERS_KEY = "bannedPlayers";
+let bannedPlayers = [];
+
+system.run(() => {
+    const storedBannedPlayers = world.getDynamicProperty(BANNED_PLAYERS_KEY);
+    if (!storedBannedPlayers) {
+        world.setDynamicProperty(BANNED_PLAYERS_KEY, JSON.stringify(bannedPlayers));
+    } else {
+        bannedPlayers = JSON.parse(storedBannedPlayers);
+    }
+});
+
+function saveBannedPlayers() {
+    world.setDynamicProperty(BANNED_PLAYERS_KEY, JSON.stringify(bannedPlayers));
+}
 
 Command.register({
     name: "ban",
@@ -339,13 +354,8 @@ Command.register({
     return player.sendMessage('§7[§b#§7] §cAmount must be a valid number greater than 0.');
   }
 
-  system.run(() => player.runCommand(`give @s ${item} ${parsedAmount} ${dataValue}`))
-    .then(() => {
-      player.sendMessage(`§7[§b#§7] §aSuccessfully gave yourself §e${parsedAmount} ${item}§a(s).`);
-    })
-    .catch((error) => {
-      player.sendMessage(`§7[§b#§7] §eFailed to give item: ${error}`);
-    });
+  system.run(() => player.runCommand(`give @s ${item} ${parsedAmount} ${dataValue}`));
+  system.run(() => player.sendMessage(`§7[§b#§7] §aSuccessfully gave yourself §e${parsedAmount} ${item}§a(s).`));
 });
 
 //
