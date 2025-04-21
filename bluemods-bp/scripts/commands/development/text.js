@@ -29,18 +29,21 @@ Command.register({
     const fullArgs = data.message.split(" ");
     if (fullArgs.length < 2) {
         player.sendMessage("§7[§b#§7] §cInvalid action! §aUse this method§7: §3!floatingtext §7<§atext§7> §7[§gx, y, z§7]");
+        system.run(() => player.runCommand('playsound random.break @s'));
         return;
     }
     
     if (!data.message.includes("\"")) {
         player.sendMessage("§7[§b#§7] §cError: Text must be enclosed in quotation marks (\")");
         player.sendMessage("§7[§b#§7] §cInvalid action! §aUse this Method§7: §3!floatingtext \"Your text here\" §7[§gx, y, z§7]");
+        system.run(() => player.runCommand('playsound random.break @s'));
         return;
     }
     
     const textMatch = data.message.match(/"([^"]*)"/);
     if (!textMatch) {
         player.sendMessage("§7[§a-§7] §cError: Could not parse text. Make sure to use proper quotation marks");
+        system.run(() => player.runCommand('playsound random.break @s'));
         return;
     }
     
@@ -63,9 +66,9 @@ Command.register({
         system.run(() => {
             player.runCommand(`summon bluemods:floating_text ${x}${y}${z} ~~ minecraft:become_neutral "${text}"`);
         });
-        player.sendMessage(`§7[§a-§7] §aAdded floating text at ${x} ${y} ${z}`);
+        player.sendMessage(`§7[§b#§7] §aAdded floating text at ${x} ${y} ${z}`);
     } catch (e) {
-        player.sendMessage("§7[§a-§7] §cFailed to create floating text. Please check your coordinates.");
+        player.sendMessage("§7[§c#§7] §cFailed to create floating text. Please check your coordinates.");
         console.warn(`Floating text summon failed: ${e}`);
     }
 });
