@@ -1075,7 +1075,7 @@ export function MoveFloatText(player) {
   const floatingTexts = world.getDimension("overworld").getEntities({ type: "bluemods:floating_text" });
 
   if (floatingTexts.length === 0) {
-    player.sendMessage("§cNo floating text entities found.");
+    player.sendMessage("§7[§b#§7] §cNo floating text entities found.");
     return;
   }
 
@@ -1104,14 +1104,14 @@ export function MoveFloatText(player) {
 
     entity.teleport({ x, y, z }, { dimension: world.getDimension("overworld"), rotation: { x: 0, y: 0 } });
 
-    player.sendMessage(`§aMoved §e"${entity.nameTag}"§a to (§b${x}, ${y}, ${z}§a)`);
+    player.sendMessage(`§7[§b#§7] §aMoved §e"${entity.nameTag}"§a to (§b${x}, ${y}, ${z}§a)`);
   }).catch((err) => {
     console.error("Error in MoveFloatText:", err);
   });
 }
 
 export function RemoveFloatText(player) {
-  player.sendMessage("§cUse a §lBarrier Block§r§c and interact with the floating text to remove it.");
+  player.sendMessage("§7[§b#§7] §cUse a §lBarrier Block§r§c and interact with the floating text to remove it.");
 }
 
 function parseCoordinates(player, input = "~ ~ ~") {
@@ -1143,7 +1143,7 @@ function RepairItemPanel(player) {
     }
 
     if (itemList.length === 0) {
-        return player.sendMessage("§cYou have no repairable items in your inventory!");
+        return player.sendMessage("§7[§b#§7] §cYou have no repairable items in your inventory!");
     }
 
     const form = new ModalFormData()
@@ -1156,7 +1156,7 @@ function RepairItemPanel(player) {
         const selectedSlot = slotList[response.formValues[0]];
         const item = inventory.getItem(selectedSlot);
 
-        if (!item) return player.sendMessage("§cSelected item is no longer in your inventory!");
+        if (!item) return player.sendMessage("§7[§b#§7] §cSelected item is no longer in your inventory!");
 
         item.getComponent("minecraft:durability").damage = 0;
         inventory.setItem(selectedSlot, item);
