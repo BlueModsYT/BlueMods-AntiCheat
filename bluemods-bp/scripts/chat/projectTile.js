@@ -14,7 +14,8 @@ world.afterEvents.projectileHitEntity.subscribe((data) => {
             "minecraft:snowball",
             "minecraft:egg",
             "minecraft:thrown_trident",
-            "minecraft:ender_pearl"
+            "minecraft:ender_pearl",
+            "minecraft:splash_potion"
         ];
         
         if (allowedProjectiles.includes(projectile)) {
