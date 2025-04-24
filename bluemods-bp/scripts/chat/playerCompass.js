@@ -304,40 +304,38 @@ function handleWarp(player) {
         form.button(customFormUICodes.action.buttons.positions.main_only + `§a${warpName}`, "textures/items/compass_item");
     }
 
-    if (player.hasTag(main.adminTag)) {
-        form.button(customFormUICodes.action.buttons.positions.main_only + "§eSet New Warp", "textures/items/compass_item")
-            .button(customFormUICodes.action.buttons.positions.main_only + "§cRemove Warp", "textures/items/compass_item");
+    const isAdmin = player.hasTag(main.adminTag);
+    if (isAdmin) {
+        form.button(customFormUICodes.action.buttons.positions.main_only + "§eSet New Warp", "textures/ui/plus")
+            .button(customFormUICodes.action.buttons.positions.main_only + "§cRemove Warp", "textures/ui/minus");
     }
 
-    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "§bBack", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "§cBack", "textures/ui/arrow_left");
 
     form.show(player).then((response) => {
         if (response.canceled) return;
 
         const selectedIndex = response.selection;
         const warpCount = Object.keys(warps).length;
-        const isAdmin = player.hasTag(main.adminTag);
+        const adminButtonCount = isAdmin ? 2 : 0;
+        const totalButtons = warpCount + adminButtonCount;
 
         if (selectedIndex < warpCount) {
             const warpName = Object.keys(warps)[selectedIndex];
             teleportWarp(player, warpName);
-        } 
-        else if (isAdmin) {
-            switch (selectedIndex - warpCount) {
-                case 0:
-                    showSetWarpForm(player);
-                    break;
-                case 1:
-                    showRemoveWarpForm(player);
-                    break;
+        }
+        else if (isAdmin && selectedIndex < totalButtons) {
+            if (selectedIndex === warpCount) {
+                showSetWarpForm(player);
+            } else if (selectedIndex === warpCount + 1) {
+                showRemoveWarpForm(player);
             }
         }
-        else if (selectedIndex === warpCount + (isAdmin ? 2 : 0)) {
+        else if (selectedIndex === totalButtons) {
             showCompassUI(player);
         }
     }).catch((error) => {
         console.error("Failed to show warp form:", error);
-        player.sendMessage("§7[§c-§7] §cFailed to open warp menu");
     });
 }
 
