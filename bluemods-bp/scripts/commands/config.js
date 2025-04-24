@@ -45,7 +45,7 @@ export const main = {
         "!help": true,
         "!ping": true,
         "!about": true,
-        //"!spawn": true,
+        "!warp": true,
         "!home": false,
         "!tpa": true,
         // Gamemodes
@@ -126,7 +126,7 @@ export const main = {
                 `§7> §a!help §7- §3${translate("command.help.description")}`,
                 `§7> §a!ping §7- §3${translate("command.ping.description")}`,
                 `§7> §a!about §7- §3${translate("command.about.description")}`,
-                `§7> §a!spawn §7- §3${translate("command.spawn.description")}`
+                `§7> §a!warp §7- §3${translate("command.warp.description")}`
             ]
         },
         {

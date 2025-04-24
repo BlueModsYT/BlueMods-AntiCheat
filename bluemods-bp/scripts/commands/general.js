@@ -20,7 +20,7 @@ const isAuthorized = (player, commandName) => {
 
 const teleportingPlayers = new Map();
 const HOME_DYNAMIC_PROPERTY = "playerHome";
-const MAX_HOME_SLOTS = 5;
+const MAX_HOME_SLOTS = 6;
 const TELEPORT_COOLDOWN = 5000; // (5 seconds)
 const playerRequest = {};
 const cooldowns = {};
@@ -728,8 +728,6 @@ Command.register({
 // Compass Command 
 //
 
-import { showCompassUI } from "../chat/playerCompass.js";
-
 Command.register({
     name: "compass",
     description: "",
@@ -759,15 +757,6 @@ Command.register({
     }
 
     system.run(() => player.runCommand('playsound note.pling @s'));
-});
-
-world.afterEvents.chatSend.subscribe((event) => {
-    const player = event.sender;
-    const message = event.message.trim();
-
-    if (message === "") {
-        showCompassUI(player);
-    }
 });
 
 //

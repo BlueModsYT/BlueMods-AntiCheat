@@ -2,6 +2,7 @@ import { world, system, EnchantmentTypes, Player, PlatformType, InputMode } from
 import { ActionFormData, ModalFormData } from "@minecraft/server-ui";
 import { banPlayer, unbanPlayer, mutePlayer, unmutePlayer, operatorPlayer, unoperatorPlayer, notifyPlayer, unnotifyPlayer, trustedPlayer, untrustedPlayer } from "../systems/handler/ModHandler.js";
 import { setHome, teleportHome, removeHome, listHomes } from "../commands/general.js"; 
+import { setWarp, teleportWarp, removeWarp, listWarps } from "../commands/development/warps.js";
 import { saveEnabledCommands } from "../commands/staff-commands.js";
 import { showTeleportRequestForm, showPlayerSelectionForm, showOutgoingRequests, showIncomingRequests } from "../systems/handler/TeleportHandler.js";
 import { ViewRewardsPanel, AddRewardPanel, RemoveRewardPanel, EditRewardPanel, CustomCooldownPanel } from "../systems/handler/ModuleHandler.js";
@@ -66,7 +67,7 @@ export function showCompassUI(player) {
         .title(customFormUICodes.action.titles.formStyles.gridMenu + "§l§bBlueMods §7| §aPlayer Menu")
         .body("Choose an option:");
 
-    form.button(customFormUICodes.action.buttons.positions.main_only + "Spawn", "textures/items/compass_item")
+    form.button(customFormUICodes.action.buttons.positions.main_only + "Warps", "textures/items/compass_item")
         .button(customFormUICodes.action.buttons.positions.main_only + "Teleport Request", "textures/items/ender_pearl")
         .button(customFormUICodes.action.buttons.positions.main_only + "RTP", "textures/items/redstone_dust")
         .button(customFormUICodes.action.buttons.positions.main_only + "Homes", "textures/items/bed_red")
@@ -93,7 +94,7 @@ export function showCompassUI(player) {
 
         switch (index) {
             case 0:
-                handleSpawn(player);
+                handleWarp(player);
                 break;
             case 1:
                 if (!isAuthorized(player, "!tpa")) return;
@@ -290,75 +291,108 @@ function handleRTP(player) {
     }, 20);
 }
 
-function handleSpawn(player) {
-    const { id } = player;
-    const SPAWN_LOCATION = spawnManager.getSpawnLocation();
+function handleWarp(player) {
+    if (!isAuthorized(player, "!warp")) return;
+    const warpDataJson = player.getDynamicProperty("playerWarp");
+    const warps = warpDataJson ? JSON.parse(warpDataJson) : {};
 
-    if (!SPAWN_LOCATION) {
-        player.sendMessage('§7[§c-§7] §cSpawn location has not been set by an admin.');
-        system.run(() => player.runCommand('playsound random.break @s'));
-        return;
+    const form = new ActionFormData()
+        .title(customFormUICodes.action.titles.formStyles.gridMenu + "§l§bBlueMods §7| §aWarps")
+        .body("Available Warps:");
+
+    for (const warpName in warps) {
+        form.button(customFormUICodes.action.buttons.positions.main_only + `§a${warpName}`, "textures/items/compass_item");
     }
 
-    if (teleportingPlayers.has(id)) {
-        player.sendMessage('§7[§c-§7] §cYou are already teleporting to spawn. Please wait.');
-        return;
+    if (player.hasTag(main.adminTag)) {
+        form.button(customFormUICodes.action.buttons.positions.main_only + "§eSet New Warp", "textures/items/compass_item")
+            .button(customFormUICodes.action.buttons.positions.main_only + "§cRemove Warp", "textures/items/compass_item");
     }
 
-    const initialPosition = { x: player.location.x, y: player.location.y, z: player.location.z };
-    player.sendMessage('§7[§a/§7] §aTeleporting to spawn in §e5 seconds§a. Do not move!');
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "§bBack", "textures/ui/arrow_left");
 
-    teleportingPlayers.set(id, { initialPosition, countdown: 5 });
+    form.show(player).then((response) => {
+        if (response.canceled) return;
 
-    const countdownInterval = system.runInterval(() => {
-        const playerData = teleportingPlayers.get(id);
-        if (!playerData || !player) {
-            system.clearRun(countdownInterval);
-            return;
+        const selectedIndex = response.selection;
+        const warpCount = Object.keys(warps).length;
+        const isAdmin = player.hasTag(main.adminTag);
+
+        if (selectedIndex < warpCount) {
+            const warpName = Object.keys(warps)[selectedIndex];
+            teleportWarp(player, warpName);
+        } 
+        else if (isAdmin) {
+            switch (selectedIndex - warpCount) {
+                case 0:
+                    showSetWarpForm(player);
+                    break;
+                case 1:
+                    showRemoveWarpForm(player);
+                    break;
+            }
         }
-
-        const { countdown, initialPosition } = playerData;
-        const currentPosition = { x: player.location.x, y: player.location.y, z: player.location.z };
-
-        if (
-            currentPosition.x !== initialPosition.x ||
-            currentPosition.y !== initialPosition.y ||
-            currentPosition.z !== initialPosition.z
-        ) {
-            player.sendMessage('§7[§c-§7] §cTeleportation to spawn canceled because you moved.');
-            system.run(() => player.runCommand('playsound random.break @s'));
-            teleportingPlayers.delete(id);
-            system.clearRun(countdownInterval);
-            return;
+        else if (selectedIndex === warpCount + (isAdmin ? 2 : 0)) {
+            showCompassUI(player);
         }
-
-        playerData.countdown -= 1;
-
-        if (playerData.countdown > 0) {
-            player.sendMessage(`§7[§a/§7] §aTeleporting to spawn in §e${playerData.countdown} seconds§a...`);
-            system.run(() => player.runCommand('playsound random.orb @s'));
-        } else {
-            system.run(() => {
-                try{
-                    player.runCommand(`tp @s ${SPAWN_LOCATION.x} ${SPAWN_LOCATION.y} ${SPAWN_LOCATION.z}`);
-                    player.sendMessage('§7[§a/§7] §aYou have been teleported to spawn.');
-                    player.runCommand('playsound random.levelup @s');
-                    // Notification for Admins
-                    world.getPlayers({ tags: ["notify"] }).forEach(admin => {
-                        admin.sendMessage(`§7[§e#§7] §e${player.name} §ais using §3!spawn `);
-                        admin.runCommand(`playsound note.pling @s`);
-                    });
-                }catch(error){
-                    player.sendMessage('§7[§c-§7] §cError: Teleportation failed. Please try again.');
-                    console.error(`Teleport error: ${error.message}`);
-                }
-            });
-
-            teleportingPlayers.delete(id);
-            system.clearRun(countdownInterval);
-        }
-    }, 20);
+    }).catch((error) => {
+        console.error("Failed to show warp form:", error);
+        player.sendMessage("§7[§c-§7] §cFailed to open warp menu");
+    });
 }
+
+function showSetWarpForm(player) {
+    const form = new ModalFormData()
+        .title("§l§bBlueMods §7| §aSet New Warp")
+        .textField("Enter warp name:", "Name");
+
+    form.show(player).then((response) => {
+        if (response.canceled) return;
+        
+        const [warpName] = response.formValues;
+        if (!warpName) {
+            player.sendMessage("§7[§c-§7] §cWarp name cannot be empty!");
+            return;
+        }
+
+        setWarp(player, warpName);
+        handleWarp(player);
+    }).catch((error) => {
+        console.error("Set Warp Form Error:", error);
+        player.sendMessage("§7[§c-§7] §cFailed to set warp");
+    });
+}
+
+function showRemoveWarpForm(player) {
+    const warpDataJson = player.getDynamicProperty("playerWarp");
+    const warps = warpDataJson ? JSON.parse(warpDataJson) : {};
+
+    if (Object.keys(warps).length === 0) {
+        player.sendMessage("§7[§c-§7] §cNo warps available to remove!");
+        return;
+    }
+
+    const form = new ModalFormData()
+        .title("§l§bBlueMods §7| §cRemove Warp")
+        .dropdown("Select warp to remove:", Object.keys(warps));
+
+    form.show(player).then((response) => {
+        if (response.canceled) return;
+        
+        const [selectedIndex] = response.formValues;
+        const warpName = Object.keys(warps)[selectedIndex];
+        
+        removeWarp(player, warpName);
+        handleWarp(player);
+    }).catch((error) => {
+        console.error("Remove Warp Form Error:", error);
+        player.sendMessage("§7[§c-§7] §cFailed to remove warp");
+    });
+}
+
+//
+// Forms
+//
 
 function AboutForm(player) {
     const devs = main.bluemods.join("§7, §a"); 
