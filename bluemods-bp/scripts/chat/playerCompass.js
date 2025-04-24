@@ -2,7 +2,7 @@ import { world, system, EnchantmentTypes, Player, PlatformType, InputMode } from
 import { ActionFormData, ModalFormData } from "@minecraft/server-ui";
 import { banPlayer, unbanPlayer, mutePlayer, unmutePlayer, operatorPlayer, unoperatorPlayer, notifyPlayer, unnotifyPlayer, trustedPlayer, untrustedPlayer } from "../systems/handler/ModHandler.js";
 import { setHome, teleportHome, removeHome, listHomes } from "../commands/general.js"; 
-import { setWarp, teleportWarp, removeWarp, listWarps } from "../commands/development/warps.js";
+import { WARP_DYNAMIC_PROPERTY, setWarp, teleportWarp, removeWarp, listWarps } from "../commands/development/warps.js";
 import { saveEnabledCommands } from "../commands/staff-commands.js";
 import { showTeleportRequestForm, showPlayerSelectionForm, showOutgoingRequests, showIncomingRequests } from "../systems/handler/TeleportHandler.js";
 import { ViewRewardsPanel, AddRewardPanel, RemoveRewardPanel, EditRewardPanel, CustomCooldownPanel } from "../systems/handler/ModuleHandler.js";
@@ -293,7 +293,8 @@ function handleRTP(player) {
 
 function handleWarp(player) {
     if (!isAuthorized(player, "!warp")) return;
-    const warpDataJson = player.getDynamicProperty("playerWarp");
+    
+    const warpDataJson = world.getDynamicProperty(WARP_DYNAMIC_PROPERTY);
     const warps = warpDataJson ? JSON.parse(warpDataJson) : {};
 
     const form = new ActionFormData()
@@ -301,7 +302,8 @@ function handleWarp(player) {
         .body("Available Warps:");
 
     for (const warpName in warps) {
-        form.button(customFormUICodes.action.buttons.positions.main_only + `§a${warpName}`, "textures/items/compass_item");
+        const creator = warps[warpName].creator || "Admin";
+        form.button(customFormUICodes.action.buttons.positions.main_only + `§a${warpName}\n§7(by ${creator})`, "textures/items/compass_item");
     }
 
     const isAdmin = player.hasTag(main.adminTag);
@@ -336,6 +338,7 @@ function handleWarp(player) {
         }
     }).catch((error) => {
         console.error("Failed to show warp form:", error);
+        player.sendMessage("§7[§c-§7] §cFailed to open warp menu");
     });
 }
 
@@ -362,7 +365,7 @@ function showSetWarpForm(player) {
 }
 
 function showRemoveWarpForm(player) {
-    const warpDataJson = player.getDynamicProperty("playerWarp");
+    const warpDataJson = world.getDynamicProperty(WARP_DYNAMIC_PROPERTY);
     const warps = warpDataJson ? JSON.parse(warpDataJson) : {};
 
     if (Object.keys(warps).length === 0) {

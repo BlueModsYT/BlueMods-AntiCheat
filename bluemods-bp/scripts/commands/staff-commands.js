@@ -21,21 +21,7 @@ const isAuthorized = (player, commandName) => {
 //
 // Ban Command
 //
-const BANNED_PLAYERS_KEY = "bannedPlayers";
 let bannedPlayers = [];
-
-system.run(() => {
-    const storedBannedPlayers = world.getDynamicProperty(BANNED_PLAYERS_KEY);
-    if (!storedBannedPlayers) {
-        world.setDynamicProperty(BANNED_PLAYERS_KEY, JSON.stringify(bannedPlayers));
-    } else {
-        bannedPlayers = JSON.parse(storedBannedPlayers);
-    }
-});
-
-function saveBannedPlayers() {
-    world.setDynamicProperty(BANNED_PLAYERS_KEY, JSON.stringify(bannedPlayers));
-}
 
 Command.register({
     name: "ban",

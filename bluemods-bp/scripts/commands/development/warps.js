@@ -2,10 +2,8 @@ import { world, system } from "@minecraft/server";
 import { Command } from "../../systems/handler/CommandHandler.js";
 import main from "../config.js";
 
-// all rights reserved @bluemods.lol - discord account. || Please report any bugs or glitches in our discord server https://dsc.gg/bluemods.
-
 const WARP_LIMIT = 5;
-const WARP_DYNAMIC_PROPERTY = "playerWarp";
+export const WARP_DYNAMIC_PROPERTY = "playerWarps";
 const TELEPORT_COOLDOWN = 5000; // 5 seconds
 
 function isCommandEnabled(commandName) {
@@ -25,7 +23,7 @@ const teleportingPlayers = new Map();
 
 Command.register({
     name: "warp",
-    description: "Teleport to warps or manage them (admin only for set/remove)",
+    description: "",
     aliases: [],
 }, (data, args) => {
     const { player } = data;
@@ -68,10 +66,9 @@ export function setWarp(player, warpName) {
         return system.run(() => player.runCommand(`playsound random.break @s`));
     }
     
-    let warpDataJson = player.getDynamicProperty(WARP_DYNAMIC_PROPERTY);
+    let warpDataJson = world.getDynamicProperty(WARP_DYNAMIC_PROPERTY);
     let warps = warpDataJson ? JSON.parse(warpDataJson) : {};
     
-    // Check warp limit
     if (Object.keys(warps).length >= WARP_LIMIT) {
         player.sendMessage(`§7[§c-§7] §cMaximum warp limit reached (${WARP_LIMIT}). Remove some warps first.`);
         return system.run(() => player.runCommand(`playsound random.break @s`));
@@ -79,10 +76,11 @@ export function setWarp(player, warpName) {
     
     warps[warpName] = {
         location: player.location,
-        dimension: player.dimension.id
+        dimension: player.dimension.id,
+        creator: player.name
     };
     
-    player.setDynamicProperty(WARP_DYNAMIC_PROPERTY, JSON.stringify(warps));
+    world.setDynamicProperty(WARP_DYNAMIC_PROPERTY, JSON.stringify(warps));
     
     player.sendMessage(`§7[§a/§7] §aWarp §e${warpName} §aset successfully! §7(${Object.keys(warps).length}/${WARP_LIMIT})`);
     system.run(() => player.runCommand(`playsound note.bell @s`));
@@ -94,7 +92,7 @@ export function teleportWarp(player, warpName) {
         return system.run(() => player.runCommand(`playsound random.break @s`));
     }
     
-    const warpDataJson = player.getDynamicProperty(WARP_DYNAMIC_PROPERTY);
+    const warpDataJson = world.getDynamicProperty(WARP_DYNAMIC_PROPERTY);
     if (!warpDataJson) {
         player.sendMessage('§7[§c-§7] §cNo warps are set. Ask an admin to set some.');
         return system.run(() => player.runCommand(`playsound random.break @s`));
@@ -175,7 +173,7 @@ export function removeWarp(player, warpName) {
         return system.run(() => player.runCommand(`playsound random.break @s`));
     }
     
-    let warpDataJson = player.getDynamicProperty(WARP_DYNAMIC_PROPERTY);
+    let warpDataJson = world.getDynamicProperty(WARP_DYNAMIC_PROPERTY);
     if (!warpDataJson) {
         player.sendMessage('§7[§c-§7] §cNo warps are set.');
         return system.run(() => player.runCommand(`playsound random.break @s`));
@@ -190,14 +188,14 @@ export function removeWarp(player, warpName) {
     
     delete warps[warpName];
     
-    player.setDynamicProperty(WARP_DYNAMIC_PROPERTY, JSON.stringify(warps));
+    world.setDynamicProperty(WARP_DYNAMIC_PROPERTY, JSON.stringify(warps));
     
     player.sendMessage(`§7[§a/§7] §aWarp §e${warpName} §ahas been removed.`);
     system.run(() => player.runCommand(`playsound note.bell @s`));
 }
 
 export function listWarps(player) {
-    let warpDataJson = player.getDynamicProperty(WARP_DYNAMIC_PROPERTY);
+    let warpDataJson = world.getDynamicProperty(WARP_DYNAMIC_PROPERTY);
     if (!warpDataJson) {
         player.sendMessage('§7[§c-§7] §cNo warps are set.');
         return system.run(() => player.runCommand(`playsound random.break @s`));
@@ -211,6 +209,11 @@ export function listWarps(player) {
         return system.run(() => player.runCommand(`playsound random.break @s`));
     }
     
-    player.sendMessage(`§7[§a/§7] §aAvailable warps: §e${warpList.join(', ')}`);
+    const warpInfo = warpList.map(name => {
+        const creator = warps[name].creator || "Unknown";
+        return `${name} §7(by ${creator})`;
+    });
+    
+    player.sendMessage(`§7[§a/§7] §aAvailable warps:\n§e${warpInfo.join('\n')}`);
     system.run(() => player.runCommand(`playsound random.levelup @s`));
 }
