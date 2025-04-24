@@ -1,6 +1,6 @@
 import { world, system } from "@minecraft/server";
 import { Command } from "../systems/handler/CommandHandler.js";
-import { parseCustomDuration, banPlayer, unbanPlayer, mutePlayer, unmutePlayer } from "../systems/handler/ModHandler.js";
+import { banPlayer, unbanPlayer, getBannedPlayers, parseCustomDuration, mutePlayer, unmutePlayer } from "../systems/handler/ModHandler.js";
 import main from "./config.js";
 
 // all rights reserved @bluemods.lol - discord account. || Please report any bugs or glitches in our discord server https://dsc.gg/bluemods.
@@ -21,7 +21,6 @@ const isAuthorized = (player, commandName) => {
 //
 // Ban Command
 //
-let bannedPlayers = [];
 
 Command.register({
     name: "ban",
@@ -38,36 +37,42 @@ Command.register({
     const reason = args.slice(3).join(" ") || "No reason specified";
 
     if (!["add", "list", "remove"].includes(action)) {
-        player.sendMessage(`§7[§b#§7] §cInvalid action! §aUse this method§7: §3!ban §aadd §7[§aduration§7] ${main.player} <§areason§7> §7/ §3!ban §cremove ${main.player} §7/ §3!ban §alist`);
+        player.sendMessage(`§7[§b#§7] §cInvalid action! §aUse§7: §3!ban §aadd §7[§aduration§7] ${main.player} <§areason§7> §7/ §3!ban §cremove ${main.player} §7/ §3!ban §alist`);
         system.run(() => player.runCommand('playsound random.break @s'));
         return;
     }
 
     if (action === "add") {
         if (!targetName) {
-            player.sendMessage(`§7[§b#§7] §cPlease specified a player to ban`);
+            player.sendMessage(`§7[§b#§7] §cPlease specify a player to ban`);
             system.run(() => player.runCommand('playsound random.break @s'));
             return;
         }
     
-        if (targetName === player.name || targetName === player.hasTag(main.adminTag)) {
+        if (targetName === player.name || world.getPlayers({ name: targetName, tags: [main.adminTag] }).length > 0) {
             player.sendMessage(`§7[§b#§7] §cYou cannot ban yourself or another admin.`);
             return;
         }
 
         const durationInMs = parseCustomDuration(durationOrTarget);
         if (durationInMs) {
-            banPlayer(targetName, reason, player, durationOrTarget);
+            if (banPlayer(targetName, reason, player, durationOrTarget)) {
+                world.getPlayers({ tags: ["notify"] }).forEach(admin => {
+                    admin.sendMessage(`§7[§e#§7] §e${player.name} §ahas banned §e${targetName} §aReason§7: §e${reason}`);
+                    system.run(() => admin.runCommand(`playsound note.pling @s`));
+                });
+            }
         } else {
-            banPlayer(durationOrTarget, reason, player); // No duration, permanent ban
+            if (banPlayer(durationOrTarget, reason, player)) {
+                world.getPlayers({ tags: ["notify"] }).forEach(admin => {
+                    admin.sendMessage(`§7[§e#§7] §e${player.name} §ahas banned §e${durationOrTarget} §aReason§7: §e${reason}`);
+                    system.run(() => admin.runCommand(`playsound note.pling @s`));
+                });
+            }
         }
-
-        world.getPlayers({ tags: ["notify"] }).forEach(admin => {
-            admin.sendMessage(`§7[§e#§7] §e${player.name} §ahas banned §e${targetName} §aReason§7: §e${reason}`);
-            system.run(() => admin.runCommand(`playsound note.pling @s`));
-        });
     } 
     else if (action === "list") {
+        const bannedPlayers = getBannedPlayers();
         if (bannedPlayers.length === 0) {
             player.sendMessage('§7[§b#§7] §cNo players are currently banned.');
             system.run(() => player.runCommand('playsound random.break @s'));
@@ -78,7 +83,6 @@ Command.register({
             }).join("\n");
             player.sendMessage(`§7[§b#§7] §aBanned Players:\n${banList}`);
         }
-
     } 
     else if (action === "remove") {
         unbanPlayer(durationOrTarget, player);

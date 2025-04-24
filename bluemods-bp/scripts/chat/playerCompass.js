@@ -1,6 +1,6 @@
 import { world, system, EnchantmentTypes, Player, PlatformType, InputMode } from "@minecraft/server";
 import { ActionFormData, ModalFormData } from "@minecraft/server-ui";
-import { banPlayer, unbanPlayer, mutePlayer, unmutePlayer, operatorPlayer, unoperatorPlayer, notifyPlayer, unnotifyPlayer, trustedPlayer, untrustedPlayer } from "../systems/handler/ModHandler.js";
+import { banPlayer, unbanPlayer, getBannedPlayers, mutePlayer, unmutePlayer, operatorPlayer, unoperatorPlayer, notifyPlayer, unnotifyPlayer, trustedPlayer, untrustedPlayer } from "../systems/handler/ModHandler.js";
 import { setHome, teleportHome, removeHome, listHomes } from "../commands/general.js"; 
 import { WARP_DYNAMIC_PROPERTY, setWarp, teleportWarp, removeWarp, listWarps } from "../commands/development/warps.js";
 import { saveEnabledCommands } from "../commands/staff-commands.js";
@@ -150,8 +150,7 @@ function ModerationPanel(player) {
         .body("Choose an option:");
 
     form.button(customFormUICodes.action.buttons.positions.main_only + "Kick Player", "textures/items/nether_star")
-        .button(customFormUICodes.action.buttons.positions.main_only + "Ban Player", "textures/items/paper")
-        .button(customFormUICodes.action.buttons.positions.main_only + "Unban Player", "textures/items/paper")
+        .button(customFormUICodes.action.buttons.positions.main_only + "Ban Manage", "textures/items/paper")
         .button(customFormUICodes.action.buttons.positions.main_only + "Mute Player", "textures/items/paper")
         .button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left")
         .button(customFormUICodes.action.buttons.positions.title_bar_only + "Close", "textures/ui/cancel");
@@ -166,20 +165,16 @@ function ModerationPanel(player) {
                 break;
             case 1:
                 if (!isAuthorized(player, "!ban")) return;
-                    showBanPlayerForm(player);
+                    showBanManagement(player);
                 break;
             case 2:
-                if (!isAuthorized(player, "!ban")) return;
-                    showUnbanPlayerForm(player);
-                break;
-            case 3:
                 if (!isAuthorized(player, "!mute")) return;
                     showMutePlayerForm(player);
                 break;
-            case 4:
+            case 3:
                 showCompassUI(player);
                 break;
-            case 5:
+            case 4:
                 break;
         }
     }).catch((error) => {
@@ -504,6 +499,40 @@ function showKickPlayerForm(player) {
     });
 }
 
+function showBanManagement(player) {
+    const bannedPlayers = getBannedPlayers();
+    
+    const form = new ActionFormData()
+        .title(customFormUICodes.action.titles.formStyles.gridMenu + "§l§bBlueMods §7| §aBan Management")
+        .body("Select an action:");
+
+    form.button(customFormUICodes.action.buttons.positions.main_only + "§aBan Player", "textures/ui/ban")
+        .button(customFormUICodes.action.buttons.positions.main_only + "§cUnban Player", "textures/ui/unban")
+        .button(customFormUICodes.action.buttons.positions.main_only + "§eBan List", "textures/ui/icon_book_writable")
+        .button(customFormUICodes.action.buttons.positions.title_bar_only + "§bBack", "textures/ui/arrow_left");
+
+    form.show(player).then((response) => {
+        if (response.canceled) return;
+
+        switch (response.selection) {
+            case 0:
+                showBanPlayerForm(player);
+                break;
+            case 1:
+                showUnbanPlayerForm(player);
+                break;
+            case 2:
+                showBanList(player);
+                break;
+            case 3:
+                ModerationPanel(player);
+                break;
+        }
+    }).catch((error) => {
+        console.error("Failed to show ban management form:", error);
+    });
+}
+
 function showBanPlayerForm(player) {
     const players = world.getPlayers();
     const playerNames = players.map(p => p.name);
@@ -531,15 +560,20 @@ function showBanPlayerForm(player) {
             return;
         }
 
-        if (targetPlayer) {
-            banPlayer(targetPlayer.name, reason, player, duration);
+        if (targetPlayer.hasTag(main.adminTag)) {
+            player.sendMessage("§7[§b#§7] §cYou cannot ban another admin.");
+            system.run(() => player.runCommand('playsound random.break @s'));
+            return;
         }
+
+        banPlayer(targetPlayer.name, reason, player, duration || null);
     }).catch((error) => {
         console.error("Failed to show ban player form:", error);
     });
 }
 
 function showUnbanPlayerForm(player) {
+    const bannedPlayers = getBannedPlayers();
     const bannedPlayerNames = bannedPlayers.map(p => p.name);
 
     if (bannedPlayerNames.length === 0) {
@@ -563,6 +597,40 @@ function showUnbanPlayerForm(player) {
         }
     }).catch((error) => {
         console.error("Failed to show unban player form:", error);
+    });
+}
+
+function showBanList(player) {
+    const bannedPlayers = getBannedPlayers();
+    
+    if (bannedPlayers.length === 0) {
+        player.sendMessage("§7[§b#§7] §cNo players are currently banned.");
+        system.run(() => player.runCommand('playsound random.break @s'));
+        return;
+    }
+
+    const form = new ActionFormData()
+        .title(customFormUICodes.action.titles.formStyles.gridMenu + "§l§bBlueMods §7| §aBan List")
+        .body("Currently Banned Players:");
+
+    bannedPlayers.forEach(ban => {
+        const expirationText = ban.expiration ? 
+            `Until ${new Date(ban.expiration).toLocaleString()}` : 
+            "Permanent";
+        form.button(`§c${ban.name}\n§7By: ${ban.moderator}\n§7Reason: ${ban.reason}\n§7Expires: ${expirationText}`, "textures/ui/icon_multiplayer");
+    });
+
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "§bBack", "textures/ui/arrow_left");
+
+    form.show(player).then((response) => {
+        if (response.canceled) return;
+        
+        if (response.selection === bannedPlayers.length) {
+            // Back button
+            showBanManagement(player);
+        }
+    }).catch((error) => {
+        console.error("Failed to show ban list form:", error);
     });
 }
 

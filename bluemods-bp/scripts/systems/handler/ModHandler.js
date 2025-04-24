@@ -1,25 +1,33 @@
 import { world, system } from "@minecraft/server";
 
-// Ban/Unban System
-const BANNED_PLAYERS_KEY = "bannedPlayers";
+export const BANNED_PLAYERS_KEY = "bannedPlayers";
 let bannedPlayers = [];
 
-system.run(() => {
+export function initializeBanSystem() {
     const storedBannedPlayers = world.getDynamicProperty(BANNED_PLAYERS_KEY);
+    bannedPlayers = storedBannedPlayers ? JSON.parse(storedBannedPlayers) : [];
     if (!storedBannedPlayers) {
-        world.setDynamicProperty(BANNED_PLAYERS_KEY, JSON.stringify(bannedPlayers));
-    } else {
-        bannedPlayers = JSON.parse(storedBannedPlayers);
+        saveBannedPlayers();
     }
-});
+    
+    const currentTime = Date.now();
+    bannedPlayers = bannedPlayers.filter(player => {
+        if (player.expiration && player.expiration < currentTime) {
+            return false;
+        }
+        return true;
+    });
+    saveBannedPlayers();
+}
 
 function saveBannedPlayers() {
     world.setDynamicProperty(BANNED_PLAYERS_KEY, JSON.stringify(bannedPlayers));
 }
 
-function isPlayerBanned(playerName) {
+export function isPlayerBanned(playerName) {
     const currentTime = Date.now();
     const bannedPlayer = bannedPlayers.find(player => player.name === playerName);
+    
     if (bannedPlayer && bannedPlayer.expiration && bannedPlayer.expiration < currentTime) {
         unbanPlayer(playerName);
         return false;
@@ -28,6 +36,8 @@ function isPlayerBanned(playerName) {
 }
 
 export function parseCustomDuration(durationStr) {
+    if (!durationStr) return null;
+    
     const timeUnits = {
         "m": 60000, // minutes to milliseconds
         "h": 3600000, // hours to milliseconds
@@ -35,20 +45,19 @@ export function parseCustomDuration(durationStr) {
         "w": 604800000, // weeks to milliseconds
     };
     
-    const match = durationStr.match(/^(\d+)([mhdw])$/); // Match the format: number + unit (m, h, d, w)
+    const match = durationStr.match(/^(\d+)([mhdw])$/);
     if (match) {
         const value = parseInt(match[1]);
         const unit = match[2];
         return value * timeUnits[unit];
-    } else {
-        return null;
     }
+    return null;
 }
 
 export function banPlayer(targetName, reason, moderator, durationStr = null) {
     if (isPlayerBanned(targetName)) {
         moderator.sendMessage(`§7[§b#§7] §e${targetName} §cis already banned.`);
-        return;
+        return false;
     }
     
     let expiration = null;
@@ -58,11 +67,17 @@ export function banPlayer(targetName, reason, moderator, durationStr = null) {
             expiration = Date.now() + durationInMs;
         } else {
             moderator.sendMessage("§7[§b#§7] §cInvalid duration format. Use: 1m, 1h, 1d, etc.");
-            return;
+            return false;
         }
     }
     
-    bannedPlayers.push({ name: targetName, reason, moderator: moderator.name, expiration });
+    bannedPlayers.push({
+        name: targetName,
+        reason,
+        moderator: moderator.name,
+        expiration,
+        date: new Date().toISOString()
+    });
     saveBannedPlayers();
     
     const [targetPlayer] = world.getPlayers({ name: targetName });
@@ -80,14 +95,15 @@ export function banPlayer(targetName, reason, moderator, durationStr = null) {
     
     moderator.sendMessage(`§7[§b#§7] §e${targetName} §ahas been banned for §c${reason}§a by §e${moderator.name}.`);
     system.run(() => moderator.runCommand('playsound random.levelup @s'));
+    return true;
 }
 
-export function unbanPlayer(targetName, moderator) {
+export function unbanPlayer(targetName, moderator = null) {
     const bannedIndex = bannedPlayers.findIndex(p => p.name === targetName);
     
     if (bannedIndex === -1) {
-        moderator.sendMessage(`§7[§b#§7] §e${targetName} §cis not banned.`);
-        return;
+        if (moderator) moderator.sendMessage(`§7[§b#§7] §e${targetName} §cis not banned.`);
+        return false;
     }
     
     bannedPlayers.splice(bannedIndex, 1);
@@ -98,9 +114,18 @@ export function unbanPlayer(targetName, moderator) {
         system.run(() => targetPlayer.runCommand(`tag "${targetName}" remove ban`));
     }
     
-    moderator.sendMessage(`§7[§b#§7] §e${targetName} §ahas been unbanned.`);
-    system.run(() => moderator.runCommand('playsound random.levelup @s'));
+    if (moderator) {
+        moderator.sendMessage(`§7[§b#§7] §e${targetName} §ahas been unbanned.`);
+        system.run(() => moderator.runCommand('playsound random.levelup @s'));
+    }
+    return true;
 }
+
+export function getBannedPlayers() {
+    return [...bannedPlayers];
+}
+
+initializeBanSystem();
 
 // Mute System
 const mutedPlayers = new Set();
