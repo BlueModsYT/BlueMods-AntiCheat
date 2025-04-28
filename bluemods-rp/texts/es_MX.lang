@@ -1,0 +1,80 @@
+entity.bluemods:floating_text.name=§bBlueMods §7| §aTexto flotante
+item.spawn_egg.entity.bluemods:floating_text.name=§bBlueMods §7| §aTexto flotante
+
+command.rtp.description=Teletransporta a una ubicación aleatoria.
+command.help.description=Muestra la lista de comandos.
+command.ping.description=Muestra el TPS del mundo y tu ping.
+command.about.description=Muestra al desarrollador del complemento.
+command.echest.description=Recibe un cofre de Ender.
+command.daily.description=Recibe un objeto aleatorio.
+command.warp.description=Teletransporta a cualquier warp o muestra la lista de warps.
+
+command.spawn.description=Teletransporta de regreso al punto de aparición.
+command.rspawn.description=Elimina el punto de aparición actual.
+command.setspawn.description=Establece un nuevo punto de aparición.
+
+command.home.description=Teletransporta a tu casa.
+command.homeset.description=Crea o elimina una casa.
+command.homelist.description=Lista todas tus casas guardadas.
+
+command.tpasend.description=Solicita teletransportarte a otro jugador.
+command.tpaaccept.description=Acepta una solicitud de teletransporte.
+command.tpadecline.description=Rechaza una solicitud de teletransporte.
+command.tpacancel.description=Cancela tu solicitud de teletransporte.
+command.tpablock.description=Bloquea a un jugador para que no envíe solicitudes de teletransporte.
+command.tpaunblock.description=Desbloquea a un jugador.
+
+command.gma.description=Cambia el modo de juego a Aventura.
+command.gmc.description=Cambia el modo de juego a Creativo.
+command.gms.description=Cambia el modo de juego a Supervivencia.
+command.gmsp.description=Cambia el modo de juego a Espectador.
+command.vanish.description=Hazte invisible.
+
+command.kick.description=Expulsa a un jugador del servidor.
+command.banadd.description=Prohíbe o desprohíbe a un jugador.
+command.banremove.description=Elimina la prohibición de un jugador.
+command.banlist.description=Lista de jugadores prohibidos.
+command.cmdsf.description=Alterna la salida de bloques de comandos.
+command.mute.description=Silencia a un jugador.
+command.mutelist.description=Lista de jugadores silenciados.
+command.freeze.description=Congela a un jugador.
+command.freezelist.description=Lista de jugadores congelados.
+command.lagclear.description=Elimina entidades que causan lag.
+command.give.description=Obtén un objeto.
+command.troll.description=Trollea a otro jugador.
+command.banitem.description=Prohíbe el uso de un objeto.
+command.banitemlist.description=Lista de objetos prohibidos.
+command.clearchat.description=Limpia el chat.
+command.ecwipe.description=Elimina el cofre de Ender de un jugador.
+command.invsee.description=Ve el inventario de otro jugador (solo texto).
+command.invwipe.description=Elimina el inventario de un jugador.
+command.pearl.description=Cambia el tiempo de reutilización de la Perla de Ender.
+command.rank.description=Asigna o elimina un rango a un jugador.
+command.floatingtext.description=Crea texto flotante en una ubicación.
+command.dupe.description=Sostén un objeto para duplicarlo.
+
+command.op.description=Otorga o elimina el estado de operador a un jugador.
+command.oplist.description=Lista de jugadores operadores.
+command.notify.description=Notifica cuando un jugador es marcado.
+command.notifylist.description=Lista de jugadores marcados.
+command.trusted.description=Agrega o elimina el estado de confianza a un jugador.
+command.trustedlist.description=Lista de jugadores de confianza.
+
+command.chatconfigset.description=Establece el valor de una opción de configuración de chat (entero).
+command.chatconfig.description=Activa o desactiva una opción de configuración de chat (booleano).
+command.chatconfiglist.description=Ve las opciones disponibles de configuración de chat.
+command.cmdtoggle.description=Alterna un comando.
+command.cmdtogglelist.description=Lista de comandos alternables.
+command.welcome.description=Establece mensajes de bienvenida.
+command.chatdisplay.description=Cambia el estilo de visualización del chat.
+command.chatdisplayset.description=Establece un nuevo estilo de visualización del chat.
+
+command.general.category=§eComandos Generales
+command.tpa.category=§eComandos de TPA
+command.home.category=§eComandos de Casa
+command.gamemode.category=§eComandos de Modos de Juego
+command.moderation.category=§eComandos de Moderación
+command.operator.category=§eComandos de Operador
+command.modules.category=§eComandos de Módulos
+
+bluemods.page.info=Estás en la Página: %1$s/%2$s | Usa §a!help <página> §7para ver otras categorías.

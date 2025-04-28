@@ -1,16 +1,16 @@
 import { world, system, EnchantmentTypes, Player, PlatformType, InputMode } from "@minecraft/server";
 import { ActionFormData, ModalFormData } from "@minecraft/server-ui";
-import { banPlayer, unbanPlayer, getBannedPlayers, mutePlayer, unmutePlayer, operatorPlayer, unoperatorPlayer, notifyPlayer, unnotifyPlayer, trustedPlayer, untrustedPlayer } from "../systems/handler/ModHandler.js";
-import { setHome, teleportHome, removeHome, listHomes } from "../commands/general.js"; 
-import { WARP_DYNAMIC_PROPERTY, setWarp, teleportWarp, removeWarp, listWarps } from "../commands/development/warps.js";
-import { saveEnabledCommands } from "../commands/staff-commands.js";
-import { showTeleportRequestForm, showPlayerSelectionForm, showOutgoingRequests, showIncomingRequests } from "../systems/handler/TeleportHandler.js";
-import { ViewRewardsPanel, AddRewardPanel, RemoveRewardPanel, EditRewardPanel, CustomCooldownPanel } from "../systems/handler/ModuleHandler.js";
+import { banPlayer, unbanPlayer, getBannedPlayers, mutePlayer, unmutePlayer, operatorPlayer, unoperatorPlayer, notifyPlayer, unnotifyPlayer, trustedPlayer, untrustedPlayer } from "../../handlings/ModHandler.js";
+import { setHome, teleportHome, removeHome, listHomes } from "../../commands/general.js"; 
+import { WARP_DYNAMIC_PROPERTY, setWarp, teleportWarp, removeWarp, listWarps } from "../../commands/development/warps.js";
+import { saveEnabledCommands } from "../../commands/staff-commands.js";
+import { showTeleportRequestForm, showPlayerSelectionForm, showOutgoingRequests, showIncomingRequests } from "../../handlings/TeleportHandler.js";
+import { ViewRewardsPanel, AddRewardPanel, RemoveRewardPanel, EditRewardPanel, CustomCooldownPanel } from "../../handlings/ModuleHandler.js";
 import { ChatConfigurationPanel } from "./playerChat.js";
-import { ModuleStatesPanel } from "../systems/isIllegal.js";
-import { customFormUICodes } from "../ui/customFormUICodes.js";
-import spawnManager from "../systems/handler/SpawnHandler.js";
-import main from "../commands/config.js";
+import { ModuleStatesPanel } from "../../systems/isIllegal.js";
+import { customFormUICodes } from "../../handlings/customFormUICodes.js";
+import spawnManager from "../../handlings/SpawnHandler.js";
+import main from "../../commands/config.js";
 
 // all rights reserve @bluemods.lol - discord account. || please report any bugs or glitches in our discord server https://dsc.gg/bluemods.  
 
@@ -506,8 +506,8 @@ function showBanManagement(player) {
         .title(customFormUICodes.action.titles.formStyles.gridMenu + "§l§bBlueMods §7| §aBan Management")
         .body("Select an action:");
 
-    form.button(customFormUICodes.action.buttons.positions.main_only + "§aBan Player", "textures/ui/ban")
-        .button(customFormUICodes.action.buttons.positions.main_only + "§cUnban Player", "textures/ui/unban")
+    form.button(customFormUICodes.action.buttons.positions.main_only + "§aBan Player", "textures/items/paper")
+        .button(customFormUICodes.action.buttons.positions.main_only + "§cUnban Player", "textures/items/paper")
         .button(customFormUICodes.action.buttons.positions.main_only + "§eBan List", "textures/ui/icon_book_writable")
         .button(customFormUICodes.action.buttons.positions.title_bar_only + "§bBack", "textures/ui/arrow_left");
 

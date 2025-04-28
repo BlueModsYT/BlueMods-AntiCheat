@@ -1,20 +1,18 @@
-// bluemods: worldSystems
 import "./systems/8craftersDebugSticksConnectivity.js";
-import "./systems/nuker/isNuker.js";
+import "./systems/isNuker.js";
 import "./systems/isCrasher.js";
 import "./systems/isIllegal.js";
 import "./systems/isEnchantment.js";
-// bluemods: chatFilter
-import "./chat/playerChat.js";
-import "./chat/projectTile.js";
-import "./chat/playerBanned.js";
-import "./chat/playerCompass.js";
-import "./chat/playerEmojis.js";
-// bluemods : staffCommands
+
+import "./systems/player/playerChat.js";
+import "./systems/player/playerProjectTile.js";
+import "./systems/player/playerBanned.js";
+import "./systems/player/playerCompass.js";
+import "./systems/player/playerEmojis.js";
+
 import "./commands/general.js";
 import "./commands/gamemodes.js";
 import "./commands/staff-commands.js";
-// bluemods: Developments
 import "./commands/development/text.js";
-
-import "./translations.js";
+import "./commands/development/warps.js";
+import "./commands/development/dupe.js";

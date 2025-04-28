@@ -1,10 +1,10 @@
 import { world, system } from "@minecraft/server";
 import { ActionFormData, ModalFormData } from "@minecraft/server-ui";
-import main from "../commands/config.js";
-import { Command } from "../systems/handler/CommandHandler.js";
+import main from "../../commands/config.js";
+import { Command } from "../../handlings/CommandHandler.js";
 import { ModulesPanel } from "./playerCompass.js";
-import { badWords } from "./config.js";
-import { customFormUICodes } from "../ui/customFormUICodes.js";
+import { badWords } from "../configuration/word_config.js";
+import { customFormUICodes } from "../../handlings/customFormUICodes.js";
 import { replaceEmojis } from "./playerEmojis.js";
 
 // All rights reserved @bluemods.lol - discord account. | Please report any bugs or glitches in our discord server https://dsc.gg/bluemods

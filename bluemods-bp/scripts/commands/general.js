@@ -1,6 +1,6 @@
 import { world, system } from "@minecraft/server";
-import { Command } from "../systems/handler/CommandHandler.js";
-import { sendTeleportRequest, acceptTeleportRequest, declineTeleportRequest, blockPlayer, unblockPlayer } from "../systems/handler/TeleportHandler.js";
+import { Command } from "../handlings/CommandHandler.js";
+import { sendTeleportRequest, acceptTeleportRequest, declineTeleportRequest, blockPlayer, unblockPlayer } from "../handlings/TeleportHandler.js";
 import main from "./config.js";
 
 // all rights reserved @bluemods.lol - discord account. || please report any bugs or glitches in our discord server https://dsc.gg/bluemods
@@ -32,33 +32,12 @@ const TELEPORT_COUNTDOWN = 5;
 // Help Command
 //
 
-function displayCategory(player, categories, page) {
-    const totalPages = categories.length;
-
-    const adjustedPage = page - 1;
-
-    if (adjustedPage < 0 || adjustedPage >= totalPages) {
-        player.sendMessage("§7[§c-§7] §cInvalid page number.");
-        system.run(() => player.runCommand(`playsound random.break @s`));
-        return;
-    }
-
-    const category = categories[adjustedPage];
-    player.sendMessage(`§l§b${category.name}§r`);
-    category.commands.forEach(line => player.sendMessage(line));
-
-    if (totalPages > 1) {
-        player.sendMessage(`\n§7You're in Page: §a${page}§7/§a${totalPages} §7| Use §a!help <page> §7to view other categories.\n`);
-    }
-}
-
 Command.register({
     name: "help",
     description: "",
     aliases: ["?"]
 }, (data, args) => {
     const player = data.player;
-    if (!isAuthorized(player, "!help")) return;
 
     const page = args[0] ? parseInt(args[0]) : 1;
 
@@ -68,18 +47,54 @@ Command.register({
         return;
     }
 
-    if (player.hasTag("admin")) {
-        displayCategory(player, main.adminCategories, page);
-    } else {
-        displayCategory(player, main.memberCategories, page);
-    }
+    const categories = player.hasTag(main.adminTag) ? main.adminCategories : main.memberCategories;
 
-    // Notify admins
-    world.getPlayers({ tags: ["notify"] }).forEach(admin => {
-        admin.sendMessage(`§7[§e#§7] §e${player.name} §ais using §3!help §afor ${player.hasTag("admin") ? "admins" : "members"}`);
+    displayCategory(player, categories, page);
+
+    world.getPlayers({ tags: [main.notifyTag] }).forEach(admin => {
+        admin.sendMessage(`§7[§e#§7] §e${player.name} §ais using §3!help §afor ${player.hasTag(main.adminTag) ? "admins" : "members"}`);
         system.run(() => admin.runCommand(`playsound note.pling @s`));
     });
 });
+
+function displayCategory(player, categories, page) {
+    const categoryIndex = page - 1;
+    if (categoryIndex >= categories.length) {
+        player.sendMessage("§7[§c-§7] §cInvalid page number.");
+        system.run(() => player.runCommand(`playsound random.break @s`));
+        return;
+    }
+
+    const category = categories[categoryIndex];
+    
+    player.sendMessage({ translate: category.name });
+
+    for (const command of category.commands) {
+        if (typeof command === "string") {
+            player.sendMessage(command);
+        } else if (typeof command === "object") {
+            player.sendMessage({
+                rawtext: [
+                    { text: command.text || "" },
+                    { translate: command.description }
+                ]
+            });
+        }
+    }
+
+    // player.sendMessage(`\n§7You're in Page: §a${page}§7/§a${categories.length} §7| Use §a!help <page> §7to view other categories.\n`);
+    player.sendMessage({
+        rawtext: [
+            { text: "\n§7" },
+            { translate: "bluemods.page.info", with: [
+                `§a${page}§7`,
+                `§a${categories.length}§7`
+            ]},
+            { text: "\n" }
+        ]
+    });
+    system.run(() => player.runCommand(`playsound note.pling @s`));
+}
 
 //
 // About Command
@@ -520,7 +535,7 @@ Command.register({
 // Daily Command
 //
 
-import { getRemainingCooldownTime } from "../systems/handler/ModuleHandler.js";
+import { getRemainingCooldownTime } from "../handlings/ModuleHandler.js";
 
 const DAILY_REWARDS_KEY = "dailyRewards";
 const DAILY_COOLDOWN_KEY = "dailyCooldown";
@@ -603,7 +618,7 @@ Command.register({
 // Spawn Command
 //
 
-import spawnManager from "../systems/handler/SpawnHandler.js";
+import spawnManager from "../handlings/SpawnHandler.js";
 
 Command.register({
     name: "spawn",

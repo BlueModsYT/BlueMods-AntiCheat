@@ -6,10 +6,10 @@
         "url": "https://bluemods.neocities.org"
     },
     "header": {
-        "name": "§l§bBlueMods §aBehavior §gBeta-v5.8.10§r",
-        "description": "BlueMods AntiCheat for Minecraft Bedrock is a powerful tool designed to protect your server from hackers & cheaters. Required to turn on §c(Beta-API + Education Edition)",
+        "name": "pack.name",
+        "description": "pack.description",
         "uuid": "6568a874-bfd7-4ccb-a63f-dba79cf935cb",
-        "version": [5, 8, 10],
+        "version": [5, 9, 0],
         "min_engine_version": [1, 21, 70]
     },
     "modules": [
@@ -19,7 +19,7 @@
             "version": [2, 2, 0]
         },
         {
-            "description": "Required to turn on §c(Beta-API + Education Edition)",
+            "description": "pack.required",
             "language": "javascript",
             "type": "script",
             "uuid": "1d7f88d8-aed9-48f4-9a59-0653c3eaf0cd",
@@ -30,7 +30,7 @@
     "dependencies": [
         {
             "uuid": "75ae9127-8b1b-4b38-a62b-a672538b4778",
-            "version": [5, 8, 10]
+            "version": [5, 9, 0]
         },
         {
             "module_name": "@minecraft/server",

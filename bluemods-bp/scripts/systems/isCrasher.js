@@ -1,11 +1,6 @@
-/**
- * Type imports.
- *
- * @import { Player } from "@minecraft/server"
- */
 import { world, system } from "@minecraft/server";
 import main from "../commands/config.js";
-import spawnManager from "./handler/SpawnHandler.js";
+import spawnManager from "../handlings/SpawnHandler.js";
 
 // All rights reserved @bluemods.lol - Discord account. | Please report any bugs or glitches in our Discord server: https://dsc.gg/bluemods.
 

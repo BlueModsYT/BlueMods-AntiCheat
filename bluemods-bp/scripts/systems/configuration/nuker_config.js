@@ -23,7 +23,7 @@ export const BLOCK_CONTAINERS = [
     "minecrart:structure_block",
     "minecrart:jigsaw"
 ],
-    
+
 VAILD_BLOCK_TAGS = [
     "snow",
     "lush_plants_replaceable",

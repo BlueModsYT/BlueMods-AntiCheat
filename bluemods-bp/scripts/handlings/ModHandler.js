@@ -39,12 +39,12 @@ export function parseCustomDuration(durationStr) {
     if (!durationStr) return null;
     
     const timeUnits = {
-        "m": 60000, // minutes to milliseconds
-        "h": 3600000, // hours to milliseconds
-        "d": 86400000, // days to milliseconds
-        "w": 604800000, // weeks to milliseconds
+        "m": 60000,           // minutes to milliseconds
+        "h": 3600000,         // hours to milliseconds
+        "d": 86400000,        // days to milliseconds
+        "w": 604800000,       // weeks to milliseconds
     };
-    
+
     const match = durationStr.match(/^(\d+)([mhdw])$/);
     if (match) {
         const value = parseInt(match[1]);
@@ -59,7 +59,7 @@ export function banPlayer(targetName, reason, moderator, durationStr = null) {
         moderator.sendMessage(`§7[§b#§7] §e${targetName} §cis already banned.`);
         return false;
     }
-    
+
     let expiration = null;
     if (durationStr) {
         const durationInMs = parseCustomDuration(durationStr);
@@ -70,20 +70,20 @@ export function banPlayer(targetName, reason, moderator, durationStr = null) {
             return false;
         }
     }
-    
-    bannedPlayers.push({
-        name: targetName,
-        reason,
-        moderator: moderator.name,
+
+    bannedPlayers.push({ 
+        name: targetName, 
+        reason, 
+        moderator: moderator.name, 
         expiration,
         date: new Date().toISOString()
     });
     saveBannedPlayers();
-    
+
     const [targetPlayer] = world.getPlayers({ name: targetName });
     if (targetPlayer) {
         system.run(() => targetPlayer.runCommand(`tag "${targetName}" add ban`));
-        let message = `kick "${targetName}" §bBlueMods §7>> You have been banned from the server.\n§eReason§7: §c${reason}`;
+        let message = `kick "${targetName}" .\n§bBlueMods §7>> You have been banned from the server.\n§eReason§7: §c${reason}`;
         if (expiration) {
             const expirationDate = new Date(expiration);
             message += `\n§eBan Duration§7: §cUntil ${expirationDate.toLocaleString()}`;
@@ -92,7 +92,7 @@ export function banPlayer(targetName, reason, moderator, durationStr = null) {
         }
         system.run(() => targetPlayer.runCommand(message));
     }
-    
+
     moderator.sendMessage(`§7[§b#§7] §e${targetName} §ahas been banned for §c${reason}§a by §e${moderator.name}.`);
     system.run(() => moderator.runCommand('playsound random.levelup @s'));
     return true;
@@ -100,20 +100,20 @@ export function banPlayer(targetName, reason, moderator, durationStr = null) {
 
 export function unbanPlayer(targetName, moderator = null) {
     const bannedIndex = bannedPlayers.findIndex(p => p.name === targetName);
-    
+
     if (bannedIndex === -1) {
         if (moderator) moderator.sendMessage(`§7[§b#§7] §e${targetName} §cis not banned.`);
         return false;
     }
-    
+
     bannedPlayers.splice(bannedIndex, 1);
     saveBannedPlayers();
-    
+
     const [targetPlayer] = world.getPlayers({ name: targetName });
     if (targetPlayer) {
         system.run(() => targetPlayer.runCommand(`tag "${targetName}" remove ban`));
     }
-    
+
     if (moderator) {
         moderator.sendMessage(`§7[§b#§7] §e${targetName} §ahas been unbanned.`);
         system.run(() => moderator.runCommand('playsound random.levelup @s'));
@@ -135,7 +135,7 @@ export function mutePlayer(targetName, moderator) {
         moderator.sendMessage(`§7[§b#§7] §e${targetName} §cis already muted.`);
         return;
     }
-    
+
     mutedPlayers.add(targetName);
     moderator.sendMessage(`§7[§b#§7] §e${targetName} §ahas been muted.`);
     system.run(() => moderator.runCommand('playsound random.levelup @s'));
@@ -146,7 +146,7 @@ export function unmutePlayer(targetName, moderator) {
         moderator.sendMessage(`§7[§b#§7] §e${targetName} §cis not muted.`);
         return;
     }
-    
+
     mutedPlayers.delete(targetName);
     moderator.sendMessage(`§7[§b#§7] §e${targetName} §ahas been unmuted.`);
     system.run(() => moderator.runCommand('playsound random.levelup @s'));
@@ -163,12 +163,12 @@ export function operatorPlayer(targetName, moderator) {
         moderator.sendMessage(`§7[§b#§7] §cPlayer not found.`);
         return;
     }
-    
+
     if (targetPlayer.hasTag("admin")) {
         moderator.sendMessage(`§7[§b#§7] §e${targetName} §chas already admin status.`);
         return;
     }
-    
+
     targetPlayer.addTag("admin");
     moderator.sendMessage(`§7[§b#§7] §aSuccessfully §3added §aadmin status to §e${targetPlayer.name}`);
     system.run(() => moderator.runCommand('playsound random.levelup @s'));
@@ -181,12 +181,12 @@ export function unoperatorPlayer(targetName, moderator) {
         moderator.sendMessage(`§7[§b#§7] §cPlayer not found.`);
         return;
     }
-    
+
     if (!targetPlayer.hasTag("admin")) {
         moderator.sendMessage(`§7[§b#§7] §c${targetPlayer.name} does not have admin status.`);
         return;
     }
-    
+
     targetPlayer.removeTag("admin");
     moderator.sendMessage(`§7[§b#§7] §aSuccessfully §cremoved §aadmin status from §e${targetPlayer.name}`);
     system.run(() => moderator.runCommand('playsound random.levelup @s'));
@@ -199,12 +199,12 @@ export function notifyPlayer(targetName, moderator) {
         moderator.sendMessage(`§7[§b#§7] §cPlayer not found.`);
         return;
     }
-    
+
     if (targetPlayer.hasTag("notify")) {
         moderator.sendMessage(`§7[§b#§7] §e${targetName} §chas already notify status.`);
         return;
     }
-    
+
     targetPlayer.addTag("notify");
     moderator.sendMessage(`§7[§b#§7] §aSuccessfully §3added §anotify status to §e${targetPlayer.name}`);
     system.run(() => moderator.runCommand('playsound random.levelup @s'));
@@ -217,12 +217,12 @@ export function unnotifyPlayer(targetName, moderator) {
         moderator.sendMessage(`§7[§b#§7] §cPlayer not found.`);
         return;
     }
-    
+
     if (!targetPlayer.hasTag("notify")) {
         moderator.sendMessage(`§7[§b#§7] §c${targetPlayer.name} does not have notify status.`);
         return;
     }
-    
+
     targetPlayer.removeTag("notify");
     moderator.sendMessage(`§7[§b#§7] §aSuccessfully §cremoved §anotify status from §e${targetPlayer.name}`);
     system.run(() => moderator.runCommand('playsound random.levelup @s'));
@@ -235,12 +235,12 @@ export function trustedPlayer(targetName, moderator) {
         moderator.sendMessage(`§7[§b#§7] §cPlayer not found.`);
         return;
     }
-    
+
     if (targetPlayer.hasTag("trusted")) {
         moderator.sendMessage(`§7[§b#§7] §e${targetName} §chas already trusted status.`);
         return;
     }
-    
+
     targetPlayer.addTag("admin");
     moderator.sendMessage(`§7[§b#§7] §aSuccessfully §3added §atrusted status to §e${targetPlayer.name}`);
     system.run(() => moderator.runCommand('playsound random.levelup @s'));
@@ -253,12 +253,12 @@ export function untrustedPlayer(targetName, moderator) {
         moderator.sendMessage(`§7[§b#§7] §cPlayer not found.`);
         return;
     }
-    
+
     if (!targetPlayer.hasTag("trusted")) {
         moderator.sendMessage(`§7[§b#§7] §c${targetPlayer.name} does not have trusted status.`);
         return;
     }
-    
+
     targetPlayer.removeTag("trusted");
     moderator.sendMessage(`§7[§b#§7] §aSuccessfully §cremoved §atrusted status from §e${targetPlayer.name}`);
     system.run(() => moderator.runCommand('playsound random.levelup @s'));

@@ -1,8 +1,8 @@
 {
   "name": "bluemods-anticheat-bp",
-  "version": "5.8.10",
+  "version": "5.9.0",
   "description": "BlueMods Anticheat.",
-  "main": "index.js",
+  "main": "bluemods.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

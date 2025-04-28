@@ -1,12 +1,15 @@
 entity.bluemods:floating_text.name=§bBlueMods §7| §aFloating text
 item.spawn_egg.entity.bluemods:floating_text.name=§bBlueMods §7| §aFloating text
 
+
+## Command Descriptions
 command.rtp.description=Teleport to a random location.
-command.help.description=Shows the list of commands.
-command.ping.description=Shows the world's TPS and ping.
-command.about.description=Shows the developer of the addon.
-command.echest.description=Get an ender chest.
+command.help.description=Show the list of commands.
+command.ping.description=Show the world's TPS and your ping.
+command.about.description=Show the developer of the addon.
+command.echest.description=Receive an ender chest.
 command.daily.description=Receive a random item.
+command.warp.description=Teleport to any warp or view the list of warps.
 
 command.spawn.description=Teleport back to the spawn point.
 command.rspawn.description=Remove the current spawn point.
@@ -16,51 +19,65 @@ command.home.description=Teleport to your home.
 command.homeset.description=Create or delete a home.
 command.homelist.description=List all your saved homes.
 
-command.tpasend.description=Request a teleport to another player.
-command.tpaccept.description=Accept a teleport request.
+command.tpasend.description=Request to teleport to another player.
+command.tpaaccept.description=Accept a teleport request.
 command.tpadecline.description=Decline a teleport request.
-command.tpacancel.description=Cancel your sent request.
-command.tpablock.description=Block a player from sending requests.
+command.tpacancel.description=Cancel your teleport request.
+command.tpablock.description=Block a player from sending teleport requests.
 command.tpaunblock.description=Unblock a player.
 
-command.gma.description=Change gamemode to adventure.
-command.gmc.description=Change gamemode to creative.
-command.gms.description=Change gamemode to survival.
-command.gmsp.description=Change gamemode to spectator.
+command.gma.description=Change gamemode to Adventure.
+command.gmc.description=Change gamemode to Creative.
+command.gms.description=Change gamemode to Survival.
+command.gmsp.description=Change gamemode to Spectator.
 command.vanish.description=Make yourself invisible.
 
 command.kick.description=Kick a player from the server.
-command.banadd.description=Add or remove a Ban from the player.
-command.banremove.description=Remove a ban from the player.
-command.banlist.description=List of banned player.
-command.cmdsf.description=Toggle command block logs.
+command.banadd.description=Ban or unban a player.
+command.banremove.description=Remove a ban from a player.
+command.banlist.description=List of banned players.
+command.cmdsf.description=Toggle command block outputs.
 command.mute.description=Mute a player.
-command.mutelist.description=List of muted player.
+command.mutelist.description=List of muted players.
 command.freeze.description=Freeze a player.
-command.freezelist.description=List of freezed player.
+command.freezelist.description=List of frozen players.
 command.lagclear.description=Clear lagging entities.
 command.give.description=Give yourself an item.
 command.troll.description=Troll another player.
-command.welcome.description=Set welcome messages.
-command.banitem.description=Ban an item from being used.
-command.banitemlist.description=List of banned item.
-command.clearchat.description=Clear your chat.
-command.ecwipe.description=Wipe a player's ender chest.
-command.invsee.description=View another player's inventory (text).
-command.invwipe.description=Wipe a player's inventory.
-command.cmdtoggle.description=Toggle Command
-command.cmdtogglelist.description=List of toggle commands.
-command.pearl.description=Change ender pearl cooldown.
-command.chatdisplay.description=Change the chat display style.
-command.chatdisplayset.description=Set a new chatdisplay
-command.rank.description=Add or remove a rank from a player.
-command.chatconfig.description=set the value of an integer chat configuration option.
-command.chatconfigset.description=enable or disable a boolean chat configuration option.
-command.chatconfiglist.description=see the list of available chat configuration options.
+command.banitem.description=Ban an item from use.
+command.banitemlist.description=List of banned items.
+command.clearchat.description=Clear the chat.
+command.ecwipe.description=Clear a player's ender chest.
+command.invsee.description=View another player's inventory (text only).
+command.invwipe.description=Clear a player's inventory.
+command.pearl.description=Change Ender Pearl cooldown.
+command.rank.description=Assign or remove a rank to a player.
+command.floatingtext.description=Create floating text at a location.
+command.dupe.description=Hold an item to duplicate it.
 
-command.op.description=Add or remove operator status to a player.
-command.oplist.description=List of operator player.
+command.op.description=Grant or remove operator status to a player.
+command.oplist.description=List of operator players.
 command.notify.description=Notify when a player is flagged.
-command.notifylist.description=List of notified player.
+command.notifylist.description=List of flagged players.
 command.trusted.description=Add or remove trusted status to a player.
-command.trustedlist.description=List of trusted player.
+command.trustedlist.description=List of trusted players.
+
+command.chatconfigset.description=Set the value of an integer chat configuration option.
+command.chatconfig.description=Enable or disable a boolean chat configuration option.
+command.chatconfiglist.description=View available chat configuration options.
+command.cmdtoggle.description=Toggle a command.
+command.cmdtogglelist.description=List of toggleable commands.
+command.welcome.description=Set welcome messages.
+command.chatdisplay.description=Change the chat display style.
+command.chatdisplayset.description=Set a new chat display style.
+
+
+command.general.category=§eGeneral Commands
+command.tpa.category=§eTPA Commands
+command.home.category=§eHome Commands
+command.gamemode.category=§eGameModes Commands
+command.moderation.category=§eModeration Commands
+command.operator.category=§eOperator Commands
+command.modules.category=§eModules Commands
+
+bluemods.page.info=You're in Page: %1$s/%2$s | Use §a!help <page> §7to view other categories.

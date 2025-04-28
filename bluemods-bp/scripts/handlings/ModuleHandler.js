@@ -1,8 +1,8 @@
 import { world, system } from "@minecraft/server";
 import { ActionFormData, ModalFormData } from "@minecraft/server-ui";
-import { showCompassUI, DailyRewardsPanel } from "../../chat/playerCompass.js";
-import { customFormUICodes } from "../../ui/customFormUICodes.js";
-import main from "../../commands/config.js";
+import { showCompassUI, DailyRewardsPanel } from "../systems/player/playerCompass.js";
+import { customFormUICodes } from "./customFormUICodes.js";
+import main from "../commands/config.js";
 
 const DAILY_REWARDS_KEY = "dailyRewards";
 let dailyRewards = [];

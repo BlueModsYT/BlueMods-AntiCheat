@@ -1,5 +1,5 @@
 import { world, system } from "@minecraft/server";
-import { Command } from "../systems/handler/CommandHandler.js";
+import { Command } from "../handlings/CommandHandler.js";
 import main from "./config.js";
 
 // all rights reserved @bluemods.lol - discord account. || please report any bugs or glitches in our discord server https://dsc.gg/bluemods

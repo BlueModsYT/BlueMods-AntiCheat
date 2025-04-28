@@ -1,9 +1,9 @@
 import { world, system, EntityAttributeComponent, EntityHealthComponent, EntityScaleComponent } from "@minecraft/server";
-import { Command } from "./handler/CommandHandler.js";
+import { Command } from "../handlings/CommandHandler.js";
 import { ActionFormData } from "@minecraft/server-ui";
-import { isLored, isDanger, isOperator, isSpawnEgg, isUnknown } from "./config.js";
-import { ModulesPanel } from "../chat/playerCompass.js";
-import { customFormUICodes } from "../ui/customFormUICodes.js";
+import { isLored, isDanger, isOperator, isSpawnEgg, isUnknown } from "./configuration/item_config.js";
+import { ModulesPanel } from "./player/playerCompass.js";
+import { customFormUICodes } from "../handlings/customFormUICodes.js";
 import main from "../commands/config.js";
 
 const adminTag = "admin";

@@ -1,7 +1,7 @@
 import { world, system } from "@minecraft/server";
-import { BLOCK_CONTAINERS, VAILD_BLOCK_TAGS, IMPOSSIBLE_BREAKS } from "./config/moderation";
-import { PlayerLog } from "./config/PlayerLog.js";
-import main from "../../commands/config.js";
+import { BLOCK_CONTAINERS, VAILD_BLOCK_TAGS, IMPOSSIBLE_BREAKS } from "./configuration/nuker_config.js";
+import { PlayerLog } from "./player/playerLog.js";
+import main from "../commands/config.js";
 
 // all rights reserved @bluemods.lol - discord account. Please report any bugs or glitches in our discord server: https://dsc.gg/bluemods.
 

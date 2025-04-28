@@ -1,66 +1,81 @@
-entity.bluemods:floating_text.name=§bBlueMods §7| §aFloating text
-item.spawn_egg.entity.bluemods:floating_text.name=§bBlueMods §7| §aFloating text
+entity.bluemods:floating_text.name=§bBlueMods §7| §a浮遊テキスト
+item.spawn_egg.entity.bluemods:floating_text.name=§bBlueMods §7| §a浮遊テキスト
 
-command.rtp.description=ランダムな場所にテレポートします。
-command.help.description=コマンドの一覧を表示します。
-command.ping.description=ワールドのTPSとピングを表示します。
-command.about.description=アドオンの開発者を表示します。
+command.rtp.description=ランダムな場所へテレポートします。
+command.help.description=コマンド一覧を表示します。
+command.ping.description=ワールドのTPSと自分のPINGを表示します。
+command.about.description=このアドオンの開発者を表示します。
 command.echest.description=エンダーチェストを取得します。
 command.daily.description=ランダムなアイテムを受け取ります。
+command.warp.description=ワープへテレポートまたはワープ一覧を表示します。
 
-command.spawn.description=スポーンポイントにテレポートします。
-command.rspawn.description=現在のスポーンポイントを削除します。
-command.setspawn.description=新しいスポーンポイントを設定します。
+command.spawn.description=スポーン地点に戻ります。
+command.rspawn.description=現在のスポーン地点を削除します。
+command.setspawn.description=新しいスポーン地点を設定します。
 
-command.home.description=ホームにテレポートします。
+command.home.description=自分のホームへテレポートします。
 command.homeset.description=ホームを作成または削除します。
-command.homelist.description=保存されたホームの一覧を表示します。
+command.homelist.description=保存されたホームを一覧表示します。
 
-command.tpasend.description=他のプレイヤーにテレポートリクエストを送信します。
-command.tpaaccept.description=テレポートリクエストを受け入れます。
+command.tpasend.description=他のプレイヤーにテレポートリクエストを送ります。
+command.tpaaccept.description=テレポートリクエストを承認します。
 command.tpadecline.description=テレポートリクエストを拒否します。
-command.tpacancel.description=送信したリクエストをキャンセルします。
-command.tpablock.description=プレイヤーがリクエストを送信できないようにブロックします。
-command.tpaunblock.description=プレイヤーのブロックを解除します。
+command.tpacancel.description=送ったリクエストをキャンセルします。
+command.tpablock.description=リクエストをブロックします。
+command.tpaunblock.description=リクエストブロックを解除します。
 
-command.gma.description=ゲームモードをアドベンチャーに変更します。
-command.gmc.description=ゲームモードをクリエイティブに変更します。
-command.gms.description=ゲームモードをサバイバルに変更します。
-command.gmsp.description=ゲームモードをスペクテイターに変更します。
-command.vanish.description=自分自身を透明にします。
+command.gma.description=アドベンチャーモードに切り替えます。
+command.gmc.description=クリエイティブモードに切り替えます。
+command.gms.description=サバイバルモードに切り替えます。
+command.gmsp.description=スペクテイターモードに切り替えます。
+command.vanish.description=自身を透明にします。
 
-command.kick.description=プレイヤーをサーバーからキックします。
-command.banadd.description=プレイヤーをBanに追加または削除します。
-command.banremove.description=プレイヤーのBanを解除します。
-command.banlist.description=Banされたプレイヤーの一覧を表示します。
+command.kick.description=プレイヤーをキックします。
+command.banadd.description=プレイヤーをBANまたは解除します。
+command.banremove.description=プレイヤーのBANを解除します。
+command.banlist.description=BANされたプレイヤー一覧。
 command.cmdsf.description=コマンドブロックのログを切り替えます。
 command.mute.description=プレイヤーをミュートします。
-command.mutelist.description=ミュートされたプレイヤーの一覧を表示します。
+command.mutelist.description=ミュートされたプレイヤー一覧。
 command.freeze.description=プレイヤーを凍結します。
-command.freezelist.description=凍結されたプレイヤーの一覧を表示します。
+command.freezelist.description=凍結されたプレイヤー一覧。
 command.lagclear.description=ラグの原因となるエンティティを削除します。
-command.give.description=自分自身にアイテムを与えます。
-command.troll.description=他のプレイヤーをトロールします。
-command.welcome.description=ウェルカムメッセージを設定します。
+command.give.description=アイテムを自分に与えます。
+command.troll.description=プレイヤーをトロールします。
 command.banitem.description=アイテムの使用を禁止します。
-command.banitemlist.description=禁止されたアイテムの一覧を表示します。
+command.banitemlist.description=禁止されたアイテム一覧。
 command.clearchat.description=チャットをクリアします。
 command.ecwipe.description=プレイヤーのエンダーチェストを消去します。
-command.invsee.description=他のプレイヤーのインベントリを表示します（テキスト）。
+command.invsee.description=他のプレイヤーのインベントリをテキストで表示します。
 command.invwipe.description=プレイヤーのインベントリを消去します。
-command.cmdtoggle.description=コマンドを切り替えます。
-command.cmdtogglelist.description=切り替え可能なコマンドの一覧を表示します。
 command.pearl.description=エンダーパールのクールダウンを変更します。
-command.chatdisplay.description=チャットの表示スタイルを変更します。
-command.chatdisplayset.description=新しいチャット表示を設定します。
-command.rank.description=プレイヤーにランクを追加または削除します。
-command.chatconfig.description=整数のチャット設定オプションの値を設定します。
-command.chatconfigset.description=ブール値のチャット設定オプションを有効または無効にします。
-command.chatconfiglist.description=利用可能なチャット設定オプションの一覧を表示します。
+command.rank.description=プレイヤーにランクを付与または削除します。
+command.floatingtext.description=指定した場所に浮遊テキストを作成します。
+command.dupe.description=アイテムを持った状態で複製します。
 
-command.op.description=プレイヤーにオペレーターステータスを追加または削除します。
-command.oplist.description=オペレータープレイヤーの一覧を表示します。
+command.op.description=プレイヤーにオペレーター権限を付与または削除します。
+command.oplist.description=オペレーター一覧。
 command.notify.description=プレイヤーがフラグされたときに通知します。
-command.notifylist.description=通知されたプレイヤーの一覧を表示します。
-command.trusted.description=プレイヤーに信頼済みステータスを追加または削除します。
-command.trustedlist.description=信頼済みプレイヤーの一覧を表示します。
+command.notifylist.description=通知対象のプレイヤー一覧。
+command.trusted.description=プレイヤーを信頼できるユーザーに設定または解除します。
+command.trustedlist.description=信頼できるプレイヤー一覧。
+
+command.chatconfigset.description=チャット設定オプションの数値を設定します。
+command.chatconfig.description=チャット設定オプションの有効・無効を切り替えます。
+command.chatconfiglist.description=利用可能なチャット設定オプションを表示します。
+command.cmdtoggle.description=コマンドを切り替えます。
+command.cmdtogglelist.description=切り替え可能なコマンド一覧。
+command.welcome.description=ウェルカムメッセージを設定します。
+command.chatdisplay.description=チャット表示スタイルを変更します。
+command.chatdisplayset.description=新しいチャット表示スタイルを設定します。
+
+
+command.general.category=§e一般コマンド
+command.tpa.category=§eTPAコマンド
+command.home.category=§eホームコマンド
+command.gamemode.category=§eゲームモードコマンド
+command.moderation.category=§eモデレーションコマンド
+command.operator.category=§eオペレーターコマンド
+command.modules.category=§eモジュールコマンド
+
+bluemods.page.info=ページ: %1$s/%2$s を表示中 | 他のカテゴリを見るには §a!help <ページ番号> §7を使用してください。
