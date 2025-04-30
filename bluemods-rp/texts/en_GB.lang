@@ -77,3 +77,5 @@ command.gamemode.category=§eGameModes Commands
 command.moderation.category=§eModeration Commands
 command.operator.category=§eOperator Commands
 command.modules.category=§eModules Commands
+
+bluemods.page.info=You're in Page: %1$s/%2$s | Use §a!help <page> §7to view other categories.
