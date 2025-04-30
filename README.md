@@ -36,6 +36,7 @@
 - Anti Operator Blocks
 - Anti Duplicate Message
 - Anti Invalid Namespoof
+- Anti InCombat Logging
 - Anti Agent Mob & NPC Systems
 - Projectile Sound
 - Chat Ranks (Automated)
