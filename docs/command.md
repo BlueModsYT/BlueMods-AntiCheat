@@ -6,6 +6,7 @@
 - `!echest` - Get an ender chest.
 - `!daily` - Receive a random item.
 - `!compass` - Show the Compass UI.
+- `!warp` - Teleport to any warp or view the list of warps.
 
 ---
 

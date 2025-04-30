@@ -1,4 +1,4 @@
-import { world, system, EntityAttributeComponent, EntityHealthComponent, EntityScaleComponent } from "@minecraft/server";
+        import { world, system, EntityAttributeComponent, EntityHealthComponent, EntityScaleComponent } from "@minecraft/server";
 import { Command } from "../handlings/CommandHandler.js";
 import { ActionFormData } from "@minecraft/server-ui";
 import { isLored, isDanger, isOperator, isSpawnEgg, isUnknown } from "./configuration/item_config.js";
@@ -13,6 +13,7 @@ const MAX_ITEM_NBT_SIZE = 1024;
 const playerClicks = new Map();
 
 const defaultModuleStates = {
+    inCombatLogging: false,
     rankDisplaySystem: false,
     loredItemCheck: true,
     dangerItemCheck: true,
@@ -216,6 +217,159 @@ system.runInterval(() => {
     }
 }, 0);
 
+//
+// Anti InCombat Log
+//
+
+export const CombatDatabase = {};
+
+world.afterEvents.entityHurt.subscribe((event) => {
+    if (!isModuleEnabled("inCombatLogging")) return;
+    if (event.damageSource.cause !== "entityAttack") return;
+    
+    const victim = event.hurtEntity;
+    const attacker = event.damageSource.damagingEntity;
+    
+    if (victim?.typeId === "minecraft:player") {
+        CombatDatabase[victim.id] = { 
+            timer: setTimer(21, 'seconds'),
+            attacker: attacker.id
+        };
+        victim.addTag('incombat');
+    }
+    
+    if (attacker?.typeId === "minecraft:player") {
+        CombatDatabase[attacker.id] = { 
+            timer: setTimer(21, 'seconds'),
+            victim: victim.id
+        };
+        attacker.addTag('incombat');
+    }
+}, { entityTypes: ["minecraft:player"] });
+
+system.runInterval(() => {
+    world.getPlayers({ tag: 'incombat' }).forEach((player) => {
+        if (!CombatDatabase[player.id]) {
+            player.removeTag('incombat');
+            return;
+        }
+
+        const timeLeft = getTime(CombatDatabase[player.id].timer).seconds;
+        player.onScreenDisplay.setActionBar(`§cCombat Logged: §7${Math.max(0, timeLeft)}s`);
+        
+        if (hasTimerReachedEnd(CombatDatabase[player.id].timer.targetDate)) {
+            player.sendMessage('§7[§a+§7] §aYou left in combat');
+            player.removeTag('incombat');
+            delete CombatDatabase[player.id];
+            return;
+        }
+
+        const playerInv = player.getComponent('inventory').container;
+        CombatDatabase[player.id] = {
+            ...CombatDatabase[player.id],
+            location: player.location,
+            dimension: player.dimension.id,
+            items: [
+                ...Array.from({ length: playerInv.size }, (_, i) => playerInv.getItem(i)).filter(Boolean),
+                ...["Head", "Chest", "Legs", "Feet"]
+                    .map(slot => player.getComponent("equippable")?.getEquipment(slot))
+                    .filter(Boolean)
+            ]
+        };
+    });
+}, 20);
+
+world.afterEvents.playerLeave.subscribe(({ playerId, playerName }) => {
+    const combatData = CombatDatabase[playerId];
+    if (!combatData || combatData.clear) return;
+    
+    combatData.items?.forEach(item => {
+        world.getDimension(combatData.dimension)
+            .spawnItem(item, combatData.location);
+    });
+    
+    CombatDatabase[playerId] = { ...combatData, clear: true };
+    
+    const opponentId = combatData.attacker || combatData.victim;
+    if (opponentId && CombatDatabase[opponentId]) {
+        const opponent = world.getPlayers().find(p => p.id === opponentId);
+        
+        if (opponent) {
+            opponent.removeTag('incombat');
+            opponent.sendMessage(`§7[§c!§7] §e${playerName} §clogged during combat!`);
+            opponent.sendMessage('§7[§a+§7] §aCombat ended');
+        }
+        delete CombatDatabase[opponentId];
+    }
+    
+    console.warn(`[CombatLog] ${playerName} logged during combat`);
+});
+
+world.afterEvents.playerSpawn.subscribe((event) => {
+    const player = event.player;
+    if (!event.initialSpawn || !CombatDatabase[player.id]?.clear) return;
+    
+    delete CombatDatabase[player.id];
+    
+    system.run(() => {
+        player.runCommand('clear @s');
+        player.runCommand(`kill @s`);
+    });
+    
+    player.sendMessage('§7[§c!§7] §cYour inventory was cleared for combat logging!');
+    
+    // Admin alert
+    world.getPlayers({ tags: ["notify"] }).forEach(admin => {
+        admin.sendMessage(`§8[§4ALERT§8] §c${player.name} §7returned after combat logging`);
+    });
+});
+
+world.afterEvents.entityDie.subscribe(({ deadEntity }) => {
+    if (deadEntity.typeId !== "minecraft:player") return;
+    
+    const attackerId = CombatDatabase[deadEntity.id]?.attacker;
+    
+    if (CombatDatabase[deadEntity.id]) {
+        const attacker = world.getPlayers().find(p => p.id === attackerId);
+        
+        deadEntity.removeTag('incombat');
+        deadEntity.sendMessage('§7[§a+§7] §aCombat ended');
+        delete CombatDatabase[deadEntity.id];
+        
+        attacker.removeTag('incombat');
+        attacker.sendMessage('§7[§a+§7] §aCombat ended (target died)');
+        delete CombatDatabase[attackerId];
+    }
+});
+
+export function setTimer(value, unit) {
+    const targetDate = new Date();
+    switch (unit) {
+        case 'hours': targetDate.setHours(targetDate.getHours() + value); break;
+        case 'days': targetDate.setDate(targetDate.getDate() + value); break;
+        case 'minutes': targetDate.setMinutes(targetDate.getMinutes() + value); break;
+        case 'seconds': targetDate.setSeconds(targetDate.getSeconds() + value); break;
+    }
+    return { targetDate };
+}
+
+export function hasTimerReachedEnd(targetDate) {
+    return Date.now() >= new Date(targetDate).getTime();
+}
+
+export function formatTime(milliseconds) {
+    return {
+        days: Math.floor(milliseconds / 86400000),
+        hours: Math.floor(milliseconds / 3600000) % 24,
+        minutes: Math.floor(milliseconds / 60000) % 60,
+        seconds: Math.floor(milliseconds / 1000) % 60
+    };
+}
+
+export function getTime(timerInfo) {
+    return formatTime(new Date(timerInfo.targetDate) - Date.now());
+}
+
 let itemCheckInterval;
 let entityCheckInterval;
 
@@ -377,3 +531,4 @@ Command.register({
         }
     }
 });
+    
