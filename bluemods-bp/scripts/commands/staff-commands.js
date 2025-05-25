@@ -1144,8 +1144,12 @@ Command.register({
     const player = data.player;
     if (!isAuthorized(player, "!nbtload")) return;
     
-    system.run(() => player.runCommand(`structure load blue_nbteverything ~~1~`));
-    system.run(() => player.runCommand(`playsound random.levelup @s`));
+    system.run(() => {
+        player.sendCommand("§cOops, Looks like this command was disabled by the developer for the new nbtkit, try again in the new update");
+        player.runCommand("playsound random.break @s");
+    }); 
+    // system.run(() => player.runCommand(`structure load blue_nbteverything ~~1~`));
+    // system.run(() => player.runCommand(`playsound random.levelup @s`));
 });
 
 //
