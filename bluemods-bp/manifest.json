@@ -9,8 +9,8 @@
         "name": "pack.name",
         "description": "pack.description",
         "uuid": "6568a874-bfd7-4ccb-a63f-dba79cf935cb",
-        "version": [5, 9, 0],
-        "min_engine_version": [1, 21, 70]
+        "version": [5, 9, 5],
+        "min_engine_version": [1, 21, 80]
     },
     "modules": [
         {
@@ -30,7 +30,7 @@
     "dependencies": [
         {
             "uuid": "75ae9127-8b1b-4b38-a62b-a672538b4778",
-            "version": [5, 9, 0]
+            "version": [5, 9, 5]
         },
         {
             "module_name": "@minecraft/server",
