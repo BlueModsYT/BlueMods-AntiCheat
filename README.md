@@ -4,7 +4,7 @@
 <h1 align="center">BlueMods AntiCheat</h1>
 <p align="center">https://bluemods.neocities.org</p>
 <p align="center">
-  BlueMods AntiCheat for Minecraft Bedrock is a powerful tool designed to protect your server from hackers and cheaters.
+  BlueMods AntiCheat for Minecraft Bedrock is a powerful tool and best solution to prevent hackers raid, its designed to protect your server from hackers and cheaters.
 </p>
 <p align="center">
   <img src="https://img.shields.io/github/downloads/BlueModsYT/BlueMods-AntiCheat/total?style=for-the-badge" alt="GitHub Downloads">
