@@ -24,15 +24,15 @@ export const BLOCK_CONTAINERS = [
     "minecrart:jigsaw"
 ],
 
-VAILD_BLOCK_TAGS = [
+export const VAILD_BLOCK_TAGS = [
     "snow",
     "lush_plants_replaceable",
     "azalea_log_replaceable",
     "minecraft:crop",
     "fertilize_area"
 ],
-
-IMPOSSIBLE_BREAKS = [
+        
+export const IMPOSSIBLE_BREAKS = [
     "minecraft:bedrock",
     "minecraft:invisiblebedrock",
     "minecraft:water",
