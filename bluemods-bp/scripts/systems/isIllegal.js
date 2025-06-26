@@ -1,4 +1,4 @@
-        import { world, system, EntityAttributeComponent, EntityHealthComponent, EntityScaleComponent } from "@minecraft/server";
+import { world, system, EntityAttributeComponent, EntityHealthComponent, EntityScaleComponent } from "@minecraft/server";
 import { Command } from "../handlings/CommandHandler.js";
 import { ActionFormData } from "@minecraft/server-ui";
 import { isLored, isDanger, isOperator, isSpawnEgg, isUnknown } from "./configuration/item_config.js";
@@ -13,8 +13,10 @@ const MAX_ITEM_NBT_SIZE = 1024;
 const playerClicks = new Map();
 
 const defaultModuleStates = {
+    receiveCompassOnJoin: false,
     inCombatLogging: false,
     rankDisplaySystem: false,
+    enchantmentCheck: true,
     loredItemCheck: true,
     dangerItemCheck: true,
     operatorItemCheck: true,
@@ -205,7 +207,7 @@ function checkRankDisplay(player) {
     if (isModuleEnabled("rankDisplaySystem")) {
         const ranks = getRanks(player).join(" §7|§r ");
         
-        player.nameTag = `${player.name}\n§7[ §r${ranks} §7]`;
+        player.nameTag = `§7[ §r${ranks} §7] §f${player.name}`;
     } else {
         player.nameTag = player.name;
     }
@@ -230,20 +232,20 @@ world.afterEvents.entityHurt.subscribe((event) => {
     const victim = event.hurtEntity;
     const attacker = event.damageSource.damagingEntity;
     
-    if (victim?.typeId === "minecraft:player") {
-        CombatDatabase[victim.id] = { 
-            timer: setTimer(21, 'seconds'),
-            attacker: attacker.id
-        };
-        victim.addTag('incombat');
-    }
-    
     if (attacker?.typeId === "minecraft:player") {
         CombatDatabase[attacker.id] = { 
             timer: setTimer(21, 'seconds'),
             victim: victim.id
         };
         attacker.addTag('incombat');
+    }
+    
+    if (victim?.typeId === "minecraft:player") {
+        CombatDatabase[victim.id] = { 
+            timer: setTimer(21, 'seconds'),
+            attacker: attacker.id
+        };
+        victim.addTag('incombat');
     }
 }, { entityTypes: ["minecraft:player"] });
 
@@ -370,6 +372,82 @@ export function getTime(timerInfo) {
     return formatTime(new Date(timerInfo.targetDate) - Date.now());
 }
 
+//
+// Received Compass Upon Joining
+//
+
+world.afterEvents.playerSpawn.subscribe((event) => {
+    const player = event.player;
+    if (!isModuleEnabled("receiveCompassOnJoin")) return;
+    
+    if (player.hasTag("new-player")) return;
+    system.run(() => {
+        player.runCommand("give @s bluemods:itemui");
+        player.runCommand("tag @s add new-player");
+    });
+    player.sendMessage("§7[§b#§7] §aYou've received a Menu Compass for being a New Player");
+});
+
+//
+// Anti Enchantment
+//
+
+function enchantCheck() {
+    if (!isModuleEnabled("enchantmentCheck")) return;
+    
+    try {
+        for (const player of world.getPlayers()) {
+            if (player.hasTag(adminTag)) continue;
+
+            const inventory = player.getComponent("inventory")?.container;
+            if (!inventory || inventory.size === inventory.emptySlotsCount) continue;
+
+            for (let i = 0; i < inventory.size; i++) {
+                const item = inventory.getItem(i);
+                if (!item || !item.typeId) continue;
+
+                const enchantmentComponent = item.getComponent("enchantable");
+                if (!enchantmentComponent) continue;
+
+                const enchantments = enchantmentComponent.getEnchantments();
+                let modified = false;
+
+                const newEnchantments = [];
+                for (const enchant of enchantments) {
+                    if (enchant.level > enchant.type.maxLevel) {
+                        modified = true;
+                    } else {
+                        newEnchantments.push(enchant);
+                    }
+                }
+
+                if (modified) {
+                    enchantmentComponent.removeAllEnchantments();
+                    for (const enchant of newEnchantments) {
+                        enchantmentComponent.addEnchantment(enchant);
+                    }
+                    inventory.setItem(i, item);
+
+                    player.sendMessage(`§7[§b#§7] §cIllegal enchantments removed§7: §e${item.typeId.replace("minecraft:", "")}`);
+
+                    world.getPlayers({ tags: ["notify"] }).forEach(admin => {
+                        admin.sendMessage(`§7[§d#§7] §e${player.name} §ais trying to get illegal enchantments§7: §e${item.typeId.replace("minecraft:", "")}`);
+                        admin.runCommand(`playsound random.break @s`);
+                    });
+                }
+            }
+        }
+    } catch (error) {
+        console.error("Error in enchantCheck:", error);
+    }
+
+    system.run(enchantCheck);
+}
+
+system.run(enchantCheck);
+
+// Runs a function
+
 let itemCheckInterval;
 let entityCheckInterval;
 
@@ -433,7 +511,7 @@ function startEntityChecks() {
 export function ModuleStatesPanel(player) {
     const form = new ActionFormData()
         .title(customFormUICodes.action.titles.formStyles.gridMenu + "§l§bBlueMods §7| §aModule States")
-        .body("§cWarning: Disabling this module may put the server at risk!\n§fOnly turn it off if you fully understand the consequences.");
+        .body("§cWarning: Disabling this module may put the server at risk!\n§cOnly turn it off if you fully understand the consequences.");
 
     Object.entries(main.moduleStates).forEach(([module, isEnabled]) => {
         const statusText = isEnabled ? "§aEnabled" : "§cDisabled";
@@ -470,6 +548,7 @@ export function ModuleStatesPanel(player) {
 
 startItemChecks();
 startEntityChecks();
+
 
 //
 // Module Command
@@ -531,4 +610,3 @@ Command.register({
         }
     }
 });
-    

@@ -106,21 +106,20 @@ Command.register({
     aliases: []
 }, (data) => {
     const player = data.player
-    if (!isAuthorized(player, "!about")) return;
+    if (!isAuthorized(player, "about")) return;
     
     system.run(() => data.player.runCommand(`playsound note.bell @s`))
     data.player.sendMessage(`
-    §l§bBlueMods §cAnti§fCheat §r
+        §l§bBlueMods §cAnti§fCheat §r
 ${main.bmdescription}
 
 §7> §aMC Supported§7: ${main.mcversion}
 §7> §aAddon Version§7: ${main.bmversion}
+§7> §aDevelopers§7: §g${main.bluemods.join("§7, §g")}
 ${debug_sticks_format_version !== null ? "§7> §aConnected Version of 8Crafter's Debug Sticks Add-On§7: " + debug_sticks_format_version : ""}
 
 ${main.developer}
-
-§aDevelopers§7:
-§a${main.bluemods.join("§7, §a")}`)
+`)
     // Notification for Admins:
     world.getPlayers({ tags: ["notify"] }).forEach(admin => {
         admin.sendMessage(`§7[§e#§7] §e${player.name} §ais using §3!about`);
@@ -138,7 +137,7 @@ Command.register({
     aliases: [],
 }, (data, args) => {
     const { player } = data;
-    if (!isAuthorized(player, "!home")) return;
+    if (!isAuthorized(player, "home")) return;
 
     const action = args[0]?.toLowerCase(); // 'tp', 'set', 'remove', or 'list'
     const homeName = args[1] || "default"; // Default home name if not specified
@@ -361,7 +360,7 @@ Command.register({
     aliases: [],
 }, (data) => {
     const { player } = data;
-    if (!isAuthorized(player, "!rtp")) return;
+    if (!isAuthorized(player, "rtp")) return;
     
     const { id } = player;
 
@@ -482,7 +481,7 @@ Command.register({
     aliases: [],
 }, (data) => {
     const { player } = data;
-    if (!isAuthorized(player, "!echest")) return;
+    if (!isAuthorized(player, "echest")) return;
     const playerKey = `${player.id}:${PLAYER_COOLDOWN_KEY}`;
 
     const lastClaimTime = world.getDynamicProperty(playerKey) || 0;
@@ -590,7 +589,7 @@ Command.register({
     aliases: [],
 }, (data) => {
     const { player } = data;
-    if (!isAuthorized(player, "!daily")) return;
+    if (!isAuthorized(player, "daily")) return;
 
     const remainingTime = getRemainingCooldownTime(player);
     if (remainingTime > 0) {
@@ -633,6 +632,11 @@ Command.register({
         player.sendMessage('§7[§c-§7] §cSpawn location has not been set by an admin.');
         system.run(() => player.runCommand('playsound random.break @s'));
         return;
+    }
+    
+    if (player.hasTag("incombat")) {
+        player.sendMessage("§7[§c-§7] §cYou can't teleport right now! try again once your incombat fade");
+        system.run(() => player.runCommand(`playsound random.break @s`));
     }
 
     if (teleportingPlayers.has(id)) {
@@ -749,7 +753,7 @@ Command.register({
     aliases: [],
 }, (data) => {
     const player = data.player;
-    if (!isAuthorized(player, "!compass")) return;
+    if (!isAuthorized(player, "compass")) return;
 
     const inventory = player.getComponent("inventory")?.container;
     if (!inventory) return;
@@ -798,7 +802,7 @@ Command.register({
     aliases: [],
 }, (data) => {
     const { player } = data;
-    if (!isAuthorized(player, "!back")) return;
+    if (!isAuthorized(player, "back")) return;
 
     const playerName = player.name;
 
