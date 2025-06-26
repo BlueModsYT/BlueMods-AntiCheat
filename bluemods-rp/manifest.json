@@ -3,26 +3,67 @@
     "metadata": {
         "authors": ["bluemods.lol", "trokkk.lol", "mp09", "8Crafter"],
         "license": "AGPLv3",
-        "url": "https://bluemods.neocities.org"
+        "url": "https://bluemods.neocities.org",
+        "product_type": "addon"
     },
     "header": {
-        "name": "§l§bBlueMods §aRP §gBeta-v5.9.0 §aV2§r",
-        "description": "BlueMods AntiCheat for Minecraft Bedrock is a powerful tool designed to protect your server from hackers & cheaters. Required to turn on §c(Beta-API + Education Edition)",
-        "min_engine_version": [1, 21, 80],
+        "name": "pack.name",
+        "description": "pack.description",
         "uuid": "75ae9127-8b1b-4b38-a62b-a672538b4778",
-        "version": [5, 9, 5]
+        "min_engine_version": [
+            1, 
+            21, 
+            90
+        ],
+        "version": [
+            5, 
+            10, 
+            3
+        ]
     },
     "modules": [
         {
             "type": "resources",
             "uuid": "36b10499-df77-441b-bc9b-676328dd62c3",
-            "version": [1, 0, 0]
+            "version": [
+                1, 
+                0, 
+                0
+            ]
         }
     ],
     "dependencies": [
         {
             "uuid": "6568a874-bfd7-4ccb-a63f-dba79cf935cb",
-            "version": [5, 9, 5]
+            "version": [
+                5, 
+                10, 
+                3
+            ]
         }
-    ]
+    ],
+	"settings": [
+		{
+			"type": "label",
+			"text": "BlueMods AntiCheat for Minecraft Bedrock is a powerful tool designed to protect your server from hackers & cheaters.\n\n§l§eRequirements:\n§rRequired to turn ON §c(Beta-API + Education Edition)\n\n§l§aSocial Medias:"
+		},
+		{
+			"type": "input",
+			"default": "youtube.com/@bluemodsyt",
+			"text": "§cYou§ftube Channel",
+			"name": "YouTube"
+		},
+		{
+			"type": "input",
+			"default": "discord.gg/ppPT3MvgCk",
+			"text": "§9Discord Server",
+			"name": "Discord"
+		},
+		{
+			"type": "input",
+			"default": "bluemods.neocities.org",
+			"text": "§bOfficial Website",
+			"name": "Website"
+		}
+	]
 }

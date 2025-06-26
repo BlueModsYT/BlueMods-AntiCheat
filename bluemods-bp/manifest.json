@@ -3,43 +3,87 @@
     "metadata": {
         "authors": ["bluemods.lol", "trokkk.lol", "mp09", "8Crafter"],
         "license": "AGPLv3",
-        "url": "https://bluemods.neocities.org"
+        "url": "https://bluemods.neocities.org",
+	    "product_type": "addon"
     },
     "header": {
         "name": "pack.name",
         "description": "pack.description",
         "uuid": "6568a874-bfd7-4ccb-a63f-dba79cf935cb",
-        "version": [5, 9, 5],
-        "min_engine_version": [1, 21, 80]
+        "version": [
+            5, 
+            10, 
+            3
+        ],
+        "min_engine_version": [
+            1, 
+            21, 
+            90
+        ]
     },
     "modules": [
         {
             "type": "data",
             "uuid": "9f0e4ac8-01e8-4ac5-b6d3-aa1f6893bdc7",
-            "version": [2, 2, 0]
+            "version": [
+                2, 
+                2, 
+                0
+            ]
         },
         {
             "description": "pack.required",
             "language": "javascript",
             "type": "script",
             "uuid": "1d7f88d8-aed9-48f4-9a59-0653c3eaf0cd",
-            "version": [2, 2, 0],
+            "version": [
+                2, 
+                2, 
+                0
+            ],
             "entry": "scripts/bluemods.js"
         }
     ],
     "dependencies": [
         {
             "uuid": "75ae9127-8b1b-4b38-a62b-a672538b4778",
-            "version": [5, 9, 5]
+            "version": [
+                5, 
+                10, 
+                3
+            ]
         },
         {
             "module_name": "@minecraft/server",
-            "version": "2.0.0-beta"
+            "version": "2.1.0-beta"
         },
         {
             "module_name": "@minecraft/server-ui",
-            "version": "2.0.0-beta"
+            "version": "2.1.0-beta"
         }
-    ]
+    ],
+	"settings": [
+		{
+			"type": "label",
+			"text": "BlueMods AntiCheat for Minecraft Bedrock is a powerful tool designed to protect your server from hackers & cheaters.\n\n§l§eRequirements:\n§rRequired to turn ON §c(Beta-API + Education Edition)\n\n§l§aSocial Medias:"
+		},
+		{
+			"type": "input",
+			"default": "bluemods.neocities.org",
+			"text": "§bOfficial Website",
+			"name": "Website"
+		},
+		{
+			"type": "input",
+			"default": "youtube.com/@bluemodsyt",
+			"text": "§cYou§ftube Channel",
+			"name": "YouTube"
+		},
+		{
+			"type": "input",
+			"default": "discord.gg/ppPT3MvgCk",
+			"text": "§9Discord Server",
+			"name": "Discord"
+		}
+	]
 }
-
