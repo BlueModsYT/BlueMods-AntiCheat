@@ -12,13 +12,13 @@
         "uuid": "6568a874-bfd7-4ccb-a63f-dba79cf935cb",
         "version": [
             5, 
-            10, 
-            3
+            11, 
+            2
         ],
         "min_engine_version": [
             1, 
             21, 
-            90
+            100
         ]
     },
     "modules": [
@@ -49,13 +49,13 @@
             "uuid": "75ae9127-8b1b-4b38-a62b-a672538b4778",
             "version": [
                 5, 
-                10, 
-                3
+                11, 
+                2
             ]
         },
         {
             "module_name": "@minecraft/server",
-            "version": "2.1.0-beta"
+            "version": "2.2.0-beta"
         },
         {
             "module_name": "@minecraft/server-ui",
@@ -65,7 +65,7 @@
 	"settings": [
 		{
 			"type": "label",
-			"text": "BlueMods AntiCheat for Minecraft Bedrock is a powerful tool designed to protect your server from hackers & cheaters.\n\n§l§eRequirements:\n§rRequired to turn ON §c(Beta-API + Education Edition)\n\n§l§aSocial Medias:"
+			"text": "BlueMods AntiCheat for Minecraft Bedrock is a powerful tool designed to protect your server from hackers & cheaters.\n\n§l§eRequirements:\n§rRequired to turn ON §c(Beta-API + Education Edition)\n\n"
 		},
 		{
 			"type": "input",
