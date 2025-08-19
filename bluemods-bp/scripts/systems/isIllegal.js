@@ -190,6 +190,7 @@ function checkGameMode(player) {
 
 //
 // Name Rank Display Systems
+// @description: The ranks will be displayed on below the name of the player.
 //
 
 const Default_Prefix = "rank:";

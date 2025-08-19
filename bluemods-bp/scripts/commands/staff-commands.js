@@ -262,7 +262,7 @@ Command.register({
         player.sendMessage(`§7[§b#§7] §cInvalid action! §aUse this Method§7: §3!cmdsf ${main.enabledisable}`);
         system.run(() => player.runCommand(`playsound random.break @s`));
     }
-}); 
+});
 
 //
 // Ender Chest Wipe Command
