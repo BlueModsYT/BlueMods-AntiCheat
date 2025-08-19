@@ -22,7 +22,7 @@ export const BLOCK_CONTAINERS = [
     "minecrart:chain_command_block",
     "minecrart:structure_block",
     "minecrart:jigsaw"
-],
+];
 
 export const VAILD_BLOCK_TAGS = [
     "snow",
@@ -30,7 +30,7 @@ export const VAILD_BLOCK_TAGS = [
     "azalea_log_replaceable",
     "minecraft:crop",
     "fertilize_area"
-],
+];
         
 export const IMPOSSIBLE_BREAKS = [
     "minecraft:bedrock",
