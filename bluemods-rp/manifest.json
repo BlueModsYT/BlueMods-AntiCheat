@@ -13,12 +13,12 @@
         "min_engine_version": [
             1, 
             21, 
-            90
+            100
         ],
         "version": [
             5, 
             10, 
-            3
+            5
         ]
     },
     "modules": [
@@ -38,32 +38,8 @@
             "version": [
                 5, 
                 10, 
-                3
+                5
             ]
         }
-    ],
-	"settings": [
-		{
-			"type": "label",
-			"text": "BlueMods AntiCheat for Minecraft Bedrock is a powerful tool designed to protect your server from hackers & cheaters.\n\n§l§eRequirements:\n§rRequired to turn ON §c(Beta-API + Education Edition)\n\n§l§aSocial Medias:"
-		},
-		{
-			"type": "input",
-			"default": "youtube.com/@bluemodsyt",
-			"text": "§cYou§ftube Channel",
-			"name": "YouTube"
-		},
-		{
-			"type": "input",
-			"default": "discord.gg/ppPT3MvgCk",
-			"text": "§9Discord Server",
-			"name": "Discord"
-		},
-		{
-			"type": "input",
-			"default": "bluemods.neocities.org",
-			"text": "§bOfficial Website",
-			"name": "Website"
-		}
-	]
+    ]
 }
