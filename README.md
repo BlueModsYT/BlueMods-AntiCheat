@@ -84,6 +84,26 @@ These settings are essential for running commands and features that operate in b
 
 ---
 
+## **DEVELOPERS**
+- @BlueModsYT (BlueShadow)
+  - Email: [@bluemodsyt](mailto:bluemodsyt@gmail.com)
+  - Discord: [BlueMods Studios](https://dsc.gg/bluemods)
+  - Website: [bluemods.neocities.org](https://bluemods.neocities.org)
+
+- @Trokkk (Former Developer of BlueMods AC)
+  - No Contact Details Provided
+
+- @ModdedPro (MP09)
+  - No Contact Details Procvided 
+
+- @8Crafter
+  - Email: [@8crafter](mailto:8crafteryt@gmail.com)
+  - Discord: [8Crafter Studios](https://dsc.gg/8crafter-studios)
+  - Website: [8crafter.com](https://8crafter.com)
+  - Website 2: [wiki.8crafter.com](htps://wiki.8crafter.com)
+
+---
+
 ## **DOWNLOAD HERE**
 - [BlueMods (Recommended)](https://bluemods.neocities.org)
 - [Github Latest](../..//releases/latest)
