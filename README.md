@@ -100,7 +100,7 @@ These settings are essential for running commands and features that operate in b
   - Email: [@8crafter](mailto:8crafteryt@gmail.com)
   - Discord: [8Crafter Studios](https://dsc.gg/8crafter-studios)
   - Website: [8crafter.com](https://8crafter.com)
-  - Website 2: [wiki.8crafter.com](htps://wiki.8crafter.com)
+  - Website 2: [wiki.8crafter.com](https://wiki.8crafter.com)
 
 ---
 
