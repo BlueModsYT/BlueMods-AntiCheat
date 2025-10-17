@@ -1,6 +1,9 @@
 /*
  * BlueMods AntiCheat Configuration
  * * * * * | * * * * * | * * * * * | * * * * * 
+ * Made By: BlueShadow (aka: @bluemods.lol)
+ * Contributors: 8Crafter, MP09, and Trokkk
+ * * * * * | * * * * * | * * * * * | * * * * *
  * Description: You can Access and Edit this config file, but owning this is not allowed
 */
 
@@ -11,7 +14,7 @@ export const main = {
     notifyTag: "notify",
     developer: "§b@bluemods.lol §7| §3https://dsc.gg/bluemods",
     bmversion: "§gBeta-v5.11.5",
-    mcversion: "§g1.21.100 §7- §g1.21.101",
+    mcversion: "§g1.21.111 §7- §g1.21.113",
     bmdescription: "§3BlueMods AntiCheat for Minecraft Bedrock is a powerful tool designed to protect your server from hackers & cheaters.",
     player: "§7<§eplayer§7>",
     reason: "§7[§areason§7]",
@@ -64,7 +67,7 @@ export const main = {
         "ban": true,
         "cmdsf": true,
         "mute": true,
-        "freeze": true,
+        // "freeze": true, - removed
         "lagclear": true,
         "give": true,
         "troll": true,
@@ -73,7 +76,7 @@ export const main = {
         "clearchat": true,
         "ecwipe": true,
         "invsee": true,
-        "inwipe": true,
+        "invwipe": true,
         "pearl": true,
         "chatdisplay": true,
         "rank": true,
@@ -221,7 +224,8 @@ export const main = {
                 { text: `  §7- §a!invwipe §7<§eplayer§7> §7- §3`, description: "command.invwipe.description" },
                 { text: `  §7- §a!pearl §7<§gduration§7> §7- §3`, description: "command.pearl.description" },
                 { text: `  §7- §a!rank §7<§aadd§7/§cremove§7> §7<§arank§7> §7[§gcolor§7] §7<§eplayer§7> §7- §3`, description: "command.rank.description" },
-                { text: `  §7- §a!floatingtext §7<§atext§7> §7[§gx, y, z§7] - §3`, description: "command.floatingtext.description" }
+                { text: `  §7- §a!floatingtext §7<§atext§7> §7[§gx, y, z§7] - §3`, description: "command.floatingtext.description" },
+                { text: `  §7- §a!dupe §7- §3`, description: "command.dupe.description" }
             ]
         },
         {

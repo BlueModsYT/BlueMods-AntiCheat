@@ -21,7 +21,6 @@ const isAuthorized = (player, commandName) => {
 const teleportingPlayers = new Map();
 const HOME_DYNAMIC_PROPERTY = "playerHome";
 const MAX_HOME_SLOTS = 6;
-const TELEPORT_COOLDOWN = 5000; // (5 seconds)
 const playerRequest = {};
 const cooldowns = {};
 const tpablocks = {};

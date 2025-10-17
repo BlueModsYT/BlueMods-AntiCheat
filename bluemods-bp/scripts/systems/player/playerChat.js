@@ -150,7 +150,7 @@ Command.register({
     permission: (player) => player.hasTag(main.adminTag),
 }, (data, args) => {
     const { player } = data;
-    if (!isAuthorized(player, "!chatdisplay")) return;
+    if (!isAuthorized(player, "chatdisplay")) return;
 
     const action = args[0];
     const format = args.slice(1).join(" ");
@@ -489,7 +489,7 @@ function AddRankPanel_SelectPlayerPanel(player) {
         .body("Choose a player to assign a rank:");
 
     onlinePlayers.forEach((p) => {
-        form.button(customFormUICodes.action.buttons.positions.main_only + "§a" + p.name, "textures/ui/icon_steve");
+        form.button(customFormUICodes.action.buttons.positions.main_only + `§a${p.name}`, "textures/ui/icon_steve");
     });
 
     form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left");
@@ -529,7 +529,7 @@ function AddRankPanel(player, targetPlayer) {
             return;
         }
 
-        world.getDimension("overworld").runCommand(`tag "${targetPlayer}" add rank:${rankColor}${rankName}`);
+        system.run(() => player.runCommand(`tag "${targetPlayer}" add "rank:${rankColor}${rankName}"`));
         player.sendMessage(`§7[§b#§7] §aAssigned rank §r${rankColor}${rankName} §ato §e${targetPlayer}§a.`);
         system.run(() => player.runCommand("playsound random.levelup @s"));
     }).catch((error) => console.error("Failed to show add rank panel:", error));
@@ -542,7 +542,7 @@ function RemoveRankPanel(player) {
         .body("Choose a player to remove their rank:");
 
     onlinePlayers.forEach((p) => {
-        form.button(customFormUICodes.action.buttons.positions.main_only + "§a" + p.name, "textures/ui/icon_steve");
+        form.button(customFormUICodes.action.buttons.positions.main_only + `§a${p.name}`, "textures/ui/icon_steve");
     });
 
     form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left");

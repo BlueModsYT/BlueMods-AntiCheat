@@ -1,24 +1,30 @@
 {
     "format_version": 2,
     "metadata": {
-        "authors": ["bluemods.lol", "trokkk.lol", "mp09", "8Crafter"],
+        "authors": [
+            "BlueShadow",
+            "Trokkk",
+            "ModdedPro",
+            "8Crafter",
+            "Mehmet303j"
+        ],
         "license": "AGPLv3",
         "url": "https://bluemods.neocities.org",
-	    "product_type": "addon"
+        "product_type": "addon"
     },
     "header": {
         "name": "pack.name",
         "description": "pack.description",
         "uuid": "6568a874-bfd7-4ccb-a63f-dba79cf935cb",
         "version": [
-            5, 
-            11, 
+            5,
+            11,
             5
         ],
         "min_engine_version": [
-            1, 
-            21, 
-            100
+            1,
+            21,
+            110
         ]
     },
     "modules": [
@@ -26,8 +32,8 @@
             "type": "data",
             "uuid": "9f0e4ac8-01e8-4ac5-b6d3-aa1f6893bdc7",
             "version": [
-                2, 
-                2, 
+                2,
+                2,
                 0
             ]
         },
@@ -37,8 +43,8 @@
             "type": "script",
             "uuid": "1d7f88d8-aed9-48f4-9a59-0653c3eaf0cd",
             "version": [
-                2, 
-                2, 
+                2,
+                2,
                 0
             ],
             "entry": "scripts/bluemods.js"
@@ -48,14 +54,14 @@
         {
             "uuid": "75ae9127-8b1b-4b38-a62b-a672538b4778",
             "version": [
-                5, 
-                11, 
+                5,
+                11,
                 5
             ]
         },
         {
             "module_name": "@minecraft/server",
-            "version": "2.2.0-beta"
+            "version": "2.3.0-beta"
         },
         {
             "module_name": "@minecraft/server-ui",

@@ -1,7 +1,13 @@
 {
     "format_version": 2,
     "metadata": {
-        "authors": ["bluemods.lol", "trokkk.lol", "mp09", "8Crafter"],
+        "authors": [
+            "BlueShadow",
+            "Trokkk",
+            "ModdedPro",
+            "8Crafter",
+            "Mehmet303j"
+        ],
         "license": "AGPLv3",
         "url": "https://bluemods.neocities.org",
         "product_type": "addon"
@@ -11,13 +17,13 @@
         "description": "pack.description",
         "uuid": "75ae9127-8b1b-4b38-a62b-a672538b4778",
         "min_engine_version": [
-            1, 
-            21, 
-            100
+            1,
+            21,
+            110
         ],
         "version": [
-            5, 
-            10, 
+            5,
+            11,
             5
         ]
     },
@@ -26,8 +32,8 @@
             "type": "resources",
             "uuid": "36b10499-df77-441b-bc9b-676328dd62c3",
             "version": [
-                1, 
-                0, 
+                1,
+                0,
                 0
             ]
         }
@@ -36,8 +42,8 @@
         {
             "uuid": "6568a874-bfd7-4ccb-a63f-dba79cf935cb",
             "version": [
-                5, 
-                10, 
+                5,
+                11,
                 5
             ]
         }
