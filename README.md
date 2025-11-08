@@ -85,7 +85,7 @@ These settings are essential for running commands and features that operate in b
 ---
 
 ## **DEVELOPERS**
-- @BlueModsYT (BlueShadow)
+- @BlueModsYT (BlueShadow) - FOUNDER
   - Email: [@bluemodsyt](mailto:bluemodsyt@gmail.com)
   - Discord: [BlueMods Studios](https://dsc.gg/bluemods)
   - Website: [bluemods.neocities.org](https://bluemods.neocities.org)
@@ -93,10 +93,10 @@ These settings are essential for running commands and features that operate in b
 - @Trokkk (Former Developer of BlueMods AC)
   - No Contact Details Provided
 
-- @ModdedPro (MP09)
-  - No Contact Details Procvided 
+- @ModdedPro (MP09) - HELPER
+  - No Contact Details Provided 
 
-- @8Crafter
+- @8Crafter - HELPER
   - Email: [@8crafter](mailto:8crafteryt@gmail.com)
   - Discord: [8Crafter Studios](https://dsc.gg/8crafter-studios)
   - Website: [8crafter.com](https://8crafter.com)
