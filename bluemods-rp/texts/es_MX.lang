@@ -1,9 +1,4 @@
 ## Manifest.json
-pack.name=§l§bBlueMods §aRP §gBeta-v5.11.5 §aV2§r
-pack.description=BlueMods AntiCheat for Minecraft Bedrock is a powerful tool designed to protect your server from hackers & cheaters. Required to turn on §c(Beta-API + Education Edition)
-pack.required=Required to turn on §c(Beta-API + Education Edition)
-
-
 entity.bluemods:floating_text.name=§bBlueMods §7| §aTexto flotante
 item.spawn_egg.entity.bluemods:floating_text.name=§bBlueMods §7| §aTexto flotante
 
