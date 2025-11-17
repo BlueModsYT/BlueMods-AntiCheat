@@ -24,7 +24,7 @@ Command.register({
     permission: (player) => player.hasTag(main.adminTag),
 }, (data, args) => {
     const player = data.player;
-    if (!isAuthorized(player, "!gma")) return;
+    if (!isAuthorized(player, "gma")) return;
     
     const targetName = args[0] || player.name;
     const [targetPlayer] = world.getPlayers({ name: targetName });
@@ -48,7 +48,7 @@ Command.register({
     permission: (player) => player.hasTag(main.adminTag),
 }, (data, args) => {
     const player = data.player;
-    if (!isAuthorized(player, "!gmc")) return;
+    if (!isAuthorized(player, "gmc")) return;
     
     const targetName = args[0] || player.name;
     const [targetPlayer] = world.getPlayers({ name: targetName });
@@ -72,7 +72,7 @@ Command.register({
     permission: (player) => player.hasTag(main.adminTag),
 }, (data, args) => {
     const player = data.player;
-    if (!isAuthorized(player, "!gms")) return;
+    if (!isAuthorized(player, "gms")) return;
     
     const targetName = args[0] || player.name;
     const [targetPlayer] = world.getPlayers({ name: targetName });
@@ -96,7 +96,7 @@ Command.register({
     permission: (player) => player.hasTag(main.adminTag),
 }, (data, args) => {
     const player = data.player;
-    if (!isAuthorized(player, "!gmsp")) return;
+    if (!isAuthorized(player, "gmsp")) return;
     
     const targetName = args[0] || player.name;
     const [targetPlayer] = world.getPlayers({ name: targetName });
@@ -120,7 +120,7 @@ Command.register({
     permission: (player) => player.hasTag(main.adminTag),
 }, (data, args) => {
     const player = data.player;
-    if (!isAuthorized(player, "!vanish")) return;
+    if (!isAuthorized(player, "vanish")) return;
     
     const targetName = args[0] || player.name;
     const [targetPlayer] = world.getPlayers({ name: targetName });

@@ -29,7 +29,7 @@ Command.register({
     permission: (player) => player.hasTag(main.adminTag),
 }, (data, args) => {
     const { player } = data;
-    if (!isAuthorized(player, "!ban")) return;
+    if (!isAuthorized(player, "ban")) return;
     
     const action = args[0]?.toLowerCase();
     const durationOrTarget = args[1];
@@ -93,20 +93,20 @@ Command.register({
 // Ban Item Command
 //
 
-const BANNED_ITEMS_KEY = "bannedItems";
+const banned_items = "bannedItems";
 let bannedItems = [];
 
 system.run(() => {
-    const storedBannedItems = world.getDynamicProperty(BANNED_ITEMS_KEY);
+    const storedBannedItems = world.getDynamicProperty(banned_items);
     if (!storedBannedItems) {
-        world.setDynamicProperty(BANNED_ITEMS_KEY, JSON.stringify(bannedItems));
+        world.setDynamicProperty(banned_items, JSON.stringify(bannedItems));
     } else {
         bannedItems = JSON.parse(storedBannedItems);
     }
 });
 
 function saveBannedItems() {
-    world.setDynamicProperty(BANNED_ITEMS_KEY, JSON.stringify(bannedItems));
+    world.setDynamicProperty(banned_items, JSON.stringify(bannedItems));
 }
 
 Command.register({
@@ -116,7 +116,7 @@ Command.register({
     permission: (player) => player.hasTag(main.adminTag),
 }, (data, args) => {
     const { player } = data;
-    if (!isAuthorized(player, "!banitem")) return;
+    if (!isAuthorized(player, "banitem")) return;
     
     const action = args[0]?.toLowerCase();
     const itemName = args[1]?.toLowerCase();
@@ -216,7 +216,7 @@ Command.register({
     permission: (player) => player.hasTag(main.adminTag),
 }, (data) => {
     const player = data.player;
-    if (!isAuthorized(player, "!clearchat")) return;
+    if (!isAuthorized(player, "clearchat")) return;
     
     
     player.sendMessage(`\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n`);
@@ -234,7 +234,7 @@ Command.register({
     permission: (player) => player.hasTag(main.adminTag),
 }, (data, args) => {
     const player = data.player
-    if (!isAuthorized(player, "!cmdsf")) return;
+    if (!isAuthorized(player, "cmdsf")) return;
     
     const enable = "enable", disable = "disable";
     
@@ -262,7 +262,7 @@ Command.register({
         player.sendMessage(`§7[§b#§7] §cInvalid action! §aUse this Method§7: §3!cmdsf ${main.enabledisable}`);
         system.run(() => player.runCommand(`playsound random.break @s`));
     }
-});
+}); 
 
 //
 // Ender Chest Wipe Command
@@ -275,7 +275,7 @@ Command.register({
     permission: (player) => player.hasTag(main.adminTag),
 }, async (data, args) => {
     const player = data.player;
-    if (!isAuthorized(player, "!ecwipe")) return;
+    if (!isAuthorized(player, "ecwipe")) return;
     
     if (!args[0]) {
         player.sendMessage(`§7[§b#§7] §aTry to mention a player to remove there ender_chest. §3!ecwipe ${main.playerl}`);
@@ -328,7 +328,7 @@ Command.register({
   permission: (player) => player.hasTag(main.adminTag),
 }, (data, args) => {
   const player = data.player;
-    if (!isAuthorized(player, "!give")) return;
+    if (!isAuthorized(player, "give")) return;
     
 
   if (args.length < 2) {
@@ -359,7 +359,7 @@ Command.register({
     permission: (player) => player.hasTag(main.adminTag),
 }, (data, args) => {
     const player = data.player;
-    if (!isAuthorized(player, "!invsee")) return;
+    if (!isAuthorized(player, "invsee")) return;
     
 
     if (args.length < 1) {
@@ -412,7 +412,7 @@ Command.register({
     permission: (player) => player.hasTag(main.adminTag),
 }, (data, args) => {
     const player = data.player;
-    if (!isAuthorized(player, "!invwipe")) return;
+    if (!isAuthorized(player, "invwipe")) return;
     
 
     if (args.length < 1) {
@@ -449,7 +449,7 @@ Command.register({
     permission: (player) => player.hasTag(main.adminTag),
 }, (data, args) => {
     const player = data.player;
-    if (!isAuthorized(player, "!kick")) return;
+    if (!isAuthorized(player, "kick")) return;
     
 
     if (args.length < 2) {
@@ -506,7 +506,7 @@ Command.register({
     permission: (player) => player.hasTag(main.adminTag),
 }, (data, args) => {
     const { player } = data;
-    if (!isAuthorized(player, "!lagclear")) return;
+    if (!isAuthorized(player, "lagclear")) return;
     
     const action = args[0]?.toLowerCase();
     
@@ -603,10 +603,10 @@ Command.register({
     name: "notify",
     description: "",
     aliases: [],
-    permission: (player) => (player.hasTag(main.adminTag) || player.isOp())
+    permission: (player) => (player.hasTag(main.adminTag))
 }, async (data, args) => {
     const player = data.player;
-    if (!isAuthorized(player, "!notify")) return;
+    if (!isAuthorized(player, "notify")) return;
     
     const action = args[0]?.toLowerCase();
     const targetName = args[1] || player.name;
@@ -663,10 +663,10 @@ Command.register({
     name: "op",
     description: "",
     aliases: [],
-    permission: (player) => (player.hasTag(main.adminTag) || player.isOp())
+    permission: (player) => (player.hasTag(main.adminTag))
 }, async (data, args) => {
     const player = data.player;
-    if (!isAuthorized(player, "!op")) return;
+    if (!isAuthorized(player, "op")) return;
     
     const action = args[0]?.toLowerCase(); // First argument: add, remove, or list
     const targetName = args[1] || player.name; // Second argument: target player's name, default to the command executor
@@ -722,7 +722,7 @@ Command.register({
 
 const playerCooldowns = new Map();
 let defaultCooldownSeconds = 10; // Default cooldown in seconds
-const MIN_COOLDOWN_SECONDS = 5;  // Minimum allowed cooldown duration
+const MIN_COOLDOWN_SECONDS = 3;  // Minimum allowed cooldown duration
 
 system.runInterval(() => {
     const currentTick = system.currentTick;
@@ -775,7 +775,7 @@ Command.register({
     permission: (player) => player.hasTag(main.adminTag),  // Only admins can use this command
 }, (data, args) => {
     const { player } = data;
-    if (!isAuthorized(player, "!pearl")) return;
+    if (!isAuthorized(player, "pearl")) return;
     
     const action = args[0]?.toLowerCase();
     const duration = parseInt(args[1]);
@@ -813,7 +813,7 @@ Command.register({
     permission: (player) => player.hasTag(main.adminTag),
 }, (data, args) => {
     const { player } = data;
-    if (!isAuthorized(player, "!rank")) return;
+    if (!isAuthorized(player, "rank")) return;
 
     if (args.length < 3 || args.length > 4) {
         player.sendMessage(`§7[§b#§7] §cInvalid action! §aUse this Method§7: §3!rank ${main.addremove} §7<§arank§7> §7[§gcolor(optional)§7] ${main.player}`);
@@ -880,7 +880,7 @@ Command.register({
     permission: (player) => player.hasTag(main.adminTag),
 }, (data, args) => {
     const { player } = data;
-    if (!isAuthorized(player, "!troll")) return;
+    if (!isAuthorized(player, "troll")) return;
     
     const { id, name } = player;
     const trollTypes = ["creeper", "endermen", "ghast", "zombie", "skeleton"];
@@ -950,7 +950,7 @@ Command.register({
     permission: (player) => (player.hasTag(main.adminTag) || player.isOp())
 }, async (data, args) => {
     const player = data.player;
-    if (!isAuthorized(player, "!trusted")) return;
+    if (!isAuthorized(player, "trusted")) return;
     
     const action = args[0]?.toLowerCase();
     const targetName = args[1] || player.name;
@@ -1079,7 +1079,7 @@ Command.register({
     permission: (player) => player.hasTag(main.adminTag),
 }, (data, args) => {
     const { player } = data;
-    if (!isAuthorized(player, "!welcome")) return;
+    if (!isAuthorized(player, "welcome")) return;
 
     const action = args[0]?.toLowerCase();
     const customMessage = args.slice(1).join(" ");
@@ -1129,27 +1129,6 @@ Command.register({
             "§7- §3!welcome §fdefault §7- Reset messages to default values."
         );
     }
-});
-
-//
-// NBT Command
-//
-
-Command.register({
-    name: "nbtload",
-    description: "",
-    aliases: [],
-    permission: (player) => player.hasTag(main.adminTag),
-}, (data) => {
-    const player = data.player;
-    if (!isAuthorized(player, "!nbtload")) return;
-    
-    system.run(() => {
-        player.sendCommand("§cOops, Looks like this command was disabled by the developer for the new nbtkit, try again in the new update");
-        player.runCommand("playsound random.break @s");
-    }); 
-    // system.run(() => player.runCommand(`structure load blue_nbteverything ~~1~`));
-    // system.run(() => player.runCommand(`playsound random.levelup @s`));
 });
 
 //
@@ -1235,3 +1214,63 @@ Command.register({
 });
 
 system.runTimeout(loadEnabledCommands, 0);
+
+//
+// Floating Text Command
+//
+
+Command.register({
+    name: "floatingtext",
+    description: "",
+    aliases: ["ft"],
+    permission: (player) => player.hasTag(main.adminTag),
+}, (data, args) => {
+    const player = data.player;
+    if (!isAuthorized(player, "floatingtext")) return;
+
+    const fullArgs = data.message.split(" ");
+    if (fullArgs.length < 2) {
+        player.sendMessage("§7[§b#§7] §cInvalid action! §aUse this method§7: §3!floatingtext §7<§atext§7> §7[§gx, y, z§7]");
+        system.run(() => player.runCommand('playsound random.break @s'));
+        return;
+    }
+
+    if (!data.message.includes("\"")) {
+        player.sendMessage("§7[§b#§7] §cError: Text must be enclosed in quotation marks (\")");
+        player.sendMessage("§7[§b#§7] §cInvalid action! §aUse this Method§7: §3!floatingtext \"Your text here\" §7[§gx, y, z§7]");
+        system.run(() => player.runCommand('playsound random.break @s'));
+        return;
+    }
+
+    const textMatch = data.message.match(/"([^"]*)"/);
+    if (!textMatch) {
+        player.sendMessage("§7[§a-§7] §cError: Could not parse text. Make sure to use proper quotation marks");
+        system.run(() => player.runCommand('playsound random.break @s'));
+        return;
+    }
+
+    let text = textMatch[1];
+    text = text.replace(/\\n/g, '\n');
+    
+    const remainingArgs = data.message.slice(textMatch.index + textMatch[0].length).trim().split(" ").filter(arg => arg);
+
+    let x = "~";
+    let y = "~1";
+    let z = "~";
+
+    if (remainingArgs.length >= 3) {
+        x = remainingArgs[0];
+        y = remainingArgs[1];
+        z = remainingArgs[2];
+    }
+
+    try {
+        system.run(() => {
+          player.runCommand(`summon bluemods:floating_text ${x}${y}${z} ~~ minecraft:become_neutral "${text}"`);
+        });
+        player.sendMessage(`§7[§b#§7] §aAdded floating text at ${x} ${y} ${z}`);
+    } catch (e) {
+        player.sendMessage("§7[§c#§7] §cFailed to create floating text. Please check your coordinates.");
+        console.warn(`Floating text summon failed: ${e}`);
+    }
+});

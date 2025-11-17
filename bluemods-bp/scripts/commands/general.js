@@ -19,13 +19,12 @@ const isAuthorized = (player, commandName) => {
 };
 
 const teleportingPlayers = new Map();
-const HOME_DYNAMIC_PROPERTY = "playerHome";
-const MAX_HOME_SLOTS = 6;
+const home_dynamic_property = "playerHome";
+const max_home_slots = 6;
 const playerRequest = {};
 const cooldowns = {};
 const tpablocks = {};
-const COOLDOWN_TIME = 10000; // (10 seconds)
-const TELEPORT_COUNTDOWN = 5;
+const teleport_countdown = 5;
 
 //
 // Help Command
@@ -171,11 +170,11 @@ export function setHome(player, homeName) {
         return system.run(() => player.runCommand(`playsound random.break @s`));
     }
 
-    let homeDataJson = player.getDynamicProperty(HOME_DYNAMIC_PROPERTY);
+    let homeDataJson = player.getDynamicProperty(home_dynamic_property);
     let homes = homeDataJson ? JSON.parse(homeDataJson) : {};
 
-    if (Object.keys(homes).length >= MAX_HOME_SLOTS) {
-        player.sendMessage(`§7[§c-§7] §cYou can only set up to ${MAX_HOME_SLOTS} homes. Use §3!home remove <home_name> §cto remove an existing home.`);
+    if (Object.keys(homes).length >= max_home_slots) {
+        player.sendMessage(`§7[§c-§7] §cYou can only set up to ${max_home_slots} homes. Use §3!home remove <home_name> §cto remove an existing home.`);
         return system.run(() => player.runCommand(`playsound random.break @s`));
     }
 
@@ -184,7 +183,7 @@ export function setHome(player, homeName) {
         dimension: player.dimension.id
     };
 
-    player.setDynamicProperty(HOME_DYNAMIC_PROPERTY, JSON.stringify(homes));
+    player.setDynamicProperty(home_dynamic_property, JSON.stringify(homes));
 
     player.sendMessage(`§7[§a/§7] §aHome §e${homeName} §aset successfully!`);
     system.run(() => player.runCommand(`playsound note.bell @s`));
@@ -196,7 +195,7 @@ export function teleportHome(player, homeName) {
         return system.run(() => player.runCommand(`playsound random.break @s`));
     }
 
-    const homeDataJson = player.getDynamicProperty(HOME_DYNAMIC_PROPERTY);
+    const homeDataJson = player.getDynamicProperty(home_dynamic_property);
     if (!homeDataJson) {
         player.sendMessage('§7[§c-§7] §cYou don\'t have any homes set. Use §3!home set <home_name> §cto create one.');
         return system.run(() => player.runCommand(`playsound random.break @s`));
@@ -278,7 +277,7 @@ export function removeHome(player, homeName) {
         return system.run(() => player.runCommand(`playsound random.break @s`));
     }
 
-    let homeDataJson = player.getDynamicProperty(HOME_DYNAMIC_PROPERTY);
+    let homeDataJson = player.getDynamicProperty(home_dynamic_property);
     if (!homeDataJson) {
         player.sendMessage('§7[§c-§7] §cYou don\'t have any homes set.');
         return system.run(() => player.runCommand(`playsound random.break @s`));
@@ -293,14 +292,14 @@ export function removeHome(player, homeName) {
 
     delete homes[homeName];
 
-    player.setDynamicProperty(HOME_DYNAMIC_PROPERTY, JSON.stringify(homes));
+    player.setDynamicProperty(home_dynamic_property, JSON.stringify(homes));
 
     player.sendMessage(`§7[§a/§7] §aHome §e${homeName} §ahas been removed.`);
     system.run(() => player.runCommand(`playsound note.bell @s`));
 }
 
 export function listHomes(player) {
-    let homeDataJson = player.getDynamicProperty(HOME_DYNAMIC_PROPERTY);
+    let homeDataJson = player.getDynamicProperty(home_dynamic_property);
     if (!homeDataJson) {
         player.sendMessage('§7[§c-§7] §cYou don\'t have any homes set.');
         return system.run(() => player.runCommand(`playsound random.break @s`));
@@ -327,26 +326,28 @@ Command.register({
     description: "",
     aliases: [],
 }, async (data) => {
+    const { player } = data;
+    if (!isAuthorized(player, "ping")) return;
+
     await system.waitTicks(1);
 
-    const { player } = data;
     const start = Date.now();
 
-    player.runCommand(`testfor @s`);
+    player.runCommand("testfor @s");
 
     const responseTime = Date.now() - start;
-    
+
     let pingStatus = "§aLow";
     if (responseTime > 100) {
         pingStatus = "§cHigh";
     } else if (responseTime > 50) {
-        pingStatus = "§gMedium";
+        pingStatus = "§eMedium";
     }
 
-    const worldTPS = Math.min(20, 20);
-    player.sendMessage(`§7[§a#§7] §aPing§7: §e${responseTime}ms §7[${pingStatus}§7] | §aTPS: §e${worldTPS}§7/§e20`);
+    const worldTPS = 20;
 
-    player.runCommand(`playsound random.orb @s`);
+    player.sendMessage(`§7[§a#§7] §aPing§7: §e${responseTime}ms §7[${pingStatus}§7] | §aTPS: §e${worldTPS}§7/§e20`);
+    player.runCommand("playsound random.orb @s");
 });
 
 //
@@ -430,6 +431,7 @@ Command.register({
     description: "",
     aliases: [],
 }, (data, args) => {
+    if (!isAuthorized(player, "tpa")) return;
     const { player } = data;
 
     if (!args[0]) {
@@ -646,7 +648,7 @@ Command.register({
     const initialPosition = { x: player.location.x, y: player.location.y, z: player.location.z };
     player.sendMessage('§7[§a/§7] §aTeleporting to spawn in §e5 seconds§a. Do not move!');
 
-    teleportingPlayers.set(id, { initialPosition, countdown: TELEPORT_COUNTDOWN });
+    teleportingPlayers.set(id, { initialPosition, countdown: teleport_countdown });
 
     const countdownInterval = system.runInterval(() => {
         const playerData = teleportingPlayers.get(id);
@@ -827,3 +829,220 @@ Command.register({
         player.sendMessage("§7[§b#§7] §cTeleportation failed. Invalid dimension.");
     });
 });
+
+//
+// Warp Command
+//
+
+const WARP_LIMIT = 5; // Warp Limiter
+export const WARP_DYNAMIC_PROPERTY = "playerWarps";
+
+/*const TELEPORT_COOLDOWN = 5000; // 5 seconds
+
+const teleportingPlayers = new Map();*/
+
+Command.register({
+    name: "warp",
+    description: "",
+    aliases: [],
+}, (data, args) => {
+    const { player } = data;
+    if (!isAuthorized(player, "warp")) return;
+
+    const action = args[0]?.toLowerCase();
+    const warpName = args[1] || "default";
+
+    if (!action) {
+        player.sendMessage(`§7[§b#§7] §cInvalid action! §aUse§7: §3!warp §7<§atp§7/§elist§7> §7<§ewarpName§7>`);
+        return;
+    }
+
+    switch (action) {
+        case "tp":
+            teleportWarp(player, warpName);
+            break;
+        case "list":
+            listWarps(player);
+            break;
+        case "set":
+        case "remove":
+            if (!player.hasTag(main.adminTag)) {
+                player.sendMessage(`§7[§c-§7] §cYou don't have permission to ${action} warps.`);
+                system.run(() => player.runCommand('playsound random.break @s'));
+                return;
+            }
+            if (action === "set") setWarp(player, warpName);
+            else removeWarp(player, warpName);
+            break;
+        default:
+            player.sendMessage(`§7[§b#§7] §cUnknown action: §e${action}§c. Use §3!warp <tp/list>`);
+            system.run(() => player.runCommand('playsound random.break @s'));
+    }
+});
+
+export function setWarp(player, warpName) {
+    if (!warpName) {
+        player.sendMessage('§7[§c-§7] §cPlease specify a warp name.');
+        return system.run(() => player.runCommand(`playsound random.break @s`));
+    }
+
+    let warpDataJson = world.getDynamicProperty(WARP_DYNAMIC_PROPERTY);
+    let warps = warpDataJson ? JSON.parse(warpDataJson) : {};
+
+    if (Object.keys(warps).length >= WARP_LIMIT) {
+        player.sendMessage(`§7[§c-§7] §cMaximum warp limit reached (${WARP_LIMIT}). Remove some warps first.`);
+        return system.run(() => player.runCommand(`playsound random.break @s`));
+    }
+
+    const blockX = Math.floor(player.location.x);
+    const blockY = Math.floor(player.location.y);
+    const blockZ = Math.floor(player.location.z);
+
+    warps[warpName] = {
+        location: { x: blockX, y: blockY, z: blockZ },
+        dimension: player.dimension.id,
+        creator: player.name
+    };
+
+    world.setDynamicProperty(WARP_DYNAMIC_PROPERTY, JSON.stringify(warps));
+
+    player.sendMessage(`§7[§a/§7] §aWarp §e${warpName} §aset successfully! §7(${Object.keys(warps).length}/${WARP_LIMIT})`);
+    system.run(() => player.runCommand(`playsound note.bell @s`));
+}
+
+export function teleportWarp(player, warpName) {
+    if (player.hasTag("incombat")) {
+        player.sendMessage("§7[§c-§7] §cYou can't teleport right now! try again once your incombat fade");
+        system.run(() => player.runCommand(`playsound random.break @s`));
+    }
+    
+    if (!warpName) {
+        player.sendMessage('§7[§c-§7] §cPlease specify the warp name you want to teleport to.');
+        return system.run(() => player.runCommand(`playsound random.break @s`));
+    }
+
+    const warpDataJson = world.getDynamicProperty(WARP_DYNAMIC_PROPERTY);
+    if (!warpDataJson) {
+        player.sendMessage('§7[§c-§7] §cNo warps are set. Ask an admin to set some.');
+        return system.run(() => player.runCommand(`playsound random.break @s`));
+    }
+
+    const warps = JSON.parse(warpDataJson);
+
+    if (!warps[warpName]) {
+        player.sendMessage(`§7[§c-§7] §cWarp §e${warpName} §cdoes not exist. Use §3!warp list §cto see available warps.`);
+        return system.run(() => player.runCommand(`playsound random.break @s`));
+    }
+
+    const warp = warps[warpName];
+
+    if (teleportingPlayers.has(player.id)) {
+        player.sendMessage('§7[§c-§7] §cYou are already in the process of teleporting. Please wait.');
+        return;
+    }
+
+    const initialPosition = { x: player.location.x, y: player.location.y, z: player.location.z };
+    player.sendMessage('§7[§a/§7] §aTeleporting to warp in §e5 seconds§a. Do not move!');
+
+    teleportingPlayers.set(player.id, { initialPosition, countdown: 5 });
+
+    const countdownInterval = system.runInterval(() => {
+        const playerData = teleportingPlayers.get(player.id);
+        if (!playerData || !player) {
+            system.clearRun(countdownInterval);
+            return;
+        }
+
+        const { countdown, initialPosition } = playerData;
+        const currentPosition = { x: player.location.x, y: player.location.y, z: player.location.z };
+
+        if (
+            currentPosition.x !== initialPosition.x ||
+            currentPosition.y !== initialPosition.y ||
+            currentPosition.z !== initialPosition.z
+        ) {
+            player.sendMessage('§7[§c-§7] §cTeleportation canceled because you moved.');
+            system.run(() => player.runCommand('playsound random.break @s'));
+            teleportingPlayers.delete(player.id);
+            system.clearRun(countdownInterval);
+            return;
+        }
+
+        playerData.countdown -= 1;
+
+        if (playerData.countdown > 0) {
+            player.sendMessage(`§7[§a/§7] §aTeleporting in §e${playerData.countdown} seconds§a...`);
+            system.run(() => player.runCommand('playsound random.orb @s'));
+        } else {
+            system.clearRun(countdownInterval);
+
+            const { x, y, z } = warp.location;
+            const dimension = warp.dimension === "minecraft:overworld" ? "overworld" :
+                              warp.dimension === "minecraft:nether" ? "nether" : "the_end";
+            
+            system.run(() => {
+                try {
+                    player.runCommand(`execute in ${dimension} run tp @s ${x} ${y} ${z}`);
+                    player.sendMessage(`§7[§a/§7] §aTeleported to warp §e${warpName}§a.`);
+                    player.runCommand(`playsound random.levelup @s`);
+                } catch (error) {
+                    player.sendMessage('§7[§c-§7] §cError: Unable to teleport. Please try again.');
+                    console.error(`Teleport error: ${error.message}`);
+                }
+            });
+
+            teleportingPlayers.delete(player.id);
+        }
+    }, 20);
+}
+
+export function removeWarp(player, warpName) {
+    if (!warpName) {
+        player.sendMessage('§7[§c-§7] §cPlease specify the warp name you want to remove.');
+        return system.run(() => player.runCommand(`playsound random.break @s`));
+    }
+
+    let warpDataJson = world.getDynamicProperty(WARP_DYNAMIC_PROPERTY);
+    if (!warpDataJson) {
+        player.sendMessage('§7[§c-§7] §cNo warps are set.');
+        return system.run(() => player.runCommand(`playsound random.break @s`));
+    }
+
+    let warps = JSON.parse(warpDataJson);
+
+    if (!warps[warpName]) {
+        player.sendMessage(`§7[§c-§7] §cWarp §e${warpName} §cdoes not exist.`);
+        return system.run(() => player.runCommand(`playsound random.break @s`));
+    }
+
+    delete warps[warpName];
+
+    world.setDynamicProperty(WARP_DYNAMIC_PROPERTY, JSON.stringify(warps));
+
+    player.sendMessage(`§7[§a/§7] §aWarp §e${warpName} §ahas been removed.`);
+    system.run(() => player.runCommand(`playsound note.bell @s`));
+}
+
+export function listWarps(player) {
+    let warpDataJson = world.getDynamicProperty(WARP_DYNAMIC_PROPERTY);
+    if (!warpDataJson) {
+        player.sendMessage('§7[§c-§7] §cNo warps are set.');
+        return system.run(() => player.runCommand(`playsound random.break @s`));
+    }
+
+    let warps = JSON.parse(warpDataJson);
+    const warpList = Object.keys(warps);
+
+    if (warpList.length === 0) {
+        player.sendMessage('§7[§c-§7] §cNo warps are set.');
+        return system.run(() => player.runCommand(`playsound random.break @s`));
+    }
+
+    const warpInfo = warpList.map(name => {
+        const creator = warps[name].creator || "Unknown";
+        return `${name} §7(by ${creator})`;
+    });
+
+    player.sendMessage(`§7[§a/§7] §aAvailable warps:\n§e${warpInfo.join('\n')}`);
+    system.run(() => player.runCommand(`playsound random.levelup @s`));
+}
