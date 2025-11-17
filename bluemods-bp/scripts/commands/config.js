@@ -13,8 +13,8 @@ export const main = {
     trustTag: "trusted",
     notifyTag: "notify",
     developer: "§b@bluemods.lol §7| §3https://dsc.gg/bluemods",
-    bmversion: "§gBeta-v5.11.5",
-    mcversion: "§g1.21.111 §7- §g1.21.113",
+    bmversion: "§gBeta-v5.12.0",
+    mcversion: "§g1.21.120 §7- §g1.21.123",
     bmdescription: "§3BlueMods AntiCheat for Minecraft Bedrock is a powerful tool designed to protect your server from hackers & cheaters.",
     player: "§7<§eplayer§7>",
     reason: "§7[§areason§7]",
@@ -49,13 +49,16 @@ export const main = {
     },
     enabledCommands: {
         // General Commands
-        "rtp": false,
         "help": true,
-        "ping": true,
-        "about": true,
-        "warp": true,
+        // "about": true, - not disabled
         "home": false,
+        "ping": true,
+        "rtp": false,
         "tpa": true,
+        "echest": false,
+        "daily": false,
+        "compass": false,
+        "back": false,
         // Gamemodes
         "gma": true,
         "gmc": true,
@@ -80,16 +83,13 @@ export const main = {
         "pearl": true,
         "chatdisplay": true,
         "rank": true,
+        "warp": true,
         // Operator's Only
         "notify": true,
         "op": true,
         "trusted": true,
         // Development or Beta Testing
-        "nbtload": false,
-        "daily": false,
-        "echest": false,
-        "back": false,
-        "compass": false,
+        // "nbtload": false, - will rework soon
         "floatingtext": true
     },
     daily: [
