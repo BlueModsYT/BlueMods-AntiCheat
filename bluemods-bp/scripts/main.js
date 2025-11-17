@@ -12,5 +12,3 @@ import "./systems/player/playerEmojis.js";
 import "./commands/general.js";
 import "./commands/gamemodes.js";
 import "./commands/staff-commands.js";
-import "./commands/development/text.js";
-import "./commands/development/warps.js";

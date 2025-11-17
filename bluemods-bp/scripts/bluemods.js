@@ -1,27 +1,17 @@
 import { system } from "@minecraft/server";
 
-const Plugins = ["main.js"];
-
 // All rights reserved @bluemods.lol - Discord account. Please report any bugs or glitches in our Discord server: https://dsc.gg/bluemods
 
-(async function loadPlugins() {
+(async function loadMainPlugin() {
     await system.waitTicks(0);
-
-    for (const plugin of Plugins) {
-        const start = Date.now();
-
-        import(`./${plugin}`)
-            .then(() => {
-                console.warn(
-                    `§aLoaded Plugin: §e${plugin}§a Successfully, in §e${Date.now() - start} ms§r`
-                );
-            })
-            .catch((error) => {
-                console.warn(
-                    `Error on Loading Plugin ${plugin}: ` + error + error.stack
-                );
-            });
-    }
+    const start = Date.now();
+    import(`./main.js`)
+        .then(() => {
+            console.warn(`§7[§bBlueMods§7] §fLoaded Plugin: §emain.js§f Successfully, in §e${Date.now() - start} ms§r`);
+        })
+        .catch((error) => {
+            console.warn(`§7[§bBlueMods§7] §fError on Loading Plugin main.js: §c` + error + error.stack + `§r`);
+        });
 })();
 
 system.beforeEvents.watchdogTerminate.subscribe(data => {

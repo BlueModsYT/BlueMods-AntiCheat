@@ -1,249 +1,74 @@
 import { world, system } from "@minecraft/server";
 
-// All rights reserved @bluemods.lol - discord account. || Please report any bugs or glitches in our Discord server https://dsc.gg/bluemods
-
-const BANNED_PLAYERS_KEY = "permanentBannedPlayers";
-let bannedPlayers = [];
-
-system.run(() => {
-    const storedBannedPlayers = world.getDynamicProperty(BANNED_PLAYERS_KEY);
-    if (storedBannedPlayers) {
-        bannedPlayers = JSON.parse(storedBannedPlayers);
-    } else {
-        bannedPlayers = [
-            "LOLSTARBURST",
-            "Adgods",
-            "Egg7869",
-            "astolfoDev2",
-            "Starman12443",
-            "BananaEater88",
-            "p2w crasher7754",
-            "WellWeb35431416",
-            "MoreFerret5696",
-            "CLOWNED ROFL",
-            "HumanShoe397800",
-            "Nebula factions",
-            "ShrekSMP",
-            "allayxiv2000",
-            "hpwd shwp",
-            "Xbox Realm l",
-            "ERMWHATTH3SlGMA",
-            "kqac",
-            "Yo its cody9088",
-            "PriorElk6357949",
-            "WeddedStar4339",
-            "FrastionPVP",
-            "CupsofNoss1628",
-            "obaqlikesmen",
-            "DeeJayTeeeeee",
-            "ScareKoala49114",
-            "dustyfrxg",
-            "Maze luvs ramen",
-            "ARASR8262",
-            "ARASR8260",
-            "LyricTrain02895",
-            "UhWhatTheSigma",
-            "Aliveland419563",
-            "Jaydoglsc",
-            "Fairplay v4",
-            "TSL CLAN ON TOP",
-            "CRYPT Night54",
-            "Diamondboi10718",
-            "Alphastorm9471",
-            "mello6894",
-            "Beast89900",
-            "igorrites26164",
-            "gingerfrog79175",
-            "Progamer",
-            "Crazygamer",
-            "MCharizard",
-            "Ashoffici4l",
-            "DarkerxLegend",
-            "Pepegamessk",
-            "Mr pro Gamer",
-            "S4D3 galaxy",
-            "iamShadowLink",
-            "Sweetdream2you",
-            "starthree477738",
-            "realherobrine73",
-            "Worrer",
-            "sithlordsoth",
-            "Skullkid7800",
-            "thekoolkrab",
-            "dio brand0w0159",
-            "appollios",
-            "bstb canada",
-            "unbatedDegree55",
-            "Qsa static",
-            "Miner noob pro",
-            "BIGBOY6914",
-            "soupergamer0",
-            "i might drop jr",
-            "CubicalCoyote75",
-            "sandshrew81",
-            "Mujalistic",
-            "Jomo667",
-            "MasterAlt",
-            "winniezapoo",
-            "nightwalkerlotsalts",
-            "NotProovyPlays",
-            "FoozoiNYC",
-            "LeasingAsp16479",
-            "thtbaconguy1029",
-            "doctortech887",
-            "seasonedcord",
-            "Cacadoodledoo1",
-            "ZPOLSKI5079",
-            "SEBA7321",
-            "Fuwzar",
-            "MexicanDream286",
-            "Echovite9835",
-            "Geiusici",
-            "BrendonBone mod",
-            "pinguintod482",
-            "azxpert",
-            "fatmole",
-            "Ayxet",
-            "Nun Souls",
-            "RandomYTvideos",
-            "POPB0B 2B2T",
-            "KingLeo332",
-            "xIlIlIIlIIlIx55",
-            "STARKILLER",
-            "GravityBot",
-            "UrgentTrash7032",
-            "BeadiXBL",
-            "NinjaXhunter130",
-            "frickyea99",
-            "timmy_is_daddy57",
-            "Julisco21",
-            "xIlSHNAGSlIx",
-            "PianoPandora948",
-            "DribFR",
-            "SlmplyLogicPvP",
-            "Kingkarter8013",
-            "slimesalt",
-            "Aleximont",
-            "ninjabals360",
-            "Bluefire5975",
-            "SlappsKing",
-            "Adgods",
-            "R2Rappy123",
-            "R2Rappy",
-            "Tarouc",
-            "GingerHarp41307",
-            "Iceecoal",
-            "Anderycarim",
-            "RestiveHawk2905",
-            "Destroyer C00L",
-            "Panda PlayZ3093",
-            "mum GAE LUL",
-            "XxWxsyxX",
-            "PacketClientOP",
-            "ninjabals360",
-            "Japan60I6",
-            "Greed13376174",
-            "ThrownNickel417",
-            "The Supreme Dub",
-            "capnes",
-            "Justin TP2007",
-            "grimleans",
-            "RedRobotboom",
-            "ttv ncps bn",
-            "RedUplif",
-            "FlipperGraph703",
-            "CausableGem385",
-            "ImNotHacking476",
-            "woffelz179",
-            "potatoes3348",
-            "mirbrahin",
-            "Hy4per2",
-            "helloagain7522",
-            "SevenCactus132",
-            "JumboCanvas9718",
-            "A35435",
-            "ArisenKitten455",
-            "RubenThePig3818",
-            "DARKELEMENT3998",
-            "Paralusive",
-            "NRG BK",
-            "Daqiv",
-            "WarLord42487",
-            "Nic The Punk",
-            "Toez6658",
-            "AntonioPROKirby",
-            "josua20229310",
-            "Savourywan",
-            "Spartan 4261400",
-            "ISHAAN GAMER723",
-            "merthackers",
-            "PAKGAMER5451",
-            "PAKGAMER54599",
-            "MockEKRem",
-            "BeamAloneTH",
-            "Yusatc",
-            "TiedKnot5727600",
-            "Paetrio7",
-            "NicktrosGaming",
-            "DIG Doogie",
-            "Xraiddahitta",
-            "DigBick_rooster",
-            "TheKingPengu",
-            "BionicBen1218",
-            "KebabNerdTog",
-            "JAMtoo2oof",
-            "CarltonRBX",
-            "xIlSHNAGSlIx",
-            "Samdesap",
-            "VolantSubset630",
-            "RushinBDev",
-            "Infernogod4473",
-            "Spanishick9762",
-            "Toxic1320",
-            "Tubaexperte5221",
-            "TudouFan",
-            "QuandaleDGNGLE",
-            "darkflash123456",
-            "M1tchellPZDC",
-            "Night8515",
-            "Gamerplygin",
-            "NowPlayingDJ",
-            "AltAnormalOM",
-            "OIlllIIlIIlO",
-            "economydev",
-            "Economydev",
-            "RealmPlusAC",
-            "HostingEconomy",
-            "EcoAutomod",
-            "WieldyAtol86717",
-            "Ctrlaltf44",
-            "BlazerLoop",
-            "TTVsaltyking641",
-            "AbyssSentinl",
-            "oP GHOST6194"
-        ];
-        world.setDynamicProperty(BANNED_PLAYERS_KEY, JSON.stringify(bannedPlayers));
-    }
-});
+// Global ban list (sorted alphabetically)
+const BANNED_PLAYERS = [
+    "Adgods", "Aleximont", "AltAnormalOM", "Aliveland419563", "Alphastorm9471",
+    "Anderycarim", "AntonioPROKirby", "ARASR8260", "ARASR8262", "ArisenKitten455",
+    "Ashoffici4l", "astolfoDev2", "A35435", "Ayxet", "azxpert", "BananaEater88",
+    "BeadiXBL", "BeamAloneTH", "Beast89900", "BIGBOY6914", "BionicBen1218",
+    "Bluefire5975", "BrendonBone mod", "Cacadoodledoo1", "capnes", "CarltonRBX",
+    "CausableGem385", "CLOWNED ROFL", "Crazygamer", "CRYPT Night54", "Ctrlaltf44",
+    "CubicalCoyote75", "CupsofNoss1628", "DARKELEMENT3998", "Dark Shad0w2564",
+    "DarkerxLegend", "Daqiv", "Destroyer C00L", "Diamondboi10718", "DIG Doogie",
+    "DigBick_rooster", "dio brand0w0159", "DeeJayTeeeeee", "dustyfrxg", "Echovite9835",
+    "Economydev", "Egg7869", "ERMWHATTH3SlGMA", "Fairplay v4", "fatmole", "FlipperGraph703",
+    "FoozoiNYC", "FrastionPVP", "Fuwzar", "frickyea99", "Gamerplygin", "Geiusici",
+    "GingerHarp41307", "gingerfrog79175", "GravityBot", "Greed13376174", "grimleans",
+    "helloagain7522", "HostingEconomy", "HumanShoe397800", "Hy4per2", "iamShadowLink",
+    "Iceecoal", "igorrites26164", "ImNotHacking476", "Infernogod4473", "ISHAAN GAMER723",
+    "JAMtoo2oof", "Japan60I6", "Jaydoglsc", "Julisco21", "JumboCanvas9718", "Justin TP2007",
+    "kqac", "Kingkarter8013", "KingLeo332", "KebabNerdTog", "LOLSTARBURST", "LeasingAsp16479",
+    "LyricTrain02895", "MasterAlt", "Maze luvs ramen", "MCharizard", "mello6894", "merthackers",
+    "MexicanDream286", "mirbrahin", "MockEKRem", "MoreFerret5696", "Mr pro Gamer", "Mujalistic",
+    "Nebula factions", "NicktrosGaming", "Nic The Punk", "Night8515", "ninjabals360",
+    "NinjaXhunter130", "NotProovyPlays", "Nun Souls", "obaqlikesmen", "OIlllIIlIIlO", "PAKGAMER5451",
+    "PAKGAMER54599", "Panda PlayZ3093", "Paralusive", "Pepegamessk", "PianoPandora948", "pinguintod482",
+    "potatoes3348", "p2w crasher7754", "POPB0B 2B2T", "PriorElk6357949", "Progamer", "Qsa static",
+    "QuandaleDGNGLE", "R2Rappy", "R2Rappy123", "RandomYTvideos", "realherobrine73", "RealmPlusAC",
+    "RedRobotboom", "RedUplif", "RestiveHawk2905", "RubenThePig3818", "RushinBDev", "S4D3 galaxy",
+    "Samdesap", "sandshrew81", "Savourywan", "ScareKoala49114", "SEBA7321", "SevenCactus132",
+    "ShrekSMP", "Sithlordsoth", "Skullkid7800", "SlappsKing", "SlmplyLogicPvP", "slimesalt",
+    "Spartan 4261400", "Spanishick9762", "starthree477738", "STARKILLER", "Starman12443",
+    "Sweetdream2you", "Tarouc", "The Supreme Dub", "TheKingPengu", "thtbaconguy1029",
+    "timmy_is_daddy57", "Toez6658", "Toxic1320", "TSL CLAN ON TOP", "Tubaexperte5221",
+    "TudouFan", "ttv ncps bn", "UhWhatTheSigma", "unbatedDegree55", "UrgentTrash7032",
+    "VolantSubset630", "WarLord42487", "WeddedStar4339", "WellWeb35431416", "WieldyAtol86717",
+    "winniezapoo", "woffelz179", "Worrer", "Xbox Realm l", "Xraiddahitta", "XxWxsyxX",
+    "Yusatc", "ZPOLSKI5079"
+];
 
 function isPlayerBanned(playerName) {
-    return bannedPlayers.includes(playerName);
+    return BANNED_PLAYERS.some(bannedName =>
+        bannedName.toLowerCase() === playerName.toLowerCase()
+    );
 }
 
 world.afterEvents.playerSpawn.subscribe((event) => {
     const player = event.player;
-
+    
     if (isPlayerBanned(player.name)) {
         player.addTag("ban_database");
-
+        
         world.sendMessage(`§7[§aGlobal§7] §e${player.name} §ahas been permanently banned by §bBlueMods §eDatabase.`);
         system.run(() => player.runCommand('playsound note.bell @a'));
-
+        
         world.getPlayers({ tags: ["notify"] }).forEach(admin => {
             admin.sendMessage(`§7[§d#§7] §e${player.name} §chas attempted to join but is banned.`);
             system.run(() => admin.runCommand('playsound random.break @s'));
         });
-
-        system.run(() => player.runCommand(`kick "${player.name}" \n§cYou are permanently banned from this server.\n§eReason: §aBanned by §bBlueMods §eDatabase`));
+        
+        system.run(() => player.runCommand(`kick "${player.name}" .\n§cYou are permanently banned from this server.\n§eReason: §aBanned by §bBlueMods §eDatabase`));
     }
+});
+
+function playerBanned(player) {
+    if (player.hasTag("ban_database")) {
+        system.run(() => {
+            player.runCommand(`kick "${player.nameTag}" §cYou are permanently banned from this server.\n§eReason: §aBanned by §bBlueMods §eDatabase`);
+        });
+    }
+}
+
+world.afterEvents.playerSpawn.subscribe((ev) => {
+    playerBanned(ev.player);
 });

@@ -2,7 +2,7 @@ import { world, system, EnchantmentTypes, Player, PlatformType, InputMode } from
 import { ActionFormData, ModalFormData } from "@minecraft/server-ui";
 import { banPlayer, unbanPlayer, getBannedPlayers, mutePlayer, unmutePlayer, operatorPlayer, unoperatorPlayer, notifyPlayer, unnotifyPlayer, trustedPlayer, untrustedPlayer } from "../../handlings/ModHandler.js";
 import { setHome, teleportHome, removeHome, listHomes } from "../../commands/general.js"; 
-import { WARP_DYNAMIC_PROPERTY, setWarp, teleportWarp, removeWarp, listWarps } from "../../commands/development/warps.js";
+import { WARP_DYNAMIC_PROPERTY, setWarp, teleportWarp, removeWarp, listWarps } from "../../commands/general.js";
 import { saveEnabledCommands } from "../../commands/staff-commands.js";
 import { showTeleportRequestForm, showPlayerSelectionForm, showOutgoingRequests, showIncomingRequests } from "../../handlings/TeleportHandler.js";
 import { ViewRewardsPanel, AddRewardPanel, RemoveRewardPanel, EditRewardPanel, CustomCooldownPanel } from "../../handlings/ModuleHandler.js";
@@ -68,10 +68,10 @@ export function showCompassUI(player) {
         .body("Choose an option:");
 
     form.button(customFormUICodes.action.buttons.positions.main_only + "Warps", "textures/items/compass_item")
-        .button(customFormUICodes.action.buttons.positions.main_only + "Teleport Request", "textures/items/ender_pearl")
+        .button(customFormUICodes.action.buttons.positions.main_only + "TPA", "textures/items/ender_pearl")
         .button(customFormUICodes.action.buttons.positions.main_only + "RTP", "textures/items/redstone_dust")
         .button(customFormUICodes.action.buttons.positions.main_only + "Homes", "textures/items/bed_red")
-        .button(customFormUICodes.action.buttons.positions.main_only + "About Addon", "textures/ui/icon_fall");
+        .button(customFormUICodes.action.buttons.positions.main_only + "Info", "textures/ui/icon_fall");
 
     let isAdmin = player.hasTag("admin");
     let adminButtons = 0;
@@ -97,15 +97,15 @@ export function showCompassUI(player) {
                 handleWarp(player);
                 break;
             case 1:
-                if (!isAuthorized(player, "!tpa")) return;
+                if (!isAuthorized(player, "tpa")) return;
                 showTeleportRequestForm(player);
                 break;
             case 2:
-                if (!isAuthorized(player, "!rtp")) return;
+                if (!isAuthorized(player, "rtp")) return;
                 handleRTP(player);
                 break;
             case 3:
-                if (!isAuthorized(player, "!home")) return;
+                if (!isAuthorized(player, "home")) return;
                 homeForm(player);
                 break;
             case 4:
@@ -160,15 +160,15 @@ function ModerationPanel(player) {
 
         switch (response.selection) {
             case 0:
-                if (!isAuthorized(player, "!kick")) return;
+                if (!isAuthorized(player, "kick")) return;
                     showKickPlayerForm(player);
                 break;
             case 1:
-                if (!isAuthorized(player, "!ban")) return;
+                if (!isAuthorized(player, "ban")) return;
                     showBanManagement(player);
                 break;
             case 2:
-                if (!isAuthorized(player, "!mute")) return;
+                if (!isAuthorized(player, "mute")) return;
                     showMutePlayerForm(player);
                 break;
             case 3:
@@ -198,15 +198,15 @@ function OperatorPanel(player) {
 
         switch (response.selection) {
             case 0:
-                if (!isAuthorized(player, "!op")) return;
+                if (!isAuthorized(player, "op")) return;
                     showOperatorForm(player);
                 break;
             case 1:
-                if (!isAuthorized(player, "!notify")) return;
+                if (!isAuthorized(player, "notify")) return;
                     showNotifyForm(player);
                 break;
             case 2:
-                if (!isAuthorized(player, "!trusted")) return;
+                if (!isAuthorized(player, "trusted")) return;
                     showTrustedForm(player);
                 break;
             case 3:
@@ -287,7 +287,7 @@ function handleRTP(player) {
 }
 
 function handleWarp(player) {
-    if (!isAuthorized(player, "!warp")) return;
+    if (!isAuthorized(player, "warp")) return;
     
     const warpDataJson = world.getDynamicProperty(WARP_DYNAMIC_PROPERTY);
     const warps = warpDataJson ? JSON.parse(warpDataJson) : {};
@@ -307,7 +307,7 @@ function handleWarp(player) {
             .button(customFormUICodes.action.buttons.positions.main_only + "§cRemove Warp", "textures/ui/minus");
     }
 
-    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "§cBack", "textures/ui/arrow_left");
+    form.button(customFormUICodes.action.buttons.positions.title_bar_only + "Back", "textures/ui/arrow_left");
 
     form.show(player).then((response) => {
         if (response.canceled) return;
@@ -831,7 +831,7 @@ function showTrustedForm(player) {
 //
 
 function homeForm(player) {
-    if (!isAuthorized(player, "!home")) return;
+    if (!isAuthorized(player, "home")) return;
     const homeDataJson = player.getDynamicProperty("playerHome");
     const homes = homeDataJson ? JSON.parse(homeDataJson) : {};
 

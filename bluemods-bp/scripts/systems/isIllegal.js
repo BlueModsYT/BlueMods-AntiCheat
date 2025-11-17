@@ -9,8 +9,7 @@ import main from "../commands/config.js";
 const adminTag = "admin";
 const trustedTag = "trusted";
 const MODULE_STATES_KEY = "moduleStates";
-const MAX_ITEM_NBT_SIZE = 1024;
-const playerClicks = new Map();
+const max_nbt_size = 1024;
 
 const defaultModuleStates = {
     receiveCompassOnJoin: false,
@@ -120,7 +119,7 @@ function checkItemNBT(player) {
         if (!item) continue;
 
         const itemData = JSON.stringify(item);
-        if (itemData.length > MAX_ITEM_NBT_SIZE) {
+        if (itemData.length > max_nbt_size) {
             inventory.setItem(i, null);
             player.sendMessage("§7[§b#§7] §cIllegal NBT detected, item removed.");
 
@@ -226,9 +225,25 @@ system.runInterval(() => {
 
 export const CombatDatabase = {};
 
+const playerProjectiles = [
+    "minecraft:arrow",
+    "minecraft:snowball",
+    "minecraft:egg",
+    "minecraft:tritem_arrow",
+    "minecraft:spectral_arrow",
+    "minecraft:thrown_trident",
+    "minecraft:ender_pearl",
+    "minecraft:splash_potion"
+];
+
 world.afterEvents.entityHurt.subscribe((event) => {
     if (!isModuleEnabled("inCombatLogging")) return;
-    if (event.damageSource.cause !== "entityAttack") return;
+    
+    if (event.damageSource.cause === "projectile") {
+        if (!playerProjectiles.includes(event.damageSource.damagingEntity?.typeId)) return;
+    } else if (event.damageSource.cause !== "entityAttack") {
+        return;
+    }
     
     const victim = event.hurtEntity;
     const attacker = event.damageSource.damagingEntity;
@@ -451,6 +466,13 @@ system.run(enchantCheck);
 
 let itemCheckInterval;
 let entityCheckInterval;
+
+
+
+
+
+
+
 
 // 
 // Checks the Item

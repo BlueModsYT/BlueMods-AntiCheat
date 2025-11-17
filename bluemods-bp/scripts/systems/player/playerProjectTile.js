@@ -18,7 +18,7 @@ world.afterEvents.projectileHitEntity.subscribe((data) => {
             "minecraft:splash_potion"
         ];
         
-        if (allowedProjectiles.includes(projectile)) {
+        if (allowedProjectiles.includes(projectile) && source.gameMode !== "creative") {
             source.playSound("random.orb", { pitch: 0.5, volume: 0.4 });
         }
     }
