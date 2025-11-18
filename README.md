@@ -13,17 +13,9 @@
   <img src="https://img.shields.io/discord/913049851531522078?style=for-the-badge&label=Discord&color=0000ff&link=https%3A%2F%2Fdiscord.gg%2Fbluemods-anticheat-913049851531522078" alt="Discord">
 </p>
 
----
 
-## **TAGS / PAGES**
-- [Social Pages](.docs/socials.md)
-- [Frequently Asked Questions](./docs/faq.md)
-- [Why Patches Still Here?](./docs/patched.md)
+## 🚀 Features  
 
-
----
-
-## **FEATURES**
 - Panel for Everyone
 - Anti Crasher
 - Anti Badwords
@@ -48,12 +40,21 @@
 - Enable/Disable Chat Display
 - Chat Configuration
 
+- Detects and blocks common cheats such as illegal items, crasher, and invalid namespoof.  
+- Customizable settings for server owners to fine-tune protection.  
+- Regular updates to improve detection and prevention methods.  
+
 Why are these patched preventions still here? [Answer is in the Link](./docs/patches.md)
 
---- 
 
-## **GUIDES**
-1. Go to the official BlueMods website or GitHub page.
+## ⚠️ Limitations  
+
+The prevention system in our addon is **basic**, meaning not all exploits or cheat movements can be completely prevented. While it helps reduce unfair advantages, more advanced hacks may still bypass some detections.  
+
+
+## 📌 Installation
+
+1. Go to the official [BlueMods website](https://bluemods.neocities.org) or GitHub page.
 2. Download the BlueMods Addon file.
 3. Open your Minecraft world settings.
 4. Import the downloaded BlueMods Addon into your world.
@@ -67,9 +68,17 @@ Why are these patched preventions still here? [Answer is in the Link](./docs/pat
 4. **Using Commands:** Always use the player’s exact username (including uppercase and lowercase letters) when running commands.
 5. **Important Tip:** Never give the **"op"** or **"trusted"** tags to players you don’t know or trust. This keeps your server safe.
 
----
 
-## **REQUIREMENTS**
+## 💡 Contribute  
+
+Want to help improve BlueMods AntiCheat?  
+- Report issues on our [GitHub Issues](https://github.com/BlueModsYT/BlueMods-AntiCheat/issues) page.  
+- Submit pull requests with bug fixes or new features.  
+- Join our community for discussions and updates.
+
+
+## ⭐ Requirements
+
 - **Education Edition**: Must be enabled for `!mute` and `!unmute` commands to function.
 - **Beta APIs**: Required to enable command functionality.
 - **Upcoming Creator Features**: Enable for custom entities and advanced features.
@@ -77,14 +86,18 @@ Why are these patched preventions still here? [Answer is in the Link](./docs/pat
 **Why enable these?**  
 These settings are essential for running commands and features that operate in beta mode. By enabling them, you ensure that your server is secure from cheaters and the addon functions as intended.
 
----
 
-## **RECOMMENDATIONS**
+## 📜 License  
+
+This project is licensed under the **GNU AGPLv3**, allowing you to modify.  
+
+
+## 🤔 Recommendations
 - [`8Crafter's Debug Sticks, Chat Ranks, Custom UI, and JavaScript Commands/Script REPL, and Server Utilities`](https://modbay.org/mods/1240-8crafters-debug-sticks.html) add-on - It is highly recommended that you enable this because it will allow for the UIs of this add-on to look a lot nicer, the add-on itself is also extremely useful. For more help with this add-on check out this discord server: [8Crafter Studios](https://discord.gg/jrCTeHGuhx).
 
----
 
-## **DEVELOPERS**
+## 👥 Developers
+
 - @BlueModsYT (BlueShadow) - FOUNDER
   - Email: [@bluemodsyt](mailto:bluemodsyt@gmail.com)
   - Discord: [BlueMods Studios](https://dsc.gg/bluemods)
@@ -102,12 +115,12 @@ These settings are essential for running commands and features that operate in b
   - Website: [8crafter.com](https://8crafter.com)
   - Website 2: [wiki.8crafter.com](https://wiki.8crafter.com)
 
----
 
-## **DOWNLOAD HERE**
+## 📂 Downloads
 - [BlueMods (Recommended)](https://bluemods.neocities.org)
-- [Github Latest](../..//releases/latest)
-- [GitHub Releases](../../releases)
+- [CurseForge](https://www.curseforge.com/minecraft-bedrock/addons/bluemods)
+- [MCPEDL](https://mcpedl.com/bluemods/)
+- [ModBay](https://modbay.org/mods/3343-bluemods-anticheat.html)
 
 Contact us by joining our official Discord server for bug fixes and suggestions.
 <p align="center">
