@@ -1,4 +1,9 @@
-// all rights reserve @bluemods.lol - discord account. || please report any bugs or glitches in our discord server https://dsc.gg/bluemods.  
+//░█░░█░█░░░░█░░█░█░░░░██░░██░█░░░█░░█░░░█░█░░█░
+//░███░░█░░░░█░░█░███░░██░░██░█░░░░█░█░░░█░██░░░
+//░█░░█░█░░░░█░░█░█░░░░█░██░█░█░░░░█░█░░░█░░░█░░
+//░█░░█░█░░█░█░░█░█░░█░█░██░█░█░░░█░░█░░░█░█░░█░
+//░███░░████░███░░████░█░█░░█░░███░░░████░░███░░
+// https://dsc.gg/bluemods
 
 const emoji = {
     ':Armor:': '',

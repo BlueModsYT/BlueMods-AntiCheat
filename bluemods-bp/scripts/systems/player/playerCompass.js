@@ -12,7 +12,13 @@ import { customFormUICodes } from "../../handlings/customFormUICodes.js";
 import spawnManager from "../../handlings/SpawnHandler.js";
 import main from "../../commands/config.js";
 
-// all rights reserve @bluemods.lol - discord account. || please report any bugs or glitches in our discord server https://dsc.gg/bluemods.  
+//░███░░██░░██░░█░████░██░░██░░████░░████░░░███░
+//░█░░█░█░░░░█░░█░█░░░░██░░██░█░░░█░░█░░░█░█░░█░
+//░███░░█░░░░█░░█░███░░██░░██░█░░░░█░█░░░█░██░░░
+//░█░░█░█░░░░█░░█░█░░░░█░██░█░█░░░░█░█░░░█░░░█░░
+//░█░░█░█░░█░█░░█░█░░█░█░██░█░█░░░█░░█░░░█░█░░█░
+//░███░░████░███░░████░█░█░░█░░███░░░████░░███░░
+// https://dsc.gg/bluemods
 
 const teleportingPlayers = new Map();
 const TELEPORT_COUNTDOWN = 5;
@@ -1165,7 +1171,7 @@ export function CreateFloatText(player) {
     const [x, y, z] = coords;
 
     system.run(() => {
-      player.runCommand(`summon bluemods:floating_text ${x} ${y} ${z} ~~ minecraft:become_neutral "${safeText}"`);
+      player.runCommand(`summon bluemods:ft ${x} ${y} ${z} ~~ minecraft:become_neutral "${safeText}"`);
     });
 
     player.sendMessage(`§aFloating text created: §e"${rawText}"§a at (§b${x}, ${y}, ${z}§a)`);
@@ -1175,7 +1181,7 @@ export function CreateFloatText(player) {
 }
 
 export function MoveFloatText(player) {
-  const floatingTexts = world.getDimension("overworld").getEntities({ type: "bluemods:floating_text" });
+  const floatingTexts = world.getDimension("overworld").getEntities({ type: "bluemods:ft" });
 
   if (floatingTexts.length === 0) {
     player.sendMessage("§7[§b#§7] §cNo floating text entities found.");

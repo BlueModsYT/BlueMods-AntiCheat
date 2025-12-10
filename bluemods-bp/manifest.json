@@ -1,3 +1,9 @@
+//░███░░██░░██░░█░████░██░░██░░████░░████░░░███░
+//░█░░█░█░░░░█░░█░█░░░░██░░██░█░░░█░░█░░░█░█░░█░
+//░███░░█░░░░█░░█░███░░██░░██░█░░░░█░█░░░█░██░░░
+//░█░░█░█░░░░█░░█░█░░░░█░██░█░█░░░░█░█░░░█░░░█░░
+//░█░░█░█░░█░█░░█░█░░█░█░██░█░█░░░█░░█░░░█░█░░█░
+//░███░░████░███░░████░█░█░░█░░███░░░████░░███░░
 {
     "format_version": 2,
     "metadata": {
@@ -13,13 +19,13 @@
         "product_type": "addon"
     },
     "header": {
-        "name": "§l§bBlueMods §aBP §gBeta-v5.12.0 §aV2§r",
+        "name": "§l§bBlueMods §aBP §gBeta-v5.12.1 §aV2§r",
         "description": "BlueMods AntiCheat for Minecraft Bedrock is a powerful tool designed to protect your server from hackers & cheaters. Required to turn on §c(Beta-API + Education Edition) §rMade by BlueMods",
         "uuid": "6568a874-bfd7-4ccb-a63f-dba79cf935cb",
         "version": [
             5,
             12,
-            0
+            1
         ],
         "min_engine_version": [
             1,
@@ -56,12 +62,12 @@
             "version": [
                 5,
                 12,
-                0
+                1
             ]
         },
         {
             "module_name": "@minecraft/server",
-            "version": "2.4.0-beta"
+            "version": "2.5.0-beta"
         },
         {
             "module_name": "@minecraft/server-ui",

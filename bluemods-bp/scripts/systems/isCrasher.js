@@ -2,7 +2,13 @@ import { world, system } from "@minecraft/server";
 import main from "../commands/config.js";
 import spawnManager from "../handlings/SpawnHandler.js";
 
-// All rights reserved @bluemods.lol - Discord account. | Please report any bugs or glitches in our Discord server: https://dsc.gg/bluemods.
+//░███░░██░░██░░█░████░██░░██░░████░░████░░░███░
+//░█░░█░█░░░░█░░█░█░░░░██░░██░█░░░█░░█░░░█░█░░█░
+//░███░░█░░░░█░░█░███░░██░░██░█░░░░█░█░░░█░██░░░
+//░█░░█░█░░░░█░░█░█░░░░█░██░█░█░░░░█░█░░░█░░░█░░
+//░█░░█░█░░█░█░░█░█░░█░█░██░█░█░░░█░░█░░░█░█░░█░
+//░███░░████░███░░████░█░█░░█░░███░░░████░░███░░
+// https://dsc.gg/bluemods
 
 const adminTag = main.adminTag;
 const MAX_COORD = 30_000_000;
@@ -32,7 +38,7 @@ function checkIllegalPosition(player) {
         }
 
         system.run(()=>player.runCommand(
-            `kick "${player.name}" \n§bBlueMods §7>> §aYou have been kicked out from the server.\n§eReason§7: §cIllegal Position Detected.`
+            `kick "${player.name}" \n§bBlueMods §7> §aYou have been kicked out from the server.\n§eReason§7: §cIllegal Position Detected.`
         ));
 
         world.getPlayers({ tags: ["notify"] }).forEach(admin => {

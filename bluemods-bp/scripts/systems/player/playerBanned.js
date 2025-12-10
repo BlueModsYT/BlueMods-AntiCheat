@@ -1,6 +1,13 @@
 import { world, system } from "@minecraft/server";
 
-// Global ban list (sorted alphabetically)
+//░███░░██░░██░░█░████░██░░██░░████░░████░░░███░
+//░█░░█░█░░░░█░░█░█░░░░██░░██░█░░░█░░█░░░█░█░░█░
+//░███░░█░░░░█░░█░███░░██░░██░█░░░░█░█░░░█░██░░░
+//░█░░█░█░░░░█░░█░█░░░░█░██░█░█░░░░█░█░░░█░░░█░░
+//░█░░█░█░░█░█░░█░█░░█░█░██░█░█░░░█░░█░░░█░█░░█░
+//░███░░████░███░░████░█░█░░█░░███░░░████░░███░░
+// https://dsc.gg/bluemods
+
 const BANNED_PLAYERS = [
     "Adgods", "Aleximont", "AltAnormalOM", "Aliveland419563", "Alphastorm9471",
     "Anderycarim", "AntonioPROKirby", "ARASR8260", "ARASR8262", "ArisenKitten455",

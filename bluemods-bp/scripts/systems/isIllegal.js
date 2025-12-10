@@ -6,6 +6,14 @@ import { ModulesPanel } from "./player/playerCompass.js";
 import { customFormUICodes } from "../handlings/customFormUICodes.js";
 import main from "../commands/config.js";
 
+//░███░░██░░██░░█░████░██░░██░░████░░████░░░███░
+//░█░░█░█░░░░█░░█░█░░░░██░░██░█░░░█░░█░░░█░█░░█░
+//░███░░█░░░░█░░█░███░░██░░██░█░░░░█░█░░░█░██░░░
+//░█░░█░█░░░░█░░█░█░░░░█░██░█░█░░░░█░█░░░█░░░█░░
+//░█░░█░█░░█░█░░█░█░░█░█░██░█░█░░░█░░█░░░█░█░░█░
+//░███░░████░███░░████░█░█░░█░░███░░░████░░███░░
+// https://dsc.gg/bluemods
+
 const adminTag = "admin";
 const trustedTag = "trusted";
 const MODULE_STATES_KEY = "moduleStates";
@@ -462,7 +470,6 @@ function enchantCheck() {
 
 system.run(enchantCheck);
 
-// Runs a function
 
 let itemCheckInterval;
 let entityCheckInterval;

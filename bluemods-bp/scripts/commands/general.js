@@ -3,7 +3,13 @@ import { Command } from "../handlings/CommandHandler.js";
 import { sendTeleportRequest, acceptTeleportRequest, declineTeleportRequest, blockPlayer, unblockPlayer } from "../handlings/TeleportHandler.js";
 import main from "./config.js";
 
-// all rights reserved @bluemods.lol - discord account. || please report any bugs or glitches in our discord server https://dsc.gg/bluemods
+//░███░░██░░██░░█░████░██░░██░░████░░████░░░███░
+//░█░░█░█░░░░█░░█░█░░░░██░░██░█░░░█░░█░░░█░█░░█░
+//░███░░█░░░░█░░█░███░░██░░██░█░░░░█░█░░░█░██░░░
+//░█░░█░█░░░░█░░█░█░░░░█░██░█░█░░░░█░█░░░█░░░█░░
+//░█░░█░█░░█░█░░█░█░░█░█░██░█░█░░░█░░█░░░█░█░░█░
+//░███░░████░███░░████░█░█░░█░░███░░░████░░███░░
+// https://dsc.gg/bluemods
 
 function isCommandEnabled(commandName) {
     return main.enabledCommands[commandName] !== undefined ? main.enabledCommands[commandName] : true;
@@ -104,7 +110,6 @@ Command.register({
     aliases: []
 }, (data) => {
     const player = data.player
-    if (!isAuthorized(player, "about")) return;
     
     system.run(() => data.player.runCommand(`playsound note.bell @s`))
     data.player.sendMessage(`

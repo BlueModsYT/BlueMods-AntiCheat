@@ -4,6 +4,14 @@ import { showCompassUI, DailyRewardsPanel } from "../systems/player/playerCompas
 import { customFormUICodes } from "./customFormUICodes.js";
 import main from "../commands/config.js";
 
+//░███░░██░░██░░█░████░██░░██░░████░░████░░░███░
+//░█░░█░█░░░░█░░█░█░░░░██░░██░█░░░█░░█░░░█░█░░█░
+//░███░░█░░░░█░░█░███░░██░░██░█░░░░█░█░░░█░██░░░
+//░█░░█░█░░░░█░░█░█░░░░█░██░█░█░░░░█░█░░░█░░░█░░
+//░█░░█░█░░█░█░░█░█░░█░█░██░█░█░░░█░░█░░░█░█░░█░
+//░███░░████░███░░████░█░█░░█░░███░░░████░░███░░
+// https://dsc.gg/bluemods
+
 const DAILY_REWARDS_KEY = "dailyRewards";
 let dailyRewards = [];
 

@@ -14,8 +14,7 @@
 </p>
 
 
-## 🚀 Features  
-
+## 🚀 Features
 - Panel for Everyone
 - Anti Crasher
 - Anti Badwords
@@ -48,12 +47,10 @@ Why are these patched preventions still here? [Answer is in the Link](./docs/pat
 
 
 ## ⚠️ Limitations  
-
 The prevention system in our addon is **basic**, meaning not all exploits or cheat movements can be completely prevented. While it helps reduce unfair advantages, more advanced hacks may still bypass some detections.  
 
 
 ## 📌 Installation
-
 1. Go to the official [BlueMods website](https://bluemods.neocities.org) or GitHub page.
 2. Download the BlueMods Addon file.
 3. Open your Minecraft world settings.
@@ -70,7 +67,6 @@ The prevention system in our addon is **basic**, meaning not all exploits or che
 
 
 ## 💡 Contribute  
-
 Want to help improve BlueMods AntiCheat?  
 - Report issues on our [GitHub Issues](https://github.com/BlueModsYT/BlueMods-AntiCheat/issues) page.  
 - Submit pull requests with bug fixes or new features.  
@@ -78,7 +74,6 @@ Want to help improve BlueMods AntiCheat?
 
 
 ## ⭐ Requirements
-
 - **Education Edition**: Must be enabled for `!mute` and `!unmute` commands to function.
 - **Beta APIs**: Required to enable command functionality.
 - **Upcoming Creator Features**: Enable for custom entities and advanced features.
@@ -88,7 +83,6 @@ These settings are essential for running commands and features that operate in b
 
 
 ## 📜 License  
-
 This project is licensed under the **GNU AGPLv3**, allowing you to modify.  
 
 
@@ -97,7 +91,6 @@ This project is licensed under the **GNU AGPLv3**, allowing you to modify.
 
 
 ## 👥 Developers
-
 - @BlueModsYT (BlueShadow) - FOUNDER
   - Email: [@bluemodsyt](mailto:bluemodsyt@gmail.com)
   - Discord: [BlueMods Studios](https://dsc.gg/bluemods)

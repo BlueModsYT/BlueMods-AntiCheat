@@ -1,11 +1,11 @@
-/*
- * BlueMods AntiCheat Configuration
- * * * * * | * * * * * | * * * * * | * * * * * 
- * Made By: BlueShadow (aka: @bluemods.lol)
- * Contributors: 8Crafter, MP09, and Trokkk
- * * * * * | * * * * * | * * * * * | * * * * *
- * Description: You can Access and Edit this config file, but owning this is not allowed
-*/
+
+//░███░░██░░██░░█░████░██░░██░░████░░████░░░███░
+//░█░░█░█░░░░█░░█░█░░░░██░░██░█░░░█░░█░░░█░█░░█░
+//░███░░█░░░░█░░█░███░░██░░██░█░░░░█░█░░░█░██░░░
+//░█░░█░█░░░░█░░█░█░░░░█░██░█░█░░░░█░█░░░█░░░█░░
+//░█░░█░█░░█░█░░█░█░░█░█░██░█░█░░░█░░█░░░█░█░░█░
+//░███░░████░███░░████░█░█░░█░░███░░░████░░███░░
+// https://dsc.gg/bluemods
 
 export const main = {
     prefix: "!", // Main Prefix
@@ -13,8 +13,8 @@ export const main = {
     trustTag: "trusted",
     notifyTag: "notify",
     developer: "§b@bluemods.lol §7| §3https://dsc.gg/bluemods",
-    bmversion: "§gBeta-v5.12.0",
-    mcversion: "§g1.21.120 §7- §g1.21.123",
+    bmversion: "§gBeta-v5.12.1",
+    mcversion: "§g1.21.120 §7- §g1.21.124",
     bmdescription: "§3BlueMods AntiCheat for Minecraft Bedrock is a powerful tool designed to protect your server from hackers & cheaters.",
     player: "§7<§eplayer§7>",
     reason: "§7[§areason§7]",
@@ -69,7 +69,7 @@ export const main = {
         "kick": true,
         "ban": true,
         "cmdsf": true,
-        "mute": true,
+        "mute": false,
         // "freeze": true, - removed
         "lagclear": true,
         "give": true,
@@ -92,7 +92,7 @@ export const main = {
         // "nbtload": false, - will rework soon
         "floatingtext": true
     },
-    daily: [
+    daily: [ // Daily Functional
         { item: "book", count: 2, chance: 50 },
         { item: "stick", count: 5, chance: 50 },
         { item: "coal", count: 3, chance: 50 },
@@ -105,7 +105,7 @@ export const main = {
         { item: "diamond", count: 5, chance: 5 },
         { item: "netherite_ingot", count: 3, chance: 5 }
     ],
-    moduleStates: {
+    moduleStates: { // Default Module States (Not Recommended to Change Here)
         "receiveCompassOnJoin": false,
         "inCombatLogging": false,
         "rankDisplaySystem": false,
@@ -122,13 +122,13 @@ export const main = {
         "isNPCMob": false,
         "isCreativeMode": false
     },
-    chatConfig: {
+    chatConfig: { // Chat Config (Spam Cooldowns, etc.)
         "SPAM_COOLDOWN_TIME": 5000,
         "allowDuplicateMessages": false,
         "allowBadWords": false,
         "allowSpam": false
     },
-    memberCategories: [
+    memberCategories: [ // Help Commands
         {
             name: "command.general.category",
             commands: [
@@ -224,8 +224,7 @@ export const main = {
                 { text: `  §7- §a!invwipe §7<§eplayer§7> §7- §3`, description: "command.invwipe.description" },
                 { text: `  §7- §a!pearl §7<§gduration§7> §7- §3`, description: "command.pearl.description" },
                 { text: `  §7- §a!rank §7<§aadd§7/§cremove§7> §7<§arank§7> §7[§gcolor§7] §7<§eplayer§7> §7- §3`, description: "command.rank.description" },
-                { text: `  §7- §a!floatingtext §7<§atext§7> §7[§gx, y, z§7] - §3`, description: "command.floatingtext.description" },
-                { text: `  §7- §a!dupe §7- §3`, description: "command.dupe.description" }
+                { text: `  §7- §a!floatingtext §7<§atext§7> §7[§gx, y, z§7] - §3`, description: "command.floatingtext.description" }
             ]
         },
         {

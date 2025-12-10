@@ -3,6 +3,14 @@ import { ActionFormData } from "@minecraft/server-ui";
 import { showCompassUI } from "../systems/player/playerCompass.js";
 import { customFormUICodes } from "./customFormUICodes.js";
 
+//░███░░██░░██░░█░████░██░░██░░████░░████░░░███░
+//░█░░█░█░░░░█░░█░█░░░░██░░██░█░░░█░░█░░░█░█░░█░
+//░███░░█░░░░█░░█░███░░██░░██░█░░░░█░█░░░█░██░░░
+//░█░░█░█░░░░█░░█░█░░░░█░██░█░█░░░░█░█░░░█░░░█░░
+//░█░░█░█░░█░█░░█░█░░█░█░██░█░█░░░█░░█░░░█░█░░█░
+//░███░░████░███░░████░█░█░░█░░███░░░████░░███░░
+// https://dsc.gg/bluemods
+
 const playerRequest = {};
 const cooldowns = {};
 const tpablocks = {};

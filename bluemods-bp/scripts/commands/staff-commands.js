@@ -3,7 +3,13 @@ import { Command } from "../handlings/CommandHandler.js";
 import { banPlayer, unbanPlayer, getBannedPlayers, parseCustomDuration, mutePlayer, unmutePlayer } from "../handlings/ModHandler.js";
 import main from "./config.js";
 
-// all rights reserved @bluemods.lol - discord account. || Please report any bugs or glitches in our discord server https://dsc.gg/bluemods.
+//░███░░██░░██░░█░████░██░░██░░████░░████░░░███░
+//░█░░█░█░░░░█░░█░█░░░░██░░██░█░░░█░░█░░░█░█░░█░
+//░███░░█░░░░█░░█░███░░██░░██░█░░░░█░█░░░█░██░░░
+//░█░░█░█░░░░█░░█░█░░░░█░██░█░█░░░░█░█░░░█░░░█░░
+//░█░░█░█░░█░█░░█░█░░█░█░██░█░█░░░█░░█░░░█░█░░█░
+//░███░░████░███░░████░█░█░░█░░███░░░████░░███░░
+// https://dsc.gg/bluemods
 
 function isCommandEnabled(commandName) {
     return main.enabledCommands[commandName] !== undefined ? main.enabledCommands[commandName] : true;
@@ -1266,7 +1272,7 @@ Command.register({
 
     try {
         system.run(() => {
-          player.runCommand(`summon bluemods:floating_text ${x}${y}${z} ~~ minecraft:become_neutral "${text}"`);
+          player.runCommand(`summon bluemods:ft ${x}${y}${z} ~~ minecraft:become_neutral "${text}"`);
         });
         player.sendMessage(`§7[§b#§7] §aAdded floating text at ${x} ${y} ${z}`);
     } catch (e) {
