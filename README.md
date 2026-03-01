@@ -3,6 +3,7 @@
 </p>
 <h1 align="center">BlueMods AntiCheat</h1>
 <p align="center">https://bluemods.neocities.org</p>
+<p align="center">DISCONTINUED</p>
 <p align="center">
   BlueMods AntiCheat for Minecraft Bedrock is a powerful tool and best solution to prevent hackers raid, its designed to protect your server from hackers and cheaters.
 </p>
@@ -13,6 +14,13 @@
   <img src="https://img.shields.io/discord/913049851531522078?style=for-the-badge&label=Discord&color=0000ff&link=https%3A%2F%2Fdiscord.gg%2Fbluemods-anticheat-913049851531522078" alt="Discord">
 </p>
 
+## Official Statement
+- **Why Discontinue?** - The project eventually came to an end because Mojang started patching most cheats and exploits themselves, including player movement-related ones, which made the add-on less necessary.
+- before you go, we have officially made another addon which is kinda similar to this addon but it's not all about anti cheats or prevention pack, however the new pack is not yet release. (check [discord announcement](https://discord.com/channels/913049851531522078/1038750610247397446/1462348993957855376))
+
+Thank you for supporting this addon and those devs who help. thanks for the 6 years of supporting ❤️.
+
+– BlueMods Studios
 
 ## 🚀 Features
 - Panel for Everyone
@@ -23,6 +31,7 @@
 - Anti Illegal Items
 - Anti CBE Exploits
 - Anti Creative Mode
+
 - Anti Lore Containers
 - Anti Operator Blocks
 - Anti Duplicate Message
